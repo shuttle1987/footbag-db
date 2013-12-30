@@ -26,7 +26,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['janis.pythonanywhere.com']
 
 
 # Application definition
