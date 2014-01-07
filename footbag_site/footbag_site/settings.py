@@ -26,7 +26,10 @@ DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['janis.pythonanywhere.com']
+ALLOWED_HOSTS = ['janis.pythonanywhere.com',
+                 '.footbag.info',
+                 '.footbag.info.',
+                ]
 
 
 # Application definition
@@ -91,4 +94,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+# Location of template files
+TEMPLATE_DIRS = (    
+    os.path.join(BASE_DIR, 'templates'),
+)
+
+TEMPLATE_LOADERS = (
+        ('django.template.loaders.cached.Loader', (
+            'django.template.loaders.filesystem.Loader',
+            'django.template.loaders.app_directories.Loader',
+        )),
+)
+
