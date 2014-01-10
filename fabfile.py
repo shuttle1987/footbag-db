@@ -19,7 +19,7 @@ def deploy():
     already been prepared with prepare_deployment.
     PythonAnywhere is set up such that touching the WSGI file restarts the server
     """
-    with lcd('~/footbagsite/www_footbag_info/footbag_site'):
-        local('git pull ~/footbagsite/dev/www_footbag_info/')
+    with lcd('~/footbagsite/www_footbag_info/'):
+        local('git pull ~/footbagsite/dev-site/')
         local('python manage.py migrate footbagmoves')
         local('touch /var/www/www_footbag_info_wsgi.py')#restarts PythonAnywhere server
