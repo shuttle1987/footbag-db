@@ -1,12 +1,21 @@
 """
 Django settings for footbag_site project.
 
+This settings file contains all the settings that are shared between all
+environments (in this case dev and live) then imports the deployment specific settings
+from local_settings.py.
+
+local_settings.py just imports the relevant settings for the deployment and as such is
+different in each deployment. local_settings.py is not tracked by git for this reason.
+
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+
+from local_settings import * #import the settings specific to the environment (dev or live)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -26,8 +35,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['janis.pythonanywhere.com',
-                 '.footbag.info',
+ALLOWED_HOSTS = ['.footbag.info',
                  '.footbag.info.',
                 ]
 
