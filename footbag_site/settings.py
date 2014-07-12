@@ -109,6 +109,7 @@ STATIC_URL = '/static/'
 # Location of template files
 TEMPLATE_DIRS = (    
     os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'apps', 'footbagmoves', 'templates'),
 )
 
 TEMPLATE_LOADERS = (
