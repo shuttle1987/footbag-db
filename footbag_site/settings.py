@@ -26,14 +26,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = '4iz9)#m9^4g71o@z3z1oqq^#rk7&vz&r%8bo3l9v41#fhjhe0_'
+# Store this in a file on the server as the settings.py file is stored in the public git repository.
 with open('/home/janis/footbag_secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['.footbag.info',
                  '.footbag.info.',
@@ -75,16 +70,6 @@ ROOT_URLCONF = 'footbag_site.urls'
 
 WSGI_APPLICATION = 'footbag_site.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
