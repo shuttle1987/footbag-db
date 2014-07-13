@@ -5,4 +5,4 @@ from django.shortcuts import RequestContext
 
 def index(request):
     """ Render the requests for the homepage found at root URL """
-    return render_to_response('index.html', context_instance=RequestContext(request))
+    return render_to_response('home/index.html', context_instance=RequestContext(request))
