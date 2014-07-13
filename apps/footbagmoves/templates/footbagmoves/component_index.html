@@ -1,1 +1,10 @@
+<h1> Footbag components </h1>
 This is the components index page (Template powered)
+
+Recently added components:
+
+<ul>
+{% for component in recent_components %}
+    <li>{{ component }}
+{% endfor %}
+</ul>

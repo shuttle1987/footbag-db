@@ -14,7 +14,8 @@ def move_index(request):
 def component_index(request):
     """ View for the components index page """
     template = loader.get_template('footbagmoves/component_index.html')
-    context = RequestContext(request, {})
+    latest_components = Component.objects.all()
+    context = RequestContext(request, {'recent_components': latest_components})
     return HttpResponse(template.render(context))
 
 def component_detail(request, component_name):
