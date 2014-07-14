@@ -1,5 +1,5 @@
-body { background; #999; }
-#page-wrap { width: 700px; position: relative; }
+body { background: #999; }
+#page-wrap { width: 700px; }
 #page-wrap:after { content: "Wide layout"; }
-#main-content { float: right; width 440px; height: 300px; }
-#sidebar-left { float: left; width: 170px; height 300px; }
+#main-content { float: right; width: 440px; height: 300px; }
+#sidebar-left { float: left; width: 170px; height: 300px; }
