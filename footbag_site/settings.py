@@ -95,6 +95,7 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (    
     os.path.join(BASE_DIR, 'footbag_site', 'templates'),
     os.path.join(BASE_DIR, 'apps', 'home', 'templates'),
+    os.path.join(BASE_DIR, 'apps', 'footbagmoves', 'templates'),
 )
 
 TEMPLATE_LOADERS = (
