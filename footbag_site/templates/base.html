@@ -1,22 +1,35 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css" />
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+
     <title>{% block title %} Footbag DB default title {% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'basic_theme/css/style.css' %}" />
+
+    <link rel="stylesheet" media="screen and (max_width: 700px)" href="{% static 'basic_theme/css/narrow.css' %}" />
+    <link rel="stylesheet" media="screen and (min_width: 701px)" href="{% static 'basic_theme/css/wide.css' %}" />
 </head>
 
-<body>
-    <div id="sidebar">
-        {% block sidebar %}
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/components/">Components</a></li>
-        </ul>
-        {% endblock %}
-    </div>
 
-    <div id="content">
-        {% block content %}{% endblock %}
+<body>
+    <div id="page-wrap">
+        <div id="header">
+            {% block header %}{% endblock %}
+        </div>
+        <div id="sidebar-left">
+            {% block sidebar %}
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/components/">Components</a></li>
+            </ul>
+            {% endblock %}
+        </div>
+
+        <div id="main-content">
+            {% block content %}{% endblock %}
+        </div>
     </div>
 </body>
 </html>

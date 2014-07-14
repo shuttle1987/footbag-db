@@ -1,0 +1,3 @@
+body { background; #333; }
+#page-wrap { width: 548 px; }
+#page-wrap:after { content: "Narrow layout"; }
