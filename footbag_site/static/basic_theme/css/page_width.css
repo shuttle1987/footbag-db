@@ -1,13 +1,13 @@
-@media screen and (max_width: 700px){
+@media screen and (max-width: 700px){
     body { background: #333; }
     #page-wrap { width: 548px; }
-    #page-wrap:after { content: "Narrow layout"; }
+    #page-wrap:after { content: "Mobile layout"; }
 }
 
-@media screen and (min_width: 701px){
+@media screen and (min-width: 701px){
     body { background: #999; }
     #page-wrap { width: 700px; }
-    #page-wrap:after { content: "Wide layout"; }
+    #page-wrap:after { content: "Desktop layout"; }
     #main-content { float: right; width: 440px; height: 300px; }
     #sidebar-left { float: left; width: 170px; height: 300px; }
 }
