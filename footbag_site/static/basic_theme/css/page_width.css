@@ -6,8 +6,8 @@
 
 @media screen and (min-width: 701px){
     body { background: #999; }
-    #page-wrap { width: 700px; }
+    #page-wrap { width: 800px; }
     #page-wrap:after { content: "Desktop layout"; }
-    #main-content { float: right; width: 440px; height: 300px; }
-    #sidebar-left { float: left; width: 170px; height: 300px; }
+    #main-content { float: right; width: 540px; height: 400px; }
+    #sidebar-left { float: left; width: 170px; height: 400px; }
 }
