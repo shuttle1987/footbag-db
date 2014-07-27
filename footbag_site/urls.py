@@ -10,7 +10,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'apps.home.views.index', name='basic_homepage'),#match the bare domain name
-    url(r'^components/', include('apps.footbagmoves.urls', namespace='footbagmoves')),
+    #url(r'^components/', include('apps.footbagmoves.urls', namespace='footbagmoves')),#namespace currently causing issues with url reverse matching in components index
+    url(r'^components/', include('apps.footbagmoves.urls')),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='home/robots.txt', content_type='text/plain'), name='robots'),
     url(r'^admin/', include(admin.site.urls)),
 )
