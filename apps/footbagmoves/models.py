@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils.text import slugify
+#from django.utils.text import slugify
+from django.template.defaultfilters import slugify
 
 # a model for a footbag component
 class Component(models.Model):
@@ -19,13 +20,13 @@ class Component(models.Model):
         if not self.id:
             #newly generated object as there is no DB key yet
             self.slug = slugify(self.name)
-        super(Component, self).save(*args, **kwargs)
+            super(Component, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         """ Compute canonical URL for a Component object"""
         from django.core.urlresolvers import reverse
-        return reverse('apps.footbagmoves.components', args=[str(self.slug)])
-        #return reverse('apps.footbagmoves.components', args=[str(self.id)])
+        #return reverse('apps.footbagmoves.components', args=[str(self.slug)])
+        return reverse('apps.footbagmoves.components', args=[str(self.id)])
 
 # a model for an entire footbag move
 class Move(models.Model):

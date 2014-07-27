@@ -1,3 +1,4 @@
+"""URL processing for footbag components"""
 from django.conf.urls import patterns, url
 
 from apps.footbagmoves import views

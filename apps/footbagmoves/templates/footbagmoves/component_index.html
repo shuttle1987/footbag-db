@@ -7,8 +7,8 @@ This is the components index page (Template powered) <br />
 
 Recently added components:
 <ul>
-{% for component in recent_components %}
-    <li><a href="{{ component.get_absolute_url }}">{{ component.name }}</a></li>
+{% for comp in recent_components %}
+<li><a href="{% url "component_detail" comp.slug %}"> {{ comp.name }}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}
