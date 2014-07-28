@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.footbagmoves.models import Component
+from apps.footbagmoves.models import Component, Move
 
 admin.site.register(Component)
-# Register your models here.
+admin.site.register(Move)

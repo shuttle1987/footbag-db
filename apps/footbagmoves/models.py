@@ -1,5 +1,4 @@
 from django.db import models
-#from django.utils.text import slugify
 from django.template.defaultfilters import slugify
 
 # a model for a footbag component
@@ -30,11 +29,29 @@ class Component(models.Model):
 
 # a model for an entire footbag move
 class Move(models.Model):
-    """ A model for an entire footbag move 
+    """ A model for organizing the information for an individual footbag move.
+    Uses MoveComponentSequence to keep track of the squence of components that
+    are contained in the move.
     see https://github.com/shuttle1987/footbag-db/wiki/Abstract-model-for-footbag-moves
     and https://github.com/shuttle1987/footbag-db/wiki/Data-structure-implementation-for-footbag-moves
     """
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=40)
+    slug = models.SlugField(editable=False, unique=True)#editable=False hides slug from admin page
     def __unicode__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        """ Overriding the save method to generate a url slug"""
+        if not self.id:
+            #newly generated object as there is no DB key yet
+            self.slug = slugify(self.name)
+            super(Move, self).save(*args, **kwargs)
+
+
+class MoveComponentSequence(models.Model):
+    """ This is essentially a table that keeps track of the sequences of components that
+    are present in any given footbag move. We have to use use a table because the
+    Django ORM doesn't deal with lists particularly well. """
+    pass
+    #sequence_number = models.PositiveSmallIntegerField()   
+    

@@ -12,9 +12,20 @@ def move_index(request):
     context = RequestContext(request, {'recent_moves': latest_moves})
     return HttpResponse(template.render(context))
 
-def move_detail(request):
+def move_detail(request, move_slug):
     """ View for the move details page"""
-    pass
+    try:
+        #extract move information
+        move = Move.objects.get(slug=move_slug)
+    except Move.DoesNotExist:
+        template = loader.get_template('footbagmoves/move_not_found.html')
+        context = RequestContext(request, {'move_slug' : move_slug})
+        return HttpResponseNotFound(template.render(context))
+    template = loader.get_template('footbagmoves/move_detail.html')
+    #TODO: extract the sequence of components for the move
+    components_seq = []
+    context = RequestContext(request, {'move' : move, 'sequence': components_seq})
+    return HttpResponse(template.render(context))
 
 def component_index(request):
     """ View for the components index page """
