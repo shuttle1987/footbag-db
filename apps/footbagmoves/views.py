@@ -9,7 +9,8 @@ def move_index(request):
     """ View for the moves index page """
     template = loader.get_template('footbagmoves/move_index.html')
     latest_moves = Move.objects.all()
-    context = RequestContext(request, {'recent_moves': latest_moves})
+    num_moves = Move.objects.count()
+    context = RequestContext(request, {'number_of_moves': num_moves, 'recent_moves': latest_moves})
     return HttpResponse(template.render(context))
 
 def move_detail(request, move_slug):
