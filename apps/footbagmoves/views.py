@@ -3,13 +3,18 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.template import RequestContext, loader
 
-from apps.footbagmoves.models import Component
-
-def move_view(request):
-    return render(request, 'move_index.html')
+from apps.footbagmoves.models import Component, Move
 
 def move_index(request):
-    return HttpResponse("You're currently at the move index.")
+    """ View for the moves index page """
+    template = loader.get_template('footbagmoves/move_index.html')
+    latest_moves = Move.objects.all()
+    context = RequestContext(request, {'recent_moves': latest_moves})
+    return HttpResponse(template.render(context))
+
+def move_detail(request):
+    """ View for the move details page"""
+    pass
 
 def component_index(request):
     """ View for the components index page """
