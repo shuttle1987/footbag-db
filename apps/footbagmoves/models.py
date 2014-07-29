@@ -57,4 +57,4 @@ class MoveComponentSequence(models.Model):
     move = models.ForeignKey(Move)
 
     def __unicode__(self):
-        return u'%s %d %s' % (move.name, sequence_number, component.name)
+        return u'%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
