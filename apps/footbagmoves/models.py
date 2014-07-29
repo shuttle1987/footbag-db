@@ -1,7 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
-# a model for a footbag component
 class Component(models.Model):
     """ A model for a footbag move component
     see https://github.com/shuttle1987/footbag-db/wiki/Abstract-model-for-footbag-moves
@@ -24,10 +23,8 @@ class Component(models.Model):
     def get_absolute_url(self):
         """ Compute canonical URL for a Component object"""
         from django.core.urlresolvers import reverse
-        #return reverse('apps.footbagmoves.components', args=[str(self.slug)])
         return reverse('apps.footbagmoves.components', args=[str(self.id)])
 
-# a model for an entire footbag move
 class Move(models.Model):
     """ A model for organizing the information for an individual footbag move.
     Uses MoveComponentSequence to keep track of the squence of components that

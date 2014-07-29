@@ -16,14 +16,13 @@ def move_index(request):
 def move_detail(request, move_slug):
     """ View for the move details page"""
     try:
-        #extract move information
+        #extract move information object
         current_move = Move.objects.get(slug=move_slug)
     except Move.DoesNotExist:
         template = loader.get_template('footbagmoves/move_not_found.html')
         context = RequestContext(request, {'move_slug' : move_slug})
         return HttpResponseNotFound(template.render(context))
     template = loader.get_template('footbagmoves/move_detail.html')
-    #TODO: extract the sequence of components for the move
     components_seq = MoveComponentSequence.objects.filter(move__exact=current_move)
     context = RequestContext(request, {'move' : current_move, 'sequence': components_seq})
     return HttpResponse(template.render(context))
