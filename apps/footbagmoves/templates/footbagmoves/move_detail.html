@@ -8,7 +8,7 @@ This is the move detail page for {{ move.name }}.
 This move is comprised of the following components:
 <ol>
     {% for comp in sequence %}
-    <li> {{comp.component.name}} </li>
+    <li><a href="{% url "component_detail" comp.component.slug %}"> {{comp.component.name}}</a> </li>
     {% endfor %}
 </ol>
 {% endblock %}
