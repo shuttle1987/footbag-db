@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.template import RequestContext, loader
 
-from apps.footbagmoves.models import Component, Move
+from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 
 def move_index(request):
     """ View for the moves index page """
@@ -17,15 +17,15 @@ def move_detail(request, move_slug):
     """ View for the move details page"""
     try:
         #extract move information
-        move = Move.objects.get(slug=move_slug)
+        current_move = Move.objects.get(slug=move_slug)
     except Move.DoesNotExist:
         template = loader.get_template('footbagmoves/move_not_found.html')
         context = RequestContext(request, {'move_slug' : move_slug})
         return HttpResponseNotFound(template.render(context))
     template = loader.get_template('footbagmoves/move_detail.html')
     #TODO: extract the sequence of components for the move
-    components_seq = []
-    context = RequestContext(request, {'move' : move, 'sequence': components_seq})
+    components_seq = MoveComponentSequence.objects.filter(move=current_move.id)
+    context = RequestContext(request, {'move' : current_move, 'sequence': components_seq})
     return HttpResponse(template.render(context))
 
 def component_index(request):

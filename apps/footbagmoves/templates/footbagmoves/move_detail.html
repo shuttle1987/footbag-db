@@ -3,5 +3,12 @@
 {% block title %} Move - {{ move.name }}{% endblock %}
 {% block header %} Move: {{ move.name }}{% endblock %}
 {% block content %}
-This is the move detail page for {{ move.name }}
+This is the move detail page for {{ move.name }}.
+<br />
+This move is comprised of the following components:
+<ol>
+    {% for component in components_seq %}
+    <li> {{component.name}} </li>
+    {% endfor %}
+</ol>
 {% endblock %}

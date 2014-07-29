@@ -52,6 +52,9 @@ class MoveComponentSequence(models.Model):
     """ This is essentially a table that keeps track of the sequences of components that
     are present in any given footbag move. We have to use use a table because the
     Django ORM doesn't deal with lists particularly well. """
-    pass
-    #sequence_number = models.PositiveSmallIntegerField()   
-    
+    sequence_number = models.PositiveSmallIntegerField(default=0)
+    component = models.ForeignKey(Component)
+    move = models.ForeignKey(Move)
+
+    def __unicode__(self):
+        return u'%s %d %s' % (move.name, sequence_number, component.name)
