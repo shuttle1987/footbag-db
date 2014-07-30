@@ -1,6 +1,7 @@
 from django.contrib import admin
 from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
+from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 
 class ComponentDemonstrationVideoInline(admin.TabularInline):
     """Inline admin to link to a demonstation video for a component"""
@@ -18,6 +19,15 @@ class ComponentAdmin(admin.ModelAdmin):
             ComponentTutorialVideoInline,
     ]
 
+
+class MoveDemonstrationVideoInline(admin.TabularInline):
+    """Inline admin to link to a demonstation video for a Move"""
+    model = MoveDemonstrationVideo
+
+class MoveTutorialVideoInline(admin.TabularInline):
+    """Inline admin to link to a tutorial video for a Move"""
+    model = MoveTutorialVideo
+
 class MoveComponentSequenceInline(admin.TabularInline):
     """ Inline admin for the move sequences. This is so we can edit the components
     sequence in the same place in the Admin page as the moves"""
@@ -27,6 +37,8 @@ class MoveAdmin(admin.ModelAdmin):
     """Admin helper for the moves """
     inlines = [
             MoveComponentSequenceInline,
+            MoveDemonstrationVideoInline,
+            MoveTutorialVideoInline,
     ]
 
 admin.site.register(Component, ComponentAdmin)
