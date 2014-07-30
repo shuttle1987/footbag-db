@@ -57,18 +57,31 @@ class MoveComponentSequence(models.Model):
         return u'%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
 
 
+VIDEO_TYPES = (
+        (u'1', u'URL'),
+        (u'2', u'Youtube'),
+)
+
 class MoveDemonstrationVideo(models.Model):
     """ This is to keep track of move demonstration videos. """
-    pass
+    move = models.ForeignKey(Move)
+    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL)
+    URL = models.URLField()
 
 class MoveTutorialVideo(models.Model):
     """ This is to keep track of move tutorial videos. """
-    pass
+    move = models.ForeignKey(Move)
+    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL)
+    URL = models.URLField()
 
 class ComponentDemonstrationVideo(models.Model):
     """ This is to keep track of component demonstration videos. """
-    pass
+    component = models.ForeignKey(Component)
+    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL)
+    URL = models.URLField()
 
 class ComponentTutorialVideo(models.Model):
     """ This is to keep track of component tutorial videos. """
-    pass
+    component = models.ForeignKey(Component)
+    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL)
+    URL = models.URLField()
