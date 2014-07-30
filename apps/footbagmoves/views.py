@@ -10,7 +10,10 @@ def move_index(request):
     template = loader.get_template('footbagmoves/move_index.html')
     latest_moves = Move.objects.all()
     num_moves = Move.objects.count()
-    context = RequestContext(request, {'number_of_moves': num_moves, 'recent_moves': latest_moves})
+    context = RequestContext(request,{
+        'number_of_moves': num_moves,
+        'recent_moves': latest_moves,
+    })
     return HttpResponse(template.render(context))
 
 def move_detail(request, move_slug):
@@ -24,7 +27,10 @@ def move_detail(request, move_slug):
         return HttpResponseNotFound(template.render(context))
     template = loader.get_template('footbagmoves/move_detail.html')
     components_seq = MoveComponentSequence.objects.filter(move__exact=current_move)
-    context = RequestContext(request, {'move' : current_move, 'sequence': components_seq})
+    context = RequestContext(request, {
+        'move' : current_move,
+        'sequence': components_seq,
+    })
     return HttpResponse(template.render(context))
 
 def component_index(request):
@@ -32,7 +38,10 @@ def component_index(request):
     template = loader.get_template('footbagmoves/component_index.html')
     latest_components = Component.objects.all()
     num_components = Component.objects.count()
-    context = RequestContext(request, {'number_of_components': num_components ,'recent_components': latest_components})
+    context = RequestContext(request, {
+        'number_of_components': num_components,
+        'recent_components': latest_components,
+    })
     return HttpResponse(template.render(context))
 
 def component_detail(request, component_slug):
