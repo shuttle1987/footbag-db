@@ -88,7 +88,7 @@ class ComponentDemonstrationVideo(models.Model):
     URL = models.URLField()
 
     def __unicode__(self):
-        return u'Demonstration video for Component: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+        return u'Demonstration video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
 
 class ComponentTutorialVideo(models.Model):
     """ This is to keep track of component tutorial videos. """
@@ -97,4 +97,4 @@ class ComponentTutorialVideo(models.Model):
     URL = models.URLField()
 
     def __unicode__(self):
-        return u'Tutorial video for Component: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+        return u'Tutorial video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
