@@ -6,14 +6,27 @@
 This is the components detail page for {{ component.name }}
 
 <br />
-Video demonstration:
-{% for vid in video_demo %}
-<a href="{{ vid.URL }}"> click for demo </a>
-{% endfor %}
+{% with videos=video_demo.all %}
+    {% if videos %}
+        Video demonstration:
+        {% for vid in videos %}
+            <a href="{{ vid.URL }}"> click for demo </a>
+        {% endfor %}
+    {% else %}
+        no video demonstrations found
+    {% endif %}
+{% endwith %}
+
 <br />
-Tutorial video:
-{% for vid in video_tutorial %}
-<a href="{{ vid.URL }}"> click for tutorial </a>
-{% endfor %}
+{% with videos=video_tutorial.all %}
+    {% if videos %}
+        Tutorial video:
+        {% for vid in videos %}
+            <a href="{{ vid.URL }}"> click for tutorial </a>
+        {% endfor %}
+    {% else %}
+        no video demonstrations found
+    {% endif %}
+{% endwith %}
 
 {% endblock %}
