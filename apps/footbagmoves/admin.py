@@ -1,5 +1,6 @@
 from django.contrib import admin
 from apps.footbagmoves.models import Component, Move, MoveComponentSequence
+from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 
 class ComponentTutorialVideoInline(admin.TabularInline):
     """Inline admin to link to a tutorial video for a component"""
@@ -9,9 +10,9 @@ class ComponentDemonstrationVideoInline(admin.TabularInline):
     """Inline admin to link to a demonstation video for a component"""
     model = ComponentDemonstrationVideo
 
-class ComponentAdmin(admin.Model);
+class ComponentAdmin(admin.ModelAdmin):
     """Admin helper for the components"""
-    fields = ('name')
+    fields = ('name',)
     inlines = [
             ComponentTutorialVideoInline,
             ComponentDemonstrationVideoInline,
