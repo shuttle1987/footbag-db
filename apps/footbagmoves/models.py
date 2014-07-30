@@ -55,3 +55,20 @@ class MoveComponentSequence(models.Model):
 
     def __unicode__(self):
         return u'%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
+
+
+class MoveDemonstrationVideo(models.Model):
+    """ This is to keep track of move demonstration videos. """
+    pass
+
+class MoveTutorialVideo(models.Model):
+    """ This is to keep track of move tutorial videos. """
+    pass
+
+class ComponentDemonstrationVideo(models.Model):
+    """ This is to keep track of component demonstration videos. """
+    pass
+
+class ComponentTutorialVideo(models.Model):
+    """ This is to keep track of component tutorial videos. """
+    pass
