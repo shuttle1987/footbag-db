@@ -68,11 +68,17 @@ class MoveDemonstrationVideo(models.Model):
     video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL)
     URL = models.URLField()
 
+    def __unicode__(self):
+        return u'Demonstration video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+
 class MoveTutorialVideo(models.Model):
     """ This is to keep track of move tutorial videos. """
     move = models.ForeignKey(Move)
     video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL)
     URL = models.URLField()
+
+    def __unicode__(self):
+        return u'Tutorial video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
 
 class ComponentDemonstrationVideo(models.Model):
     """ This is to keep track of component demonstration videos. """
@@ -80,8 +86,14 @@ class ComponentDemonstrationVideo(models.Model):
     video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL)
     URL = models.URLField()
 
+    def __unicode__(self):
+        return u'Demonstration video for Component: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+
 class ComponentTutorialVideo(models.Model):
     """ This is to keep track of component tutorial videos. """
     component = models.ForeignKey(Component)
     video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL)
     URL = models.URLField()
+
+    def __unicode__(self):
+        return u'Tutorial video for Component: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
