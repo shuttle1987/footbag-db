@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %} Move - {{ move.name }}{% endblock %}
+{% block header %} Move: {{ move.name }}{% endblock %}
+{% block content %}
+This is the move detail page for {{ move.name }}.
+<br />
+This move is comprised of the following components:
+<ol>
+    {% for comp in sequence %}
+    <li><a href="{% url "component_detail" comp.component.slug %}"> {{comp.component.name}}</a> </li>
+    {% endfor %}
+</ol>
+{% endblock %}

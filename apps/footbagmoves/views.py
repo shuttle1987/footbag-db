@@ -3,19 +3,36 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.template import RequestContext, loader
 
-from apps.footbagmoves.models import Component
-
-def move_view(request):
-    return render(request, 'move_index.html')
+from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 
 def move_index(request):
-    return HttpResponse("You're currently at the move index.")
+    """ View for the moves index page """
+    template = loader.get_template('footbagmoves/move_index.html')
+    latest_moves = Move.objects.all()
+    num_moves = Move.objects.count()
+    context = RequestContext(request, {'number_of_moves': num_moves, 'recent_moves': latest_moves})
+    return HttpResponse(template.render(context))
+
+def move_detail(request, move_slug):
+    """ View for the move details page"""
+    try:
+        #extract move information object
+        current_move = Move.objects.get(slug=move_slug)
+    except Move.DoesNotExist:
+        template = loader.get_template('footbagmoves/move_not_found.html')
+        context = RequestContext(request, {'move_slug' : move_slug})
+        return HttpResponseNotFound(template.render(context))
+    template = loader.get_template('footbagmoves/move_detail.html')
+    components_seq = MoveComponentSequence.objects.filter(move__exact=current_move)
+    context = RequestContext(request, {'move' : current_move, 'sequence': components_seq})
+    return HttpResponse(template.render(context))
 
 def component_index(request):
     """ View for the components index page """
     template = loader.get_template('footbagmoves/component_index.html')
     latest_components = Component.objects.all()
-    context = RequestContext(request, {'recent_components': latest_components})
+    num_components = Component.objects.count()
+    context = RequestContext(request, {'number_of_components': num_components ,'recent_components': latest_components})
     return HttpResponse(template.render(context))
 
 def component_detail(request, component_slug):
