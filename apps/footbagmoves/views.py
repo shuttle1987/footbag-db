@@ -26,10 +26,15 @@ def move_detail(request, move_slug):
         context = RequestContext(request, {'move_slug' : move_slug})
         return HttpResponseNotFound(template.render(context))
     template = loader.get_template('footbagmoves/move_detail.html')
+    #load move info from DB
     components_seq = MoveComponentSequence.objects.filter(move__exact=current_move)
+    demo_video = MoveDemonstrationVideo.objects.filter(component__exact=current_move)
+    tutorial_video = MoveTutorialVideo.objects.filter(component__exact=current_move)
     context = RequestContext(request, {
         'move' : current_move,
         'sequence': components_seq,
+        'video_demo_URL': demo_video,
+        'video_tutorial_URL': tutorial_video,
     })
     return HttpResponse(template.render(context))
 
@@ -55,5 +60,12 @@ def component_detail(request, component_slug):
         context = RequestContext(request, {'component_slug' : component_slug})
         return HttpResponseNotFound(template.render(context))
     template = loader.get_template('footbagmoves/component_detail.html')
-    context = RequestContext(request, {'component' : component})
+    #load component info from DB
+    demo_video = ComponentDemonstrationVideo.objects.filter(component__exact=current_component)
+    tutorial_video = ComponentTutorialVideo.objects.filter(component__exact=current_component)
+    context = RequestContext(request, {
+        'component' : component,
+        'video_demo_URL': demo_video,
+        'video_tutorial_URL': tutorial_video,
+    })
     return HttpResponse(template.render(context))
