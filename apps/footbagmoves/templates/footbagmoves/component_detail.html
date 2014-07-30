@@ -4,4 +4,29 @@
 {% block header %} Component: {{ component.name }}{% endblock %}
 {% block content %}
 This is the components detail page for {{ component.name }}
+
+<br />
+{% with videos=video_demo.all %}
+    {% if videos %}
+        Video demonstration:
+        {% for vid in videos %}
+            <a href="{{ vid.URL }}"> click for demo </a>
+        {% endfor %}
+    {% else %}
+        no video demonstrations found
+    {% endif %}
+{% endwith %}
+
+<br />
+{% with videos=video_tutorial.all %}
+    {% if videos %}
+        Tutorial video:
+        {% for vid in videos %}
+            <a href="{{ vid.URL }}"> click for tutorial </a>
+        {% endfor %}
+    {% else %}
+        no video demonstrations found
+    {% endif %}
+{% endwith %}
+
 {% endblock %}

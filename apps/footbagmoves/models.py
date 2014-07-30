@@ -55,3 +55,46 @@ class MoveComponentSequence(models.Model):
 
     def __unicode__(self):
         return u'%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
+
+URL_VIDEO_TYPE = u'1'
+YOUTUBE_VIDEO_TYPE = u'1'
+VIDEO_TYPES = (
+        (URL_VIDEO_TYPE, u'URL'),
+        (YOUTUBE_VIDEO_TYPE, u'Youtube'),
+)
+
+class MoveDemonstrationVideo(models.Model):
+    """ This is to keep track of move demonstration videos. """
+    move = models.ForeignKey(Move)
+    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
+    URL = models.URLField()
+
+    def __unicode__(self):
+        return u'Demonstration video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+
+class MoveTutorialVideo(models.Model):
+    """ This is to keep track of move tutorial videos. """
+    move = models.ForeignKey(Move)
+    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
+    URL = models.URLField()
+
+    def __unicode__(self):
+        return u'Tutorial video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+
+class ComponentDemonstrationVideo(models.Model):
+    """ This is to keep track of component demonstration videos. """
+    component = models.ForeignKey(Component)
+    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
+    URL = models.URLField()
+
+    def __unicode__(self):
+        return u'Demonstration video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
+
+class ComponentTutorialVideo(models.Model):
+    """ This is to keep track of component tutorial videos. """
+    component = models.ForeignKey(Component)
+    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
+    URL = models.URLField()
+
+    def __unicode__(self):
+        return u'Tutorial video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
