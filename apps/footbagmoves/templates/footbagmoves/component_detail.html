@@ -4,4 +4,16 @@
 {% block header %} Component: {{ component.name }}{% endblock %}
 {% block content %}
 This is the components detail page for {{ component.name }}
+
+<br />
+Video demonstration:
+{% for vid in video_demo %}
+<a href="{{ vid.URL }}"> click for demo </a>
+{% endfor %}
+<br />
+Tutorial video:
+{% for vid in video_tutorial %}
+<a href="{{ vid.URL }}"> click for tutorial </a>
+{% endfor %}
+
 {% endblock %}
