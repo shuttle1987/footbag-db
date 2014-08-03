@@ -5,6 +5,7 @@ ul{
     list-style-type: none;
     padding: 10px;
 }
+
 .footbag_sequence{
     ul{
         list-style-type: none;
@@ -17,6 +18,9 @@ ul{
         background: #ddd;
         padding: 5px 8px;
 
+        &:hover{
+            background: #ccc;
+        }
         position: relative;
         &:after{
             display: block;
