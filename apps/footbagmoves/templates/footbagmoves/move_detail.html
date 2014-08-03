@@ -4,12 +4,14 @@
 {% block header %} Move: {{ move.name }}{% endblock %}
 {% block content %}
 {{ move.name }} is comprised of the following components:
-<ol>
+<br />
+<ul class="footbag_sequence">
     {% for comp in sequence %}
     <li><a href="{% url "component_detail" comp.component.slug %}"> {{comp.component.name}}</a> </li>
     {% endfor %}
-</ol>
+</ul>
 
+<br />
 <br />
 {% with videos=video_demo.all %}
     {% if videos %}
