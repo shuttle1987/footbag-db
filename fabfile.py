@@ -21,7 +21,6 @@ def prepare_deployment(branch_name):
 def deploy():
     """ Deploy from the dev folder to the live site using git, assumes changes have
     already been prepared with prepare_deployment.
-    PythonAnywhere is set up such that touching the WSGI file restarts the server
     """
     with lcd('~/footbagsite/www_footbag_info/'):
         local('git pull ~/footbagsite/dev-site/')
@@ -29,5 +28,13 @@ def deploy():
         restart_server()
 
 def restart_server():
-    """ The command to restart the web server """
+    """ The command to restart the web server.
+    PythonAnywhere is set up such that touching the WSGI file restarts the server.
+    Change this command to whatever your web server requires."""
     local('touch /var/www/www_footbag_info_wsgi.py')#restarts PythonAnywhere server
+
+def compile_scss():
+    """ Compile the SCSS files into regular CSS and place those in the static directory.
+    Requires SCSS processor to be installed."""
+    with lcd('scss/'):
+        local('pyscss *.scss > ../static/basic_theme/css/style.css')
