@@ -6,7 +6,8 @@ from fabric.api import lcd, local
 
 def run_tests():
     """ Run the unit test suite """
-    local('python manage.py test footbag_site')
+    with prefix('workon myvenv'):
+        local('python manage.py test footbag_site')
 
 def prepare_deployment(branch_name):
     """ Prepare to deploy from a git branch if and only if the unit tests pass
@@ -24,7 +25,8 @@ def deploy():
     """
     with lcd('~/footbagsite/www_footbag_info/'):
         local('git pull ~/footbagsite/dev-site/')
-        local('python manage.py migrate footbagmoves')
+        with prefix('workon myvenv'):
+            local('python manage.py migrate footbagmoves')
         restart_server()
 
 def restart_server():
@@ -37,4 +39,6 @@ def compile_scss():
     """ Compile the SCSS files into regular CSS and place those in the static directory.
     Requires SCSS processor to be installed."""
     with lcd('scss/'):
-        local('pyscss *.scss > ../static/basic_theme/css/style.css')
+        with prefix('workon myvenv'):
+            local('pyscss *.scss > ../static/basic_theme/css/style.css')
+
