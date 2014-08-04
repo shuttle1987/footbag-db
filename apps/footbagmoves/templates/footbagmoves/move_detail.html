@@ -4,11 +4,12 @@
 {% block header %} Move: {{ move.name }}{% endblock %}
 {% block content %}
 {{ move.name }} is comprised of the following components:
-<ol>
+<br />
+<ul class="footbag_sequence">
     {% for comp in sequence %}
     <li><a href="{% url "component_detail" comp.component.slug %}"> {{comp.component.name}}</a> </li>
     {% endfor %}
-</ol>
+</ul>
 
 
     <div id="player"></div>
@@ -56,6 +57,7 @@
     </script>
 
 <br />
+<br />
 {% with videos=video_demo.all %}
     {% if videos %}
         Video demonstration:
@@ -63,7 +65,7 @@
             <a href="{{ vid.URL }}"> click for demo </a>
         {% endfor %}
     {% else %}
-        no video demonstrations found
+        No video demonstrations found.
     {% endif %}
 {% endwith %}
 
@@ -75,7 +77,7 @@
             <a href="{{ vid.URL }}"> click for tutorial </a>
         {% endfor %}
     {% else %}
-        no video demonstrations found
+        No video tutorials found.
     {% endif %}
 {% endwith %}
 {% endblock %}
