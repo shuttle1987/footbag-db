@@ -2,11 +2,21 @@
 used here assumes that the master branch is for a the deployable site.
 """
 
-from fabric.api import lcd, local
+from fabric.api import lcd, local, prefix, run
+from contextlib import contextmanager
+
+virtualenv_name = 'footbagsite'
+
+#This is a helper to make sure that we are in the right virtualenv
+@contextmanager
+def virtualenvwrapper():
+    with prefix("source ~/.virtualenvs/footbagsite/bin/activate"):
+        yield
 
 def run_tests():
     """ Run the unit test suite """
-    local('python manage.py test footbag_site')
+    with virtualenvwrapper():
+        local('python manage.py test footbag_site', shell='/bin/bash')
 
 def prepare_deployment(branch_name):
     """ Prepare to deploy from a git branch if and only if the unit tests pass
@@ -24,7 +34,8 @@ def deploy():
     """
     with lcd('~/footbagsite/www_footbag_info/'):
         local('git pull ~/footbagsite/dev-site/')
-        local('python manage.py migrate footbagmoves')
+        with virtualenvwrapper():
+            local('python manage.py migrate footbagmoves', shell='/bin/bash')
         restart_server()
 
 def restart_server():
@@ -36,5 +47,7 @@ def restart_server():
 def compile_scss():
     """ Compile the SCSS files into regular CSS and place those in the static directory.
     Requires SCSS processor to be installed."""
-    with lcd('scss/'):
-        local('pyscss *.scss > ../static/basic_theme/css/style.css')
+    with virtualenvwrapper():
+        with lcd('scss/'):
+            local('pyscss *.scss > ../static/basic_theme/css/style.css', shell='/bin/bash')
+
