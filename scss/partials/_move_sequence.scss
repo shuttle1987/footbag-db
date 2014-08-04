@@ -1,10 +1,5 @@
 //SCSS to make the move components appear in a horizontal layout with arrows
 
-//This is so the default ul bullets don't appear
-ul{
-    list-style-type: none;
-    padding: 10px;
-}
 .footbag_sequence{
     ul{
         list-style-type: none;
@@ -17,6 +12,9 @@ ul{
         background: #ddd;
         padding: 5px 8px;
 
+        &:hover{
+            background: #ccc;
+        }
         position: relative;
         &:after{
             display: block;
