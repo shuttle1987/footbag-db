@@ -57,7 +57,7 @@ class MoveComponentSequence(models.Model):
         return u'%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
 
 URL_VIDEO_TYPE = u'1'
-YOUTUBE_VIDEO_TYPE = u'1'
+YOUTUBE_VIDEO_TYPE = u'2'
 VIDEO_TYPES = (
         (URL_VIDEO_TYPE, u'URL'),
         (YOUTUBE_VIDEO_TYPE, u'Youtube'),
