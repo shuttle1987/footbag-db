@@ -14,7 +14,9 @@
 
 <div id="player"></div>
 
+{% if load_youtube %}
 <script src="{% static 'js/load_youtube.js' %}"></script>
+{% endif %}
 
 <br />
 <br />
@@ -23,7 +25,7 @@
     {% if videos %}
         Video demonstration:<br />
         {% for vid in videos %}
-            <a href="{{ vid.URL }}" class="demo_video_link"> click for demo </a>
+            <a href="{{ vid.URL }}" class="{{ vid.video_type }}"> click for demo </a>
         {% endfor %}
     {% else %}
         No video demonstrations found.
@@ -37,7 +39,7 @@
     {% if videos %}
         Tutorial video:<br />
         {% for vid in videos %}
-            <a href="{{ vid.URL }}" class="tutorial_video_link"> click for tutorial </a>
+            <a href="{{ vid.URL }}" class="{{ vid.video_type }}"> click for tutorial </a>
         {% endfor %}
     {% else %}
         No video tutorials found.

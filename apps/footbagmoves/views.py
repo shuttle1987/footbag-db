@@ -6,6 +6,8 @@ from django.template import RequestContext, loader
 from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
+from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE
+
 
 def move_index(request):
     """ View for the moves index page """
@@ -32,11 +34,15 @@ def move_detail(request, move_slug):
     components_seq = MoveComponentSequence.objects.filter(move__exact=current_move)
     demo_video = MoveDemonstrationVideo.objects.filter(move__exact=current_move)
     tutorial_video = MoveTutorialVideo.objects.filter(move__exact=current_move)
+    #only load the youtube API if a youtube video is associated with the move
+    load_youtube_api = (any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in demo_video) or
+                        any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in tutorial_video))
     context = RequestContext(request, {
         'move' : current_move,
         'sequence': components_seq,
         'video_demo': demo_video,
         'video_tutorial': tutorial_video,
+        'load_youtube': load_youtube_api,
     })
     return HttpResponse(template.render(context))
 
