@@ -21,7 +21,7 @@
 <div class="demonstration_videos">
 {% with videos=video_demo.all %}
     {% if videos %}
-        Video demonstration:
+        Video demonstration:<br />
         {% for vid in videos %}
             <a href="{{ vid.URL }}" class="demo_video_link"> click for demo </a>
         {% endfor %}
@@ -35,7 +35,7 @@
 <div class="tutorial_videos">
 {% with videos=video_tutorial.all %}
     {% if videos %}
-        Tutorial video:
+        Tutorial video:<br />
         {% for vid in videos %}
             <a href="{{ vid.URL }}" class="tutorial_video_link"> click for tutorial </a>
         {% endfor %}
