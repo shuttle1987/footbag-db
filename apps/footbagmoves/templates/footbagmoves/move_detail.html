@@ -12,10 +12,31 @@
     {% endfor %}
 </ul>
 
+{% if load_youtube %}
+<script src="{% static 'js/load_youtube.js' %}"></script>
+{% endif %}
+
 <div id="player"></div>
 
 {% if load_youtube %}
-<script src="{% static 'js/load_youtube.js' %}"></script>
+<script>
+var player;
+youtube_ready = function(){
+    //Todo: find all the youtube links
+    var youtube_links = "https://www.youtube.com/watch?v=L-ZBwq9wW_s";//get all the youtube links
+    var first_vid_id = "L-ZBwq9wW_s";// id of the first video to be loaded
+
+    player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: first_vid_id,
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+        }
+    });
+}
+</script>
 {% endif %}
 
 <br />
