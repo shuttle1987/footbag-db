@@ -46,7 +46,11 @@ youtube_ready = function(){
         Video demonstration:<br />
         <ul>
         {% for vid in videos %}
-            <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demo </a></li>
+            {% if vid.video_type == vid_type_external %}
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial (external link)</a></li>
+            {% else %}
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial </a></li>
+            {% endif %}
         {% endfor %}
         </ul>
     {% else %}
@@ -62,7 +66,11 @@ youtube_ready = function(){
         Tutorial video:<br />
         <ul>
         {% for vid in videos %}
-            <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial </a></li>
+            {% if vid.video_type == vid_type_external %}
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial (external link)</a></li>
+            {% else %}
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial </a></li>
+            {% endif %}
         {% endfor %}
         </ul>
     {% else %}

@@ -7,7 +7,7 @@ from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 
-from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE
+from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
 from apps.footbagmoves.video_api_helpers import extract_first_yt_url, extract_yt_id
 
 def move_index(request):
@@ -48,7 +48,8 @@ def move_detail(request, move_slug):
         'video_demo': demo_video,
         'video_tutorial': tutorial_video,
         'load_youtube': load_youtube_api,
-        'yt_vid_type': YOUTUBE_VIDEO_TYPE,
+        'vid_type_yt': YOUTUBE_VIDEO_TYPE,
+        'vid_type_external': URL_VIDEO_TYPE,
         'first_yt_id': first_yt_id,
     })
     return HttpResponse(template.render(context))
