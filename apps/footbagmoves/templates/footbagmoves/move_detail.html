@@ -77,16 +77,18 @@ function cancelDefaultAction(e) {
     return false;
 }
 
-var classname = document.getElementsByClassName("vidtype2");
+//Get all the demo/tutorial links that contain a youtube video
+var yt_vid_class = document.getElementsByClassName("vidtype{{yt_vid_type}}");
 
-var myFunction = function(evt) {
+//Function that's called whenever a youtube video link is clicked
+var ytVidFunction = function(evt) {
     var attribute = this.getAttribute("href");
     alert(attribute);
     cancelDefaultAction(evt)
 };
 
-for(var i=0;i<classname.length;i++){
-    classname[i].addEventListener('click', myFunction, false);
+for(var i=0;i<yt_vid_class.length;i++){
+    yt_vid_class[i].addEventListener('click', ytVidFunction, false);
 }
 </script>
 {% endblock %}

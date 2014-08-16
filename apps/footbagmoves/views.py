@@ -48,6 +48,7 @@ def move_detail(request, move_slug):
         'video_demo': demo_video,
         'video_tutorial': tutorial_video,
         'load_youtube': load_youtube_api,
+        'yt_vid_type': YOUTUBE_VIDEO_TYPE,
         'first_yt_id': first_yt_id,
     })
     return HttpResponse(template.render(context))
