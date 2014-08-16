@@ -6,8 +6,9 @@ from django.template import RequestContext, loader
 from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
-from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE
 
+from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE
+from apps.footbagmoves.video_api_helpers import extract_first_yt_url, extract_yt_id
 
 def move_index(request):
     """ View for the moves index page """
@@ -37,12 +38,17 @@ def move_detail(request, move_slug):
     #only load the youtube API if a youtube video is associated with the move
     load_youtube_api = (any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in demo_video) or
                         any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in tutorial_video))
+    if load_youtube_api:
+        first_yt_id = extract_yt_id(extract_first_yt_url(demo_video, tutorial_video))
+        #TODO: cache this as it's horrendously inefficient to calculate this every time a view is loaded
+
     context = RequestContext(request, {
         'move' : current_move,
         'sequence': components_seq,
         'video_demo': demo_video,
         'video_tutorial': tutorial_video,
         'load_youtube': load_youtube_api,
+        'first_yt_id': first_yt_id,
     })
     return HttpResponse(template.render(context))
 

@@ -22,10 +22,8 @@
 <script>
 var player;
 youtube_ready = function(){
-    //Todo: find all the youtube links
-    var youtube_links = "https://www.youtube.com/watch?v=L-ZBwq9wW_s";//get all the youtube links
-    var first_vid_id = "L-ZBwq9wW_s";// id of the first video to be loaded
-
+    //Youtube ID of the first video to be loaded in the player along with the page
+    var first_vid_id = "{{ first_yt_id }}";
     player = new YT.Player('player', {
         height: '390',
         width: '640',
