@@ -13,7 +13,6 @@ function onYouTubeIframeAPIReady() {
 
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
-    player.loadVideoById(first_vid_link);
     event.target.playVideo();
 }
 
