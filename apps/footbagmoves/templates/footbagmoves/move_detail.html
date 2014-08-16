@@ -44,9 +44,11 @@ youtube_ready = function(){
 {% with videos=video_demo.all %}
     {% if videos %}
         Video demonstration:<br />
+        <ul>
         {% for vid in videos %}
-            <a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demo </a>
+            <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demo </a></li>
         {% endfor %}
+        </ul>
     {% else %}
         No video demonstrations found.
     {% endif %}
@@ -58,9 +60,11 @@ youtube_ready = function(){
 {% with videos=video_tutorial.all %}
     {% if videos %}
         Tutorial video:<br />
+        <ul>
         {% for vid in videos %}
-            <a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial </a>
+            <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial </a></li>
         {% endfor %}
+        </ul>
     {% else %}
         No video tutorials found.
     {% endif %}
