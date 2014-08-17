@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %} Move - {{ move.name }}{% endblock %}
 {% block header %} Move: {{ move.name }}{% endblock %}
@@ -11,28 +12,86 @@
     {% endfor %}
 </ul>
 
+{% if load_youtube %}
+<script src="{% static 'js/load_youtube.js' %}"></script>
+{% endif %}
+
+<div id="player"></div>
+
+{% if load_youtube %}
+<script>
+var player;
+youtube_ready = function(){
+    //Youtube ID of the first video to be loaded in the player along with the page
+    var first_vid_id = "{{ first_yt_id }}";
+    player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: first_vid_id,
+        events: {
+            'onReady': onPlayerReady
+        }
+    });
+}
+
+</script>
+{% endif %}
+
 <br />
 <br />
+<div class="demonstration_videos">
 {% with videos=video_demo.all %}
     {% if videos %}
-        Video demonstration:
+        Video demonstration:<br />
+        <ul>
         {% for vid in videos %}
-            <a href="{{ vid.URL }}"> click for demo </a>
+            {% if vid.video_type == vid_type_external %}
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration (external link)</a></li>
+            {% else %}
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration </a></li>
+            {% endif %}
         {% endfor %}
+        </ul>
     {% else %}
         No video demonstrations found.
     {% endif %}
 {% endwith %}
+</div>
 
 <br />
+<div class="tutorial_videos">
 {% with videos=video_tutorial.all %}
     {% if videos %}
-        Tutorial video:
+        Tutorial video:<br />
+        <ul>
         {% for vid in videos %}
-            <a href="{{ vid.URL }}"> click for tutorial </a>
+            {% if vid.video_type == vid_type_external %}
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial (external link)</a></li>
+            {% else %}
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial </a></li>
+            {% endif %}
         {% endfor %}
+        </ul>
     {% else %}
         No video tutorials found.
     {% endif %}
 {% endwith %}
+</div>
+
+<script>
+//Get all the demo/tutorial links that contain a youtube video
+var yt_vid_class = document.getElementsByClassName("vidtype{{vid_type_yt}}");
+
+//Function that's called whenever a youtube video link is clicked
+var ytVidFunction = function(evt) {
+    var attribute = this.getAttribute("href");
+    player.loadVideoById(extractYouTubeID(attribute));
+    cancelDefaultAction(evt);
+};
+
+//Register listener for each youtube link
+for(var i=0;i<yt_vid_class.length;i++){
+    yt_vid_class[i].addEventListener('click', ytVidFunction, false);
+}
+</script>
 {% endblock %}

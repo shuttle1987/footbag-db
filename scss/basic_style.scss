@@ -4,6 +4,7 @@ $body-font: 14px Georgia, serif;
 @import 'partials/_reset.scss';
 @import 'partials/_move_sequence.scss';
 
+
 @media screen and (max-width: 700px){
     body {
         background: #333;
@@ -16,25 +17,27 @@ $body-font: 14px Georgia, serif;
     }
 }
 
+$content-height: 600px;
+
 @media screen and (min-width: 701px){
     body {
         background: #999;
     }
     #page-wrap {
-        width: 800px;
+        width: 850px;
     }
     #page-wrap:after {
         content: "Desktop layout";
     }
     #main-content {
         float: right;
-        width: 540px;
-        height: 400px;
+        width: 640px;
+        height: $content-height;
     }
     #sidebar-left {
         float: left;
-        width: 170px;
-        height: 400px;
+        width: 120px;
+        height: $content-height;
     }
 }
 
