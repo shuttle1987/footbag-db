@@ -38,3 +38,12 @@ function extractYouTubeID(url_text) {
     var id_match = re.exec(url_text);
     return id_match[1];
 }
+
+//A helper function to prevent the default behaviour of an event,
+//used to prevent href from being followed when we are updating a video in the player
+function cancelDefaultAction(e) {
+    var evt = e ? e:window.event;
+    if (evt.preventDefault) evt.preventDefault();
+    evt.returnValue = false;
+    return false;
+}
