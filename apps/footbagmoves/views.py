@@ -41,6 +41,8 @@ def move_detail(request, move_slug):
     if load_youtube_api:
         first_yt_id = extract_yt_id(extract_first_yt_url(demo_video, tutorial_video))
         #TODO: cache this as it's horrendously inefficient to calculate this every time a view is loaded
+    else:
+        first_yt_id = ""
 
     context = RequestContext(request, {
         'move' : current_move,
