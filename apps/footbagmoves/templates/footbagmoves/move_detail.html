@@ -26,7 +26,14 @@
         Video demonstration:<br />
         <ul>
         {% for vid in videos %}
-            <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration  {% if vid.video_type == vid_types.URL %}(external link){% endif %}</a></li>
+            {% if vid.use_start or vid.use_end %}
+            <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration
+                ({% if vid.use_start == True %}starts at {{ vid.start_time }}s {% endif %}
+                {% if vid.use_end == True %}ends at {{ vid.end_time }}s {% endif %})
+                {% if vid.video_type == vid_types.URL %}(external link){% endif %}</a></li>
+            {% else %}
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration  {% if vid.video_type == vid_types.URL %}(external link){% endif %}</a></li>
+            {% endif %}
         {% endfor %}
         </ul>
     {% else %}
