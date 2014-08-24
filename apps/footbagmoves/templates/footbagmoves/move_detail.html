@@ -20,17 +20,16 @@
 
 {% if load_youtube %}
 <script>
-var player;
-youtube_ready = function(){
-    //Youtube ID of the first video to be loaded in the player along with the page
-    var first_vid_id = "{{ first_yt_id }}";
-    player = new YT.Player('player', {
-        height: '390',
-        width: '640',
-        videoId: first_vid_id,
-        events: {
-            'onReady': onPlayerReady
-        }
+load_first_video = function(){
+    //first Youtube video to be loaded in the player along with the page
+    player.loadVideoById({
+        videoId: "{{ first_yt_id }}",
+    {% if first_yt_video.use_start %}
+        startSeconds: {{first_yt_video.start_time}},
+    {% endif %}
+    {% if first_yt_video.use_end %}
+        endSeconds: {{first_yt_video.end_time}},
+    {% endif %}
     });
 }
 

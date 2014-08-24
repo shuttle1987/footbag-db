@@ -3,6 +3,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.template import RequestContext, loader
 
+import json
+import itertools
+
 from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
@@ -38,9 +41,14 @@ def move_detail(request, move_slug):
     #only load the youtube API if a youtube video is associated with the move
     load_youtube_api = (any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in demo_video) or
                         any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in tutorial_video))
+
+    first_yt_video = next((vid for vid in itertools.chain(demo_video,tutorial_video) if
+                           vid.video_type == YOUTUBE_VIDEO_TYPE), None)
     if load_youtube_api:
         first_yt_id = extract_yt_id(extract_first_yt_url(demo_video, tutorial_video))
         #TODO: cache this as it's horrendously inefficient to calculate this every time a view is loaded
+    else:
+        first_yt_id = ""
 
     context = RequestContext(request, {
         'move' : current_move,
@@ -51,6 +59,7 @@ def move_detail(request, move_slug):
         'vid_type_yt': YOUTUBE_VIDEO_TYPE,
         'vid_type_external': URL_VIDEO_TYPE,
         'first_yt_id': first_yt_id,
+        'first_yt_video': first_yt_video,
     })
     return HttpResponse(template.render(context))
 
