@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.template import RequestContext, loader
 
-import json
 import itertools
 
 from apps.footbagmoves.models import Component, Move, MoveComponentSequence
@@ -50,6 +49,7 @@ def move_detail(request, move_slug):
     else:
         first_yt_id = ""
 
+    #Used in the template to create class names for link elements so that we can extract the youtube videos from the DOM using javascript.
     video_types = {
         "URL": URL_VIDEO_TYPE,
         "Youtube": YOUTUBE_VIDEO_TYPE,
