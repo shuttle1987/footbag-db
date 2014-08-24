@@ -50,14 +50,18 @@ def move_detail(request, move_slug):
     else:
         first_yt_id = ""
 
+    video_types = {
+        "URL": URL_VIDEO_TYPE,
+        "Youtube": YOUTUBE_VIDEO_TYPE,
+    }
+
     context = RequestContext(request, {
         'move' : current_move,
         'sequence': components_seq,
         'video_demo': demo_video,
         'video_tutorial': tutorial_video,
         'load_youtube': load_youtube_api,
-        'vid_type_yt': YOUTUBE_VIDEO_TYPE,
-        'vid_type_external': URL_VIDEO_TYPE,
+        'vid_types': video_types,
         'first_yt_id': first_yt_id,
         'first_yt_video': first_yt_video,
     })
