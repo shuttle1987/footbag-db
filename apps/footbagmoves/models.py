@@ -56,8 +56,11 @@ class MoveComponentSequence(models.Model):
     def __unicode__(self):
         return u'%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
 
+#Raw URL pointing to a video
 URL_VIDEO_TYPE = u'1'
+#URL pointing to a youtube video
 YOUTUBE_VIDEO_TYPE = u'2'
+#Possible choices for video types
 VIDEO_TYPES = (
         (URL_VIDEO_TYPE, u'URL'),
         (YOUTUBE_VIDEO_TYPE, u'Youtube'),
@@ -68,9 +71,16 @@ class MoveDemonstrationVideo(models.Model):
     move = models.ForeignKey(Move)
     video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
     URL = models.URLField()
+    use_start = models.BooleanField(default=False)
+    start_time = models.PositiveSmallIntegerField()
+    use_end = models.BooleanField(default=False)
+    end_time = models.PositiveSmallIntegerField()
 
     def __unicode__(self):
-        return u'Demonstration video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+        if self.use_start == True or self.use_end == True:
+            return u'Demonstration video for Move: %s, %s, %s start: %d end %d' % (self.move.name, self.video_type, self.URL, self.start_time, self.end_time)
+        else:
+            return u'Demonstration video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
 
 class MoveTutorialVideo(models.Model):
     """ This is to keep track of move tutorial videos. """

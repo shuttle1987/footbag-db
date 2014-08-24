@@ -18,25 +18,6 @@
 
 <div id="player"></div>
 
-{% if load_youtube %}
-<script>
-var player;
-youtube_ready = function(){
-    //Youtube ID of the first video to be loaded in the player along with the page
-    var first_vid_id = "{{ first_yt_id }}";
-    player = new YT.Player('player', {
-        height: '390',
-        width: '640',
-        videoId: first_vid_id,
-        events: {
-            'onReady': onPlayerReady
-        }
-    });
-}
-
-</script>
-{% endif %}
-
 <br />
 <br />
 <div class="demonstration_videos">
@@ -45,10 +26,13 @@ youtube_ready = function(){
         Video demonstration:<br />
         <ul>
         {% for vid in videos %}
-            {% if vid.video_type == vid_type_external %}
-                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration (external link)</a></li>
+            {% if vid.use_start or vid.use_end %}
+            <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration
+                ({% if vid.use_start == True %}starts at {{ vid.start_time }}s {% endif %}
+                {% if vid.use_end == True %}ends at {{ vid.end_time }}s {% endif %})
+                {% if vid.video_type == vid_types.URL %}(external link){% endif %}</a></li>
             {% else %}
-                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration </a></li>
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration  {% if vid.video_type == vid_types.URL %}(external link){% endif %}</a></li>
             {% endif %}
         {% endfor %}
         </ul>
@@ -65,11 +49,7 @@ youtube_ready = function(){
         Tutorial video:<br />
         <ul>
         {% for vid in videos %}
-            {% if vid.video_type == vid_type_external %}
-                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial (external link)</a></li>
-            {% else %}
-                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial </a></li>
-            {% endif %}
+            <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial  {% if vid.video_type == vid_types.URL %}(external link){% endif %}</a></li>
         {% endfor %}
         </ul>
     {% else %}
@@ -78,9 +58,24 @@ youtube_ready = function(){
 {% endwith %}
 </div>
 
+
+{% if load_youtube %}
 <script>
+load_first_video = function(){
+    //first Youtube video to be loaded in the player along with the page
+    player.loadVideoById({
+        videoId: "{{ first_yt_id }}",
+    {% if first_yt_video.use_start %}
+        startSeconds: {{first_yt_video.start_time}},
+    {% endif %}
+    {% if first_yt_video.use_end %}
+        endSeconds: {{first_yt_video.end_time}},
+    {% endif %}
+    });
+}
+
 //Get all the demo/tutorial links that contain a youtube video
-var yt_vid_class = document.getElementsByClassName("vidtype{{vid_type_yt}}");
+var yt_vid_class = document.getElementsByClassName("vidtype{{vid_types.Youtube}}");
 
 //Function that's called whenever a youtube video link is clicked
 var ytVidFunction = function(evt) {
@@ -94,4 +89,6 @@ for(var i=0;i<yt_vid_class.length;i++){
     yt_vid_class[i].addEventListener('click', ytVidFunction, false);
 }
 </script>
+{% endif %}
+
 {% endblock %}

@@ -5,13 +5,21 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+var player;
 //This function calls the youtube_ready function after the youtube API code downloads.
 function onYouTubeIframeAPIReady() {
-    youtube_ready();
+    player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        events: {
+            'onReady': onPlayerReady
+        }
+    });
 }
 
 //The API will call this function when the video player is ready.
 function onPlayerReady(event) {
+    load_first_video();
     event.target.playVideo();
 }
 

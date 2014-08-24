@@ -3,14 +3,13 @@
 {% block title %}Footbag moves{% endblock %}
 {% block header %}Footbag moves - index{% endblock %}
 {% block content %}
-This is the move index page (Template powered) <br />
 
 There are currently {{ number_of_moves }} moves on record in the footbag database.
 <br/>
 Recently added moves:
 <ul>
 {% for move in recent_moves %}
-<li><a href="{% url "move_detail" move.slug %}"> {{ move.name }}</a></li>
+    <li><a href="{% url "move_detail" move.slug %}"> {{ move.name }}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}

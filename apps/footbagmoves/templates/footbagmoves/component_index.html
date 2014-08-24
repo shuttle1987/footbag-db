@@ -3,14 +3,13 @@
 {% block title %}Footbag components{% endblock %}
 {% block header %}Footbag components - index{% endblock %}
 {% block content %}
-This is the components index page (Template powered) <br />
 
 There are currently {{ number_of_components }} components on record in the footbag database.
-
+<br />
 Recently added components:
 <ul>
 {% for comp in recent_components %}
-<li><a href="{% url "component_detail" comp.slug %}"> {{ comp.name }}</a></li>
+    <li><a href="{% url "component_detail" comp.slug %}"> {{ comp.name }}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}
