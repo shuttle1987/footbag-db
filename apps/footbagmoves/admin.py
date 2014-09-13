@@ -5,22 +5,12 @@ from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 
-from apps.footbagmoves.forms import VideoEntryForm, AtLeastOneRequiredInlineFormset
+from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, AtLeastOneRequiredInlineFormset
 
-
-class VideosFormset(BaseInlineFormSet):
-    """A set of video entry forms """
-    def is_valid(self):
-        return (super(VideosFormset,self).is_valid() and
-                not any(bool(e) for e in self.errors))
-
-    def clean(self):
-        super(VideosFormset, self).clean()
-        for form in self.forms:
-            form.is_valid()
 
 class VideoEntryAdmin(admin.TabularInline):
     """ Single video entry """
+    #TODO: remove this?
     pass
 
 class ComponentDemonstrationVideoInline(admin.TabularInline):
