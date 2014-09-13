@@ -5,7 +5,7 @@ from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 
-from apps.footbagmoves.forms import VideoEntryForm
+from apps.footbagmoves.forms import VideoEntryForm, AtLeastOneRequiredInlineFormset
 
 
 class VideosFormset(BaseInlineFormSet):
@@ -54,6 +54,7 @@ class MoveComponentSequenceInline(admin.TabularInline):
     """ Inline admin for the move sequences. This is so we can edit the components
     sequence in the same place in the Admin page as the moves"""
     model = MoveComponentSequence
+    formset = AtLeastOneRequiredInlineFormset
 
 class MoveAdmin(admin.ModelAdmin): 
     """Admin helper for the moves """
