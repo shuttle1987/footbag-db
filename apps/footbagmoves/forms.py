@@ -27,14 +27,25 @@ class ComponentsInlineFormset(BaseInlineFormSet):
 
 class VideoEntryForm(forms.ModelForm):
     """A form for entering in video details """
+
     class Meta:
         model = MoveDemonstrationVideo
+        fields = (
+                'video_type',
+                'URL',
+                'use_start',
+                'use_end',
+                'start_time',
+                'end_time',
+        )
 
     def clean(self):
         """ Validate that the end time is after the start time""" 
-        start = self.cleaned_data.get("start_time")
-        end = self.cleaned_data.get("end_time")
-        if start and end and (start > end):
+        start = self.cleaned_data.get("use_start")
+        end = self.cleaned_data.get("use_end")
+        start_time = self.cleaned_data.get("start_time")
+        end_time = self.cleaned_data.get("end_time")
+        if start and end and (start_time > end_time):
             raise forms.ValidationError("Error: Invalid timestamp, start time is after the end time")
             #TODO: need to remove invalid items by using del?
         return self.cleaned_data
