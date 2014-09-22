@@ -16,6 +16,14 @@ class ComponentsInlineFormset(BaseInlineFormSet):
         if not any(cleaned_data and not cleaned_data.get('DELETE', False)
                 for cleaned_data in self.cleaned_data):
             raise forms.ValidationError('At least one item is required.')
+        components_entered = set()
+        for component in self.cleaned_data:
+            seq_number = component.get('sequence_number', False)
+            if seq_number and seq_number in components_entered:
+                raise forms.ValidationError('A sequence number was repeated, sequence numbers must be unique')
+            else:
+                components_entered.add(seq_number)
+
 
 class VideoEntryForm(forms.ModelForm):
     """A form for entering in video details """
