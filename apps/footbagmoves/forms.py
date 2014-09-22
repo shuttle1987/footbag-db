@@ -5,11 +5,12 @@ from apps.footbagmoves.models import MoveDemonstrationVideo
 from apps.footbagmoves.models import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
 
 
-class AtLeastOneRequiredInlineFormset(BaseInlineFormSet):
-    """ A formset that requires you to enter at least one entry in order to validate """
+class ComponentsInlineFormset(BaseInlineFormSet):
+    """ A formset that requires you to enter at least one entry in order to validate.
+    This is used for entering in the components for the footbag moves."""
     def clean(self):
         """Check that at least one has been entered"""
-        super(AtLeastOneRequiredInlineFormset, self).clean()
+        super(ComponentsInlineFormset, self).clean()
         if any(self.errors):
             return
         if not any(cleaned_data and not cleaned_data.get('DELETE', False)
