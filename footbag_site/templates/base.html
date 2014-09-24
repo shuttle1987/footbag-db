@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
 
-    <title>{% block title %} Footbag DB default title {% endblock %}</title>
+    <title>{% block title %} default title {% endblock %} - Footbag DB</title>
 
     <link rel="stylesheet" href="{% static 'basic_theme/css/style.css' %}" />
 </head>
@@ -22,6 +22,11 @@
                 <li><a href="/components/">Components</a></li>
                 <li><a href="/moves/">Moves</a></li>
                 <li><a href="/about">About</a><li>
+                {% if user.is_authenticated %}
+                <li><a href="/logout">Logout</a><li>
+                {% else %}
+                <li><a href="/login">Login</a><li>
+                {% endif %}
             </ul>
             {% endblock %}
         </div>
