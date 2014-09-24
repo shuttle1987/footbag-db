@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
 def error404(request):
     return render(request,'404.html')
@@ -28,6 +29,8 @@ def user_login(request):
     else:
         login_template = loader.get_template('login.html')
         return HttpResponse(login_template.render(context))
-        #return render_to_response('/login.html', {}, context)
 
-
+@login_required
+def user_panel(request):
+    """User account panel"""
+    return HttpResponse("login successful!")

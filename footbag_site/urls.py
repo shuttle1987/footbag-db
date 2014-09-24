@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from apps.home import views
 from apps.footbagmoves import views
-from views import user_login
+from views import user_login, user_panel
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^components/', include('apps.footbagmoves.urls')),
     url(r'^moves/', include('apps.footbagmoves.move_urls')),
     url(r'^login/$', user_login, name='login'),
+    url(r'^user_panel/$', user_panel, name='user_panel'),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='home/robots.txt', content_type='text/plain'), name='robots'),
     url(r'^admin/', include(admin.site.urls)),
 )
