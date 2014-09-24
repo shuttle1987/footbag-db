@@ -22,7 +22,11 @@
                 <li><a href="/components/">Components</a></li>
                 <li><a href="/moves/">Moves</a></li>
                 <li><a href="/about">About</a><li>
+                {% if user.is_authenticated %}
+                <li><a href="/logout">Logout</a><li>
+                {% else %}
                 <li><a href="/login">Login</a><li>
+                {% endif %}
             </ul>
             {% endblock %}
         </div>
