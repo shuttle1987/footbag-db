@@ -40,4 +40,6 @@ def user_logout(request):
 @login_required
 def user_panel(request):
     """User account panel"""
-    return HttpResponse("login successful!")
+    context = RequestContext(request)
+    login_template = loader.get_template('user_panel.html')
+    return HttpResponse(login_template.render(context))
