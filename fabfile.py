@@ -33,6 +33,7 @@ def deploy():
     already been prepared with prepare_deployment.
     """
     with lcd('~/footbagsite/www_footbag_info/'):
+        compile_scss()
         local('git pull ~/footbagsite/dev-site/')
         with virtualenvwrapper():
             local('python manage.py migrate footbagmoves', shell='/bin/bash')
