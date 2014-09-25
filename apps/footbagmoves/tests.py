@@ -17,7 +17,7 @@ class YoutubeIDExtraction(TestCase):
 
 class VideoEntryFormTests(TestCase):
     """Test video entry from forms validation"""
-    def test_start_end_times(self):
+    def test_invalid_start_end_times(self):
         """Test that a start time occuring after an end time fails validation"""
         form_data = {
                 'video_type': YOUTUBE_VIDEO_TYPE,
@@ -29,3 +29,16 @@ class VideoEntryFormTests(TestCase):
         }
         form = VideoEntryForm(data=form_data)
         self.assertFalse(form.is_valid())
+
+    def test_valid_youtube_video(self):
+        """Test that a valid youtube video passes the validation """
+        form_data = {
+                'video_type': YOUTUBE_VIDEO_TYPE,
+                'URL': 'http://www.youtube.com/watch?v=DJ_uZiueQKg',
+                'use_end': 'on',
+                'use_start': 'on',
+                'start_time': 5,
+                'end_time': 15,
+        }
+        form = VideoEntryForm(data=form_data)
+        self.assertTrue(form.is_valid())
