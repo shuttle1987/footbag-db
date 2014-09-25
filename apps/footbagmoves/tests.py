@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from apps.footbagmoves.video_api_helpers import extract_yt_id
-from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE
+from apps.footbagmoves.models import Component, YOUTUBE_VIDEO_TYPE
 from apps.footbagmoves.forms import VideoEntryForm
 
 class YoutubeIDExtraction(TestCase):
@@ -42,3 +42,19 @@ class VideoEntryFormTests(TestCase):
         }
         form = VideoEntryForm(data=form_data)
         self.assertTrue(form.is_valid())
+
+class ComponentCreationTest(TestCase):
+    """Test that we can successfully create a component"""
+    def test_creating_component_and_saving_to_db(self):
+        """Test that we can create a component and save it to the database"""
+        comp1 = Component()
+        comp1.name = "Toe stall"
+        comp1.save()
+
+        all_components_in_db = Component.objects.all()
+        self.assertEquals(len(all_components_in_db), 1)
+        only_component_in_db = all_components_in_db[0]
+        self.assertEquals(only_component_in_db, comp1)
+
+        #Test the component saved it's name properly in the DB
+        self.assertEquals(only_component_in_db.name, "Toe stall")
