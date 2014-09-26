@@ -4,5 +4,8 @@ South==0.8.4
 argparse==1.2.1
 ecdsa==0.11
 paramiko==1.14.0
+pyScss==1.2.0.post3
 pycrypto==2.6.1
+pyparsing==2.0.2
+six==1.7.3
 wsgiref==0.1.2

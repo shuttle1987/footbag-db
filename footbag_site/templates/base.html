@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+
+    <title>{% block title %} default title {% endblock %} - Footbag DB</title>
+
+    <link rel="stylesheet" href="{% static 'basic_theme/css/style.css' %}" />
+</head>
+
+
+<body>
+    <div id="page-wrap">
+        <div id="header">
+            {% block header %}{% endblock %}
+        </div>
+        <div id="sidebar-left">
+            {% block sidebar %}
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/components/">Components</a></li>
+                <li><a href="/moves/">Moves</a></li>
+                <li><a href="/about">About</a><li>
+                {% if user.is_authenticated %}
+                <li><a href="/logout">Logout</a><li>
+                {% else %}
+                <li><a href="/login">Login</a><li>
+                {% endif %}
+            </ul>
+            {% endblock %}
+        </div>
+
+        <div id="main-content">
+            {% block content %}{% endblock %}
+        </div>
+        <div id="footer">
+            user contributions licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">cc by-sa 3.0</a> with attribution required
+        </div>
+    </div>
+</body>
+</html>

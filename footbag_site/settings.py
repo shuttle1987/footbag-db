@@ -47,7 +47,7 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    'south',
+#    'south',
 )
 
 LOCAL_APPS = (
@@ -90,10 +90,13 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'footbag_site', 'static'),)
 
 # Location of template files
 TEMPLATE_DIRS = (    
-    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'footbag_site', 'templates'),
+    os.path.join(BASE_DIR, 'apps', 'home', 'templates'),
+    os.path.join(BASE_DIR, 'apps', 'footbagmoves', 'templates'),
 )
 
 TEMPLATE_LOADERS = (

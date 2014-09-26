@@ -1,0 +1,89 @@
+$div-color: #eee;
+$body-font: 14px Georgia, serif; 
+
+@import 'partials/_reset.scss';
+@import 'partials/_move_sequence.scss';
+
+
+@media screen and (max-width: 700px){
+    body {
+        background: #333;
+    }
+    #page-wrap {
+        width: 548px;
+    }
+    #page-wrap:after {
+        content: "Mobile layout";
+    }
+}
+
+$content-height: 600px;
+
+@media screen and (min-width: 701px){
+    body {
+        background: #999;
+    }
+    #page-wrap {
+        width: 850px;
+    }
+    #page-wrap:after {
+        content: "Desktop layout";
+    }
+    #main-content {
+        float: right;
+        width: 640px;
+        height: $content-height;
+    }
+    #sidebar-left {
+        float: left;
+        width: 120px;
+        height: $content-height;
+    }
+}
+
+//star-hack for old version of browsers
+* { margin: 0; padding: 0; }
+
+body {
+    font: $body-font;
+}
+
+#page-wrap {
+    margin: 40px auto;
+    color: white;
+}
+
+//Another compatibility hack
+
+#page-wrap >div {
+    border: 1px solid #999;
+    padding: 20px;
+    margin-bottom: 5px;
+    color: black;
+}
+
+#header {
+    font-weight: bold;
+    font-size: 24px;
+    background: $div-color;
+}
+
+#main-content {
+    background: $div-color;
+}
+
+#sidebar-left { 
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    a {
+        display: block;
+        padding: 6px 12px;
+        text-decoration: none;
+    }
+
+    background: $div-color;
+}
