@@ -48,6 +48,7 @@ def restart_server():
 def compile_scss():
     """ Compile the SCSS files into regular CSS and place those in the static directory.
     Requires SCSS processor to be installed."""
+    local('mkdir -p static/basic_theme/css/', shell='/bin/bash')
     with virtualenvwrapper():
         with lcd('scss/'):
             local('pyscss *.scss > ../static/basic_theme/css/style.css', shell='/bin/bash')
