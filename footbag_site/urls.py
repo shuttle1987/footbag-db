@@ -12,7 +12,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', 'apps.home.views.index', name='basic_homepage'),#match the bare domain name
     url(r'^about$', TemplateView.as_view(template_name='home/about.html'), name='about'),
-    url(r'^components/', include('apps.footbagmoves.urls')),
+    url(r'^components/', include('apps.footbagmoves.component_urls')),
     url(r'^moves/', include('apps.footbagmoves.move_urls')),
     url(r'^login/$', user_login, name='login'),
     url(r'^logout/$', user_logout, name='logout'),
