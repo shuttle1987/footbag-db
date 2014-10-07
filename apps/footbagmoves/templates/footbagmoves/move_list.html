@@ -7,10 +7,28 @@
     <tr class="row-top">
         <th> Move name </th>
     </tr>
-    {% for move in object_list %}
+    {% for move in move_list %}
     <tr class="{% cycle 'row-even' 'row-odd' %}">
         <td><a href="{% url "move_detail" move.slug %}"> {{ move.name }}</a></td>
     </tr>
     {% endfor %}
 </table>
+
+{% if is_paginated %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number}}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number}}">next</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
 {% endblock %}

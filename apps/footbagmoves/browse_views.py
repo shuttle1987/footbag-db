@@ -5,3 +5,4 @@ class MoveList(ListView):
     """A list view for footbag moves"""
     model = Move
     context_object_name = 'move_list'
+    paginate_by = 15
