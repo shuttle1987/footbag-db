@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Browse moves{% endblock %}
+{% block header %}Browse footbag moves{% endblock %}
+{% block content %}
+<ul>
+    {% for move in object_list %}
+    <li><a href="{% url "move_detail" move.slug %}"> {{ move.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
