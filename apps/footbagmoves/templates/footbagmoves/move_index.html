@@ -4,9 +4,10 @@
 {% block header %}Footbag moves - index{% endblock %}
 {% block content %}
 
-There are currently {{ number_of_moves }} moves on record in the footbag database.
-<br/>
-Recently added moves:
+There are currently {{ number_of_moves }} moves on record in the footbag database
+which you can <a href="{% url "move-list" %}"> browse </a> through to find extra information.
+</br>
+For example here are some recently added moves:
 <ul>
 {% for move in recent_moves %}
     <li><a href="{% url "move_detail" move.slug %}"> {{ move.name }}</a></li>

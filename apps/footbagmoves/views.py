@@ -12,10 +12,15 @@ from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
 from apps.footbagmoves.video_api_helpers import extract_first_yt_url, extract_yt_id
 
+def get_last_3(queryset):
+    """Get the last 3 objects that were added as determined by their id.
+    :param queryset: the query set we are filtering on"""
+    return queryset.order_by('id')[0:3]
+
 def move_index(request):
     """ View for the moves index page """
     template = loader.get_template('footbagmoves/move_index.html')
-    latest_moves = Move.objects.all()
+    latest_moves = get_last_3(Move.objects.all())
     num_moves = Move.objects.count()
     context = RequestContext(request,{
         'number_of_moves': num_moves,
