@@ -4,6 +4,7 @@ from django.forms.models import BaseInlineFormSet
 from apps.footbagmoves.models import MoveDemonstrationVideo
 from apps.footbagmoves.models import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
 
+from video_api_helpers import is_youtube_video
 
 class ComponentsInlineFormset(BaseInlineFormSet):
     """ A formset that requires you to enter at least one entry in order to validate.
@@ -40,7 +41,9 @@ class VideoEntryForm(forms.ModelForm):
         )
 
     def clean(self):
-        """ Validate that the end time is after the start time""" 
+        """ Validates the video entry:
+            checks the end time is after the start time.
+            checks if a youtube video is entered in as a raw url."""
         start = self.cleaned_data.get("use_start")
         end = self.cleaned_data.get("use_end")
         start_time = self.cleaned_data.get("start_time")
@@ -48,6 +51,11 @@ class VideoEntryForm(forms.ModelForm):
         if start and end and (start_time > end_time):
             raise forms.ValidationError("Error: Invalid timestamp, start time is after the end time")
             #TODO: need to remove invalid items by using del?
+
+        video_type = self.cleaned_data.get("video_type")
+        url = self.cleaned_data.get("URL")
+        if video_type == URL_VIDEO_TYPE and is_youtube_video(url):
+            raise forms.ValidationError("Error: a youtube link was entered in as a raw URL. Please use youtube video type instead.")
         return self.cleaned_data
 
 class VideosFormset(BaseInlineFormSet):

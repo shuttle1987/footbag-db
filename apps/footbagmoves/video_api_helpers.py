@@ -41,3 +41,18 @@ def extract_yt_id(youtube_url):
             return query.path.split('/')[2]
     # fail?
     return None
+
+def is_youtube_video(youtube_url):
+    """Returns true if the video is a youtube link and false otherwise"""
+    query = urlparse(youtube_url)
+    if query.hostname == 'youtu.be':
+        return True
+    if query.hostname in ('www.youtube.com', 'youtube.com'):
+        if query.path == '/watch':
+            return True
+        if query.path[:7] == '/embed/':
+            return True
+        if query.path[:3] == '/v/':
+            return True
+    # fail?
+    return False
