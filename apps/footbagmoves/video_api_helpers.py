@@ -3,7 +3,7 @@ __all__ = ['extract_first_yt_url', 'extract_yt_id']
 
 from urlparse import urlparse, parse_qs
 
-from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE
+from constants import YOUTUBE_VIDEO_TYPE
 
 def extract_first_yt_url(demo_vids, tutorial_vids):
     """Extract the first youtube url from the demo or tutorial videos.

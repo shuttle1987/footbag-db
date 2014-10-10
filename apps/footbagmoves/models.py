@@ -1,6 +1,10 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from video_api_helpers import extract_yt_id
+
+from constants import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
+
 class Component(models.Model):
     """ A model for a footbag move component
     see https://github.com/shuttle1987/footbag-db/wiki/Abstract-model-for-footbag-moves
@@ -55,16 +59,6 @@ class MoveComponentSequence(models.Model):
 
     def __unicode__(self):
         return u'%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
-
-#Raw URL pointing to a video
-URL_VIDEO_TYPE = u'1'
-#URL pointing to a youtube video
-YOUTUBE_VIDEO_TYPE = u'2'
-#Possible choices for video types
-VIDEO_TYPES = (
-        (URL_VIDEO_TYPE, u'URL'),
-        (YOUTUBE_VIDEO_TYPE, u'Youtube'),
-)
 
 class MoveDemonstrationVideo(models.Model):
     """ This is to keep track of move demonstration videos. """

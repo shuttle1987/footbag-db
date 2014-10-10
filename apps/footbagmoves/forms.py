@@ -2,9 +2,9 @@ from django import forms
 from django.forms.models import BaseInlineFormSet
 
 from apps.footbagmoves.models import MoveDemonstrationVideo
-from apps.footbagmoves.models import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
+from constants import URL_VIDEO_TYPE
 
-from video_api_helpers import is_youtube_video
+from apps.footbagmoves.video_api_helpers import is_youtube_video
 
 class ComponentsInlineFormset(BaseInlineFormSet):
     """ A formset that requires you to enter at least one entry in order to validate.
