@@ -1,7 +1,6 @@
 from django import forms
 from django.forms.models import BaseInlineFormSet
 
-#from apps.footbagmoves.models import MoveDemonstrationVideo
 from video_assets_models import VideoAsset
 from constants import URL_VIDEO_TYPE
 
@@ -49,8 +48,8 @@ class VideoEntryForm(forms.ModelForm):
         end = self.cleaned_data.get("use_end")
         start_time = self.cleaned_data.get("start_time")
         end_time = self.cleaned_data.get("end_time")
-        if start and end and (start_time > end_time):
-            raise forms.ValidationError("Error: Invalid timestamp, start time is after the end time")
+        if start and end and (start_time >= end_time):
+            raise forms.ValidationError("Error: Invalid timestamp, start time is not before the end time")
             #TODO: need to remove invalid items by using del?
 
         video_type = self.cleaned_data.get("video_type")
@@ -62,10 +61,12 @@ class VideoEntryForm(forms.ModelForm):
 class VideosFormset(BaseInlineFormSet):
     """A set of video entry forms """
     def is_valid(self):
+        """Test that all individual videos are error free"""
         return (super(VideosFormset,self).is_valid() and
                 not any(bool(e) for e in self.errors))
 
     def clean(self):
+        """Test that all individual videos are valid"""
         super(VideosFormset, self).clean()
         for form in self.forms:
             form.is_valid()
