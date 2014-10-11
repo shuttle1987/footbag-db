@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from video_assets_models import VideoAsset
 from video_api_helpers import extract_yt_id
 
 from constants import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
@@ -60,15 +61,10 @@ class MoveComponentSequence(models.Model):
     def __unicode__(self):
         return u'%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
 
-class MoveDemonstrationVideo(models.Model):
-    """ This is to keep track of move demonstration videos. """
+class MoveDemonstrationVideo(VideoAsset):
+    """ This is to keep track of move demonstration videos.
+    Videos are stored as defined in VideoAsset and are associated with moves via this table."""
     move = models.ForeignKey(Move)
-    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
-    URL = models.URLField()
-    use_start = models.BooleanField(default=False)
-    start_time = models.PositiveSmallIntegerField()
-    use_end = models.BooleanField(default=False)
-    end_time = models.PositiveSmallIntegerField()
 
     def __unicode__(self):
         if self.use_start == True or self.use_end == True:

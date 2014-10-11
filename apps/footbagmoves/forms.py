@@ -1,7 +1,8 @@
 from django import forms
 from django.forms.models import BaseInlineFormSet
 
-from apps.footbagmoves.models import MoveDemonstrationVideo
+#from apps.footbagmoves.models import MoveDemonstrationVideo
+from video_assets_models import VideoAsset
 from constants import URL_VIDEO_TYPE
 
 from apps.footbagmoves.video_api_helpers import is_youtube_video
@@ -30,7 +31,7 @@ class VideoEntryForm(forms.ModelForm):
     """A form for entering in video details """
 
     class Meta:
-        model = MoveDemonstrationVideo
+        model = VideoAsset
         fields = (
                 'video_type',
                 'URL',
