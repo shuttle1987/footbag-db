@@ -72,29 +72,36 @@ class MoveDemonstrationVideo(VideoAsset):
         else:
             return u'Demonstration video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
 
-class MoveTutorialVideo(models.Model):
-    """ This is to keep track of move tutorial videos. """
+class MoveTutorialVideo(VideoAsset):
+    """ This is to keep track of move tutorial videos.
+    Videos are stored as defined in VideoAsset and are associated with moves via this table."""
     move = models.ForeignKey(Move)
-    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
-    URL = models.URLField()
 
     def __unicode__(self):
-        return u'Tutorial video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+        if self.use_start == True or self.use_end == True:
+            return u'Tutorial video for Move: %s, %s, %s start: %d end %d' % (self.move.name, self.video_type, self.URL, self.start_time, self.end_time)
+        else:
+            return u'Tutorial video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
 
-class ComponentDemonstrationVideo(models.Model):
-    """ This is to keep track of component demonstration videos. """
+class ComponentDemonstrationVideo(VideoAsset):
+    """ This is to keep track of component demonstration videos.
+    Videos are stored as defined in VideoAsset and are associated with components via this table."""
     component = models.ForeignKey(Component)
-    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
-    URL = models.URLField()
 
     def __unicode__(self):
-        return u'Demonstration video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
+        if self.use_start == True or self.use_end == True:
+            return u'Demonstration video for Component: %s, %s, %s start: %d end %d' % (self.component.name, self.video_type, self.URL, self.start_time, self.end_time)
+        else:
+            return u'Demonstration video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
 
-class ComponentTutorialVideo(models.Model):
-    """ This is to keep track of component tutorial videos. """
+class ComponentTutorialVideo(VideoAsset):
+    """ This is to keep track of component tutorial videos.
+    Videos are stored as defined in VideoAsset and are associated with components via this table."""
     component = models.ForeignKey(Component)
-    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
-    URL = models.URLField()
 
     def __unicode__(self):
-        return u'Tutorial video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
+        if self.use_start == True or self.use_end == True:
+            return u'Tutorial video for Component: %s, %s, %s start: %d end %d' % (self.component.name, self.video_type, self.URL, self.start_time, self.end_time)
+        else:
+            return u'Tutorial video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
+

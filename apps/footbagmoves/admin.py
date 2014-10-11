@@ -16,11 +16,15 @@ class VideoEntryAdmin(admin.TabularInline):
 class ComponentDemonstrationVideoInline(admin.TabularInline):
     """Inline admin to link to a demonstation video for a component"""
     model = ComponentDemonstrationVideo
+    form = VideoEntryForm
+    formset = VideosFormset
     max_num = 20
 
 class ComponentTutorialVideoInline(admin.TabularInline):
     """Inline admin to link to a tutorial video for a component"""
     model = ComponentTutorialVideo
+    form = VideoEntryForm
+    formset = VideosFormset
     max_num = 20
 
 class ComponentAdmin(admin.ModelAdmin):
@@ -42,6 +46,8 @@ class MoveDemonstrationVideoInline(admin.TabularInline):
 class MoveTutorialVideoInline(admin.TabularInline):
     """Inline admin to link to a tutorial video for a Move"""
     model = MoveTutorialVideo
+    form = VideoEntryForm
+    formset = VideosFormset
     max_num = 20
 
 class MoveComponentSequenceInline(admin.TabularInline):
