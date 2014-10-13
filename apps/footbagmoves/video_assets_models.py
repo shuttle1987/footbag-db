@@ -19,9 +19,24 @@ class VideoAsset(models.Model):
     end_time = models.PositiveSmallIntegerField()
 
     def save(self, *args, **kwargs):
-        """Overriding the save for youtube videos to store ID internally"""
+        """In order to correctly create instances of VideoAsset we need to override the save method.
+        The start and end times when defined by `start_time` and `end_time` in the forms have to set
+        `use_start` and `use_end` upon saving to the database.
+        We also need to extract the ID from youtube videos to store internally"""
         if(self.video_type == YOUTUBE_VIDEO_TYPE):
             self.video_id = extract_yt_id(self.URL)
+
+        if self.start_time:
+            self.use_start = True
+        else:
+            self.use_start = False
+            self.start_time = 0
+
+        if self.end_time:
+            self.use_end = True
+        else:
+            self.use_end = False
+            self.end_time = 0
         super(VideoAsset, self).save(*args, **kwargs)
 
     def __unicode__(self):

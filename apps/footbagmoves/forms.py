@@ -1,12 +1,11 @@
 from django import forms
-from django.forms.models import BaseInlineFormSet
+from django.utils.translation import ugettext_lazy as _
 
+from constants import YOUTUBE_VIDEO_TYPE
 from video_assets_models import VideoAsset
-from constants import URL_VIDEO_TYPE
+from video_api_helpers import is_youtube_video
 
-from apps.footbagmoves.video_api_helpers import is_youtube_video
-
-class ComponentsInlineFormset(BaseInlineFormSet):
+class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
     """ A formset that requires you to enter at least one entry in order to validate.
     This is used for entering in the components for the footbag moves."""
     def clean(self):
@@ -29,40 +28,46 @@ class ComponentsInlineFormset(BaseInlineFormSet):
 class VideoEntryForm(forms.ModelForm):
     """A form for entering in video details """
 
+    def __init__(self, *args, **kwargs):
+        super(VideoEntryForm, self).__init__(*args, **kwargs)
+        self.fields['start_time'].required = False
+        self.fields['end_time'].required = False
+
     class Meta:
         model = VideoAsset
         fields = (
-                'video_type',
-                'URL',
-                'use_start',
-                'use_end',
-                'start_time',
-                'end_time',
+            'video_type',
+            'URL',
+            'start_time',
+            'end_time',
         )
+        labels = {
+                'start_time': _('Start time'),
+                'end_time': _('End time'),
+        }
 
     def clean(self):
         """ Validates the video entry:
             checks the end time is after the start time.
             checks if a youtube video is entered in as a raw url."""
-        start = self.cleaned_data.get("use_start")
-        end = self.cleaned_data.get("use_end")
         start_time = self.cleaned_data.get("start_time")
         end_time = self.cleaned_data.get("end_time")
-        if start and end and (start_time >= end_time):
+        if start_time and end_time and (start_time >= end_time):
             raise forms.ValidationError("Error: Invalid timestamp, start time is not before the end time")
             #TODO: need to remove invalid items by using del?
 
         video_type = self.cleaned_data.get("video_type")
         url = self.cleaned_data.get("URL")
-        if video_type == URL_VIDEO_TYPE and is_youtube_video(url):
+        if video_type != YOUTUBE_VIDEO_TYPE and is_youtube_video(url):
             raise forms.ValidationError("Error: a youtube link was entered in as a raw URL. Please use youtube video type instead.")
         return self.cleaned_data
 
-class VideosFormset(BaseInlineFormSet):
+
+class VideosFormset(forms.models.BaseInlineFormSet):
     """A set of video entry forms """
     def is_valid(self):
         """Test that all individual videos are error free"""
-        return (super(VideosFormset,self).is_valid() and
+        return (super(VideosFormset, self).is_valid() and
                 not any(bool(e) for e in self.errors))
 
     def clean(self):
