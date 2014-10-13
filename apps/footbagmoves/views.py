@@ -100,10 +100,32 @@ def component_detail(request, component_slug):
     demo_video = ComponentDemonstrationVideo.objects.filter(component__exact=current_component)
     tutorial_video = ComponentTutorialVideo.objects.filter(component__exact=current_component)
     nicknames = ComponentNickname.objects.filter(move__exact=current_component)
+
+    #only load the youtube API if a youtube video is associated with the move
+    load_youtube_api = (any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in demo_video) or
+                        any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in tutorial_video))
+
+    first_yt_video = next((vid for vid in itertools.chain(demo_video, tutorial_video) if
+                           vid.video_type == YOUTUBE_VIDEO_TYPE), None)
+    if load_youtube_api:
+        first_yt_id = first_yt_video.video_id
+    else:
+        first_yt_id = ""
+
+    #Used in the template to create class names for link elements so that we can extract the youtube videos from the DOM using javascript.
+    video_types = {
+        "URL": URL_VIDEO_TYPE,
+        "Youtube": YOUTUBE_VIDEO_TYPE,
+    }
+
     context = RequestContext(request, {
         'component' : current_component,
         'nicknames': nicknames,
         'video_demo': demo_video,
         'video_tutorial': tutorial_video,
+        'load_youtube': load_youtube_api,
+        'vid_types': video_types,
+        'first_yt_id': first_yt_id,
+        'first_yt_video': first_yt_video,
     })
     return HttpResponse(template.render(context))
