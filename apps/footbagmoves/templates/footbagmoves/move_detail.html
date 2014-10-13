@@ -12,6 +12,17 @@
     {% endfor %}
 </ul>
 
+{% if nicknames %}
+<br />
+<br />
+This move is also known by the following nicknames:
+<ul class="nicknames">
+    {% for nick in nicknames %}
+    <li> {{ nick.nickname }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 {% if load_youtube %}
 <script src="{% static 'js/load_youtube.js' %}"></script>
 {% endif %}

@@ -105,3 +105,15 @@ class ComponentTutorialVideo(VideoAsset):
         else:
             return u'Tutorial video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
 
+
+class MoveNickname(models.Model):
+    """Keep track of nicknames for footbag moves."""
+    move = models.ForeignKey(Move)
+    nickname = models.CharField(max_length=40, unique=True)
+    rating = models.SmallIntegerField(default=0)
+
+class ComponentNickname(models.Model):
+    """Keep track of nicknames for footbag components."""
+    move = models.ForeignKey(Component)
+    nickname = models.CharField(max_length=40, unique=True)
+    rating = models.SmallIntegerField(default=0)

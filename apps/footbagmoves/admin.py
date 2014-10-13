@@ -4,14 +4,10 @@ from django.forms.models import BaseInlineFormSet
 from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
+from apps.footbagmoves.models import ComponentNickname, MoveNickname
 
-from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, ComponentsInlineFormset
+from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, ComponentsInlineFormset, ComponentNicknameForm, MoveNicknameForm
 
-
-class VideoEntryAdmin(admin.TabularInline):
-    """ Single video entry """
-    #TODO: remove this?
-    pass
 
 class ComponentDemonstrationVideoInline(admin.TabularInline):
     """Inline admin to link to a demonstation video for a component"""
@@ -27,12 +23,21 @@ class ComponentTutorialVideoInline(admin.TabularInline):
     formset = VideosFormset
     max_num = 20
 
+
+class ComponentNicknamesInline(admin.TabularInline):
+    """ Inline admin for associating component nicknames with the underlying Component obejcts """
+    model = ComponentNickname
+    form = ComponentNicknameForm
+    max_num = 20
+    extra = 1
+
 class ComponentAdmin(admin.ModelAdmin):
     """Admin helper for the components"""
     fields = ('name',)
     inlines = (
             ComponentDemonstrationVideoInline,
             ComponentTutorialVideoInline,
+            ComponentNicknamesInline,
     )
 
 
@@ -58,12 +63,20 @@ class MoveComponentSequenceInline(admin.TabularInline):
     max_num = 20 #maximum of 20 components allowed
     extra = 1
 
+class MoveNicknamesInline(admin.TabularInline):
+    """ Inline admin for associating move nicknames with the underlying move obejcts """
+    model = MoveNickname
+    form = MoveNicknameForm
+    max_num = 20
+    extra = 1
+
 class MoveAdmin(admin.ModelAdmin): 
     """Admin helper for the moves """
     inlines = (
             MoveComponentSequenceInline,
             MoveDemonstrationVideoInline,
             MoveTutorialVideoInline,
+            MoveNicknamesInline,
     )
 
 
