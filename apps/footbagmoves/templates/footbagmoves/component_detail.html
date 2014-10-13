@@ -5,6 +5,18 @@
 {% block content %}
 This is the components detail page for {{ component.name }}
 
+
+{% if nicknames %}
+<br />
+<br />
+This component is also known by the following nicknames:
+<ul class="nicknames">
+    {% for nick in nicknames %}
+    <li> {{ nick.nickname }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <br />
 {% with videos=video_demo.all %}
     {% if videos %}
