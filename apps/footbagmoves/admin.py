@@ -4,14 +4,10 @@ from django.forms.models import BaseInlineFormSet
 from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
+from apps.footbagmoves.models import MoveNickname
 
 from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, ComponentsInlineFormset
 
-
-class VideoEntryAdmin(admin.TabularInline):
-    """ Single video entry """
-    #TODO: remove this?
-    pass
 
 class ComponentDemonstrationVideoInline(admin.TabularInline):
     """Inline admin to link to a demonstation video for a component"""
@@ -58,12 +54,19 @@ class MoveComponentSequenceInline(admin.TabularInline):
     max_num = 20 #maximum of 20 components allowed
     extra = 1
 
+class MoveNicknamesInline(admin.TabularInline):
+    """ Inline admin for associating move nicknames with the underlying move obejcts """
+    model = MoveNickname
+    max_num = 20
+    extra = 1
+
 class MoveAdmin(admin.ModelAdmin): 
     """Admin helper for the moves """
     inlines = (
             MoveComponentSequenceInline,
             MoveDemonstrationVideoInline,
             MoveTutorialVideoInline,
+            MoveNicknamesInline,
     )
 
 
