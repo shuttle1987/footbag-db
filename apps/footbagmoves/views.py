@@ -51,8 +51,7 @@ def move_detail(request, move_slug):
     first_yt_video = next((vid for vid in itertools.chain(demo_video,tutorial_video) if
                            vid.video_type == YOUTUBE_VIDEO_TYPE), None)
     if load_youtube_api:
-        first_yt_id = extract_yt_id(extract_first_yt_url(demo_video, tutorial_video))
-        #TODO: cache this as it's horrendously inefficient to calculate this every time a view is loaded
+        first_yt_id = first_yt_video.video_id
     else:
         first_yt_id = ""
 
