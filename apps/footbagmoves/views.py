@@ -8,6 +8,7 @@ import itertools
 from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
+from apps.footbagmoves.models import MoveNickname
 
 from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
 from apps.footbagmoves.video_api_helpers import extract_first_yt_url, extract_yt_id
@@ -42,6 +43,7 @@ def move_detail(request, move_slug):
     components_seq = MoveComponentSequence.objects.filter(move__exact=current_move)
     demo_video = MoveDemonstrationVideo.objects.filter(move__exact=current_move)
     tutorial_video = MoveTutorialVideo.objects.filter(move__exact=current_move)
+    nicknames = MoveNickname.objects.filter(move__exact=current_move)
     #only load the youtube API if a youtube video is associated with the move
     load_youtube_api = (any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in demo_video) or
                         any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in tutorial_video))
@@ -63,6 +65,7 @@ def move_detail(request, move_slug):
     context = RequestContext(request, {
         'move' : current_move,
         'sequence': components_seq,
+        'nicknames': nicknames,
         'video_demo': demo_video,
         'video_tutorial': tutorial_video,
         'load_youtube': load_youtube_api,
