@@ -5,7 +5,7 @@ from constants import YOUTUBE_VIDEO_TYPE
 from video_assets_models import VideoAsset
 from video_api_helpers import is_youtube_video
 
-from models import MoveNickname
+from models import ComponentNickname, MoveNickname
 
 class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
     """ A formset that requires you to enter at least one entry in order to validate.
@@ -82,6 +82,23 @@ class MoveNicknameForm(forms.ModelForm):
     """A Form for entering in move nickname information"""
     class Meta:
         model = MoveNickname
+
+        fields = (
+            'nickname',
+            'rating',
+        )
+        labels = {
+                'nickname': _('nickname'),
+                'rating': _('nickname rating'),
+        }
+        help_texts = {
+                'rating': _('The more appropriate the nickname is the higher the rating it should have.'),
+        }
+
+class ComponentNicknameForm(forms.ModelForm):
+    """A Form for entering in component nickname information"""
+    class Meta:
+        model = ComponentNickname
 
         fields = (
             'nickname',

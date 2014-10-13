@@ -4,9 +4,9 @@ from django.forms.models import BaseInlineFormSet
 from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
-from apps.footbagmoves.models import MoveNickname
+from apps.footbagmoves.models import ComponentNickname, MoveNickname
 
-from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, ComponentsInlineFormset, MoveNicknameForm
+from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, ComponentsInlineFormset, ComponentNicknameForm, MoveNicknameForm
 
 
 class ComponentDemonstrationVideoInline(admin.TabularInline):
@@ -23,12 +23,21 @@ class ComponentTutorialVideoInline(admin.TabularInline):
     formset = VideosFormset
     max_num = 20
 
+
+class ComponentNicknamesInline(admin.TabularInline):
+    """ Inline admin for associating component nicknames with the underlying Component obejcts """
+    model = ComponentNickname
+    form = ComponentNicknameForm
+    max_num = 20
+    extra = 1
+
 class ComponentAdmin(admin.ModelAdmin):
     """Admin helper for the components"""
     fields = ('name',)
     inlines = (
             ComponentDemonstrationVideoInline,
             ComponentTutorialVideoInline,
+            ComponentNicknamesInline,
     )
 
 
