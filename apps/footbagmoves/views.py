@@ -129,3 +129,10 @@ def component_detail(request, component_slug):
         'first_yt_video': first_yt_video,
     })
     return HttpResponse(template.render(context))
+
+def search_page(request):
+    """A search page for the footbag database"""
+
+    template = loader.get_template('footbagmoves/search.html')
+    context = RequestContext(request, {})
+    return HttpResponse(template.render(context))
