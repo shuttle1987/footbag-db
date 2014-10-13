@@ -6,7 +6,7 @@ from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrat
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 from apps.footbagmoves.models import MoveNickname
 
-from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, ComponentsInlineFormset
+from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, ComponentsInlineFormset, MoveNicknameForm
 
 
 class ComponentDemonstrationVideoInline(admin.TabularInline):
@@ -57,6 +57,7 @@ class MoveComponentSequenceInline(admin.TabularInline):
 class MoveNicknamesInline(admin.TabularInline):
     """ Inline admin for associating move nicknames with the underlying move obejcts """
     model = MoveNickname
+    form = MoveNicknameForm
     max_num = 20
     extra = 1
 
