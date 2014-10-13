@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
 from constants import YOUTUBE_VIDEO_TYPE
 from video_assets_models import VideoAsset
@@ -27,17 +28,23 @@ class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
 class VideoEntryForm(forms.ModelForm):
     """A form for entering in video details """
 
-    start_time = forms.IntegerField(required=False)
-    end_time = forms.IntegerField(required=False)
+    def __init__(self, *args, **kwargs):
+        super(VideoEntryForm, self).__init__(*args, **kwargs)
+        self.fields['start_time'].required = False
+        self.fields['end_time'].required = False
 
     class Meta:
         model = VideoAsset
         fields = (
-                'video_type',
-                'URL',
-                'start_time',
-                'end_time',
+            'video_type',
+            'URL',
+            'start_time',
+            'end_time',
         )
+        labels = {
+                'start_time': _('Start time'),
+                'end_time': _('End time'),
+        }
 
     def clean(self):
         """ Validates the video entry:
@@ -55,9 +62,6 @@ class VideoEntryForm(forms.ModelForm):
             raise forms.ValidationError("Error: a youtube link was entered in as a raw URL. Please use youtube video type instead.")
         return self.cleaned_data
 
-#    def save(self):
-#        """Save a video based on the verified data coming out of this form"""
-#        pass
 
 class VideosFormset(forms.models.BaseInlineFormSet):
     """A set of video entry forms """
