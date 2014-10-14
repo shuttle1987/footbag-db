@@ -6,4 +6,17 @@
 
 Search page coming soon!
 
+{% if search_form.errors %}
+<p style="color: red;">
+    Please correct the error {{ search_form.errors|pluralize}} below.
+</p>
+{% endif %}
+
+<form action="" method="post">
+    <table>
+        {{ search_form.as_table }}
+    </table>
+    {% csrf_token %}
+    <input type="submit" value="Search">
+</form>
 {% endblock %}

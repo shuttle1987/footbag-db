@@ -10,8 +10,12 @@ from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrat
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 from apps.footbagmoves.models import MoveNickname, ComponentNickname
 
-from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
+from apps.footbagmoves.constants import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
+
 from apps.footbagmoves.video_api_helpers import extract_first_yt_url, extract_yt_id
+
+from apps.footbagmoves.forms import SearchForm
+
 
 def get_last_3(queryset):
     """Get the last 3 objects that were added as determined by their id.
@@ -132,7 +136,15 @@ def component_detail(request, component_slug):
 
 def search_page(request):
     """A search page for the footbag database"""
-
+    if request.method == 'POST':
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            cleaned_data = search_form.cleaned_data
+            return HttpResponse('Search data successfully entered!')
+    else:
+        search_form = SearchForm()
     template = loader.get_template('footbagmoves/search.html')
-    context = RequestContext(request, {})
+    context = RequestContext(request, {
+        'search_form': search_form,
+    })
     return HttpResponse(template.render(context))
