@@ -115,3 +115,5 @@ class ComponentNicknameForm(forms.ModelForm):
 class SearchForm(forms.Form):
     """The form used for searching the footbag database"""
     search_text = forms.CharField()
+    error_css_class = 'error'
+    required_css_class = 'required'
