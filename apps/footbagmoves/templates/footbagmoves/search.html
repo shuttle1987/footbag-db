@@ -4,7 +4,8 @@
 {% block header %}Search the footbag database{% endblock %}
 {% block content %}
 
-Search page coming soon!
+Currently only searching for moves by nicknames is supported.
+More complex searching functionality is coming soon!
 
 {% if search_form.errors %}
 <p style="color: red;">
@@ -19,4 +20,22 @@ Search page coming soon!
     {% csrf_token %}
     <input type="submit" value="Search">
 </form>
+
+{% if show_results %}
+<br />
+{{ results_info }}
+
+<table>
+    <tr class="row-top">
+        <th> name </th>
+        <th> breakdown <th>
+    </tr>
+    {% for move in results_list %}
+    <tr class="{% cycle 'row-even' 'row-odd' %}">
+        <td><a href="{% url "move_detail" move.slug %}"> {{ move.name }}</a></td>
+        <td>move breakdown</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
 {% endblock %}

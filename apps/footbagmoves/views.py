@@ -136,15 +136,34 @@ def component_detail(request, component_slug):
 
 def search_page(request):
     """A search page for the footbag database"""
+    template = loader.get_template('footbagmoves/search.html')
     if request.method == 'POST':
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
-            cleaned_data = search_form.cleaned_data
-            return HttpResponse('Search data successfully entered!')
+            search_text = search_form.cleaned_data['search_text']
+            nickname_objs = MoveNickname.objects.filter(nickname__exact=search_text)
+            move_objs = [ nickname.move for nickname in nickname_objs]
+            results_found = len(move_objs)
+            if results_found > 0:
+                results_info_text = "Found " + str(results_found) + " results for " + search_form.cleaned_data['search_text']
+                show_results = True
+            else:
+                show_results = False
+                results_info_text = "No results found for " + search_form.cleaned_data['search_text']
+            #Note that this will hit the DB a lot(once per nickname found), some sort
+            #of join method would be preferable as that potentially will scale better
+            context = RequestContext(request, {
+                'search_form': search_form,
+                'show_results': show_results,
+                'results_info': results_info_text,
+                'results_list': move_objs,
+            })
+            return HttpResponse(template.render(context))
     else:
         search_form = SearchForm()
-    template = loader.get_template('footbagmoves/search.html')
+        show_results = False
     context = RequestContext(request, {
         'search_form': search_form,
+        'show_results': show_results,
     })
     return HttpResponse(template.render(context))
