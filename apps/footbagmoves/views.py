@@ -10,8 +10,12 @@ from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrat
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 from apps.footbagmoves.models import MoveNickname, ComponentNickname
 
-from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
+from apps.footbagmoves.constants import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
+
 from apps.footbagmoves.video_api_helpers import extract_first_yt_url, extract_yt_id
+
+from apps.footbagmoves.forms import SearchForm
+
 
 def get_last_3(queryset):
     """Get the last 3 objects that were added as determined by their id.
@@ -127,5 +131,38 @@ def component_detail(request, component_slug):
         'vid_types': video_types,
         'first_yt_id': first_yt_id,
         'first_yt_video': first_yt_video,
+    })
+    return HttpResponse(template.render(context))
+
+def search_page(request):
+    """A search page for the footbag database"""
+    template = loader.get_template('footbagmoves/search.html')
+    if request.method == 'POST':
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            search_text = search_form.cleaned_data['search_text']
+            nickname_objs = MoveNickname.objects.filter(nickname__exact=search_text)
+            move_objs = [ nickname.move for nickname in nickname_objs]
+            results_found = len(move_objs)
+            if results_found > 0:
+                results_info_text = "Found " + str(results_found) + " results for " + search_form.cleaned_data['search_text']
+                show_results = True
+            else:
+                show_results = False
+                results_info_text = "No results found for " + search_form.cleaned_data['search_text']
+            #Note that this will hit the DB a lot(once per nickname found), some sort
+            #of join method would be preferable as that potentially will scale better
+            context = RequestContext(request, {
+                'search_form': search_form,
+                'show_results': show_results,
+                'results_info': results_info_text,
+                'results_list': move_objs,
+            })
+            return HttpResponse(template.render(context))
+    else:
+        search_form = SearchForm()
+        show_results = False
+    context = RequestContext(request, {
+        'search_form': search_form,
     })
     return HttpResponse(template.render(context))

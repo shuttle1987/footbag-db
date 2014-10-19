@@ -111,3 +111,9 @@ class ComponentNicknameForm(forms.ModelForm):
         help_texts = {
                 'rating': _('The more appropriate the nickname is the higher the rating it should have.'),
         }
+
+class SearchForm(forms.Form):
+    """The form used for searching the footbag database"""
+    search_text = forms.CharField()
+    error_css_class = 'error'
+    required_css_class = 'required'
