@@ -164,6 +164,5 @@ def search_page(request):
         show_results = False
     context = RequestContext(request, {
         'search_form': search_form,
-        'show_results': show_results,
     })
     return HttpResponse(template.render(context))
