@@ -81,7 +81,7 @@ def move_detail(request, move_slug):
 def component_index(request):
     """ View for the components index page """
     template = loader.get_template('footbagmoves/component_index.html')
-    latest_components = Component.objects.all()
+    latest_components = get_last_3(Component.objects.all())
     num_components = Component.objects.count()
     context = RequestContext(request, {
         'number_of_components': num_components,
