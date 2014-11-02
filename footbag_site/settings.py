@@ -15,7 +15,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
-from local_settings import * #import the settings specific to the environment (dev or live)
+from .local_settings import * #import the settings specific to the environment (dev or live)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # Store this in a file on the server as the settings.py file is stored in the public git repository.
-with open('/home/janis/footbag_secret_key.txt') as f:
+with open('secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 ALLOWED_HOSTS = ['.footbag.info',
