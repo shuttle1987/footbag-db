@@ -1,7 +1,7 @@
 """Helper functions for the video APIs we are using in the project"""
 __all__ = ['extract_first_yt_url', 'extract_yt_id']
 
-from urlparse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs
 
 from .constants import YOUTUBE_VIDEO_TYPE
 
