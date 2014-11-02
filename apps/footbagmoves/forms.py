@@ -1,11 +1,11 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from constants import YOUTUBE_VIDEO_TYPE
-from video_assets_models import VideoAsset
-from video_api_helpers import is_youtube_video
+from .constants import YOUTUBE_VIDEO_TYPE
+from .video_assets_models import VideoAsset
+from .video_api_helpers import is_youtube_video
 
-from models import ComponentNickname, MoveNickname
+from .models import ComponentNickname, MoveNickname
 
 class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
     """ A formset that requires you to enter at least one entry in order to validate.

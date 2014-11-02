@@ -9,13 +9,13 @@ local_settings.py just imports the relevant settings for the deployment and as s
 different in each deployment. local_settings.py is not tracked by git for this reason.
 
 For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
+https://docs.djangoproject.com/en/1.7/topics/settings/
 
 For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
+https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
-from local_settings import * #import the settings specific to the environment (dev or live)
+from .local_settings import * #import the settings specific to the environment (dev or live)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -23,11 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # Store this in a file on the server as the settings.py file is stored in the public git repository.
-with open('/home/janis/footbag_secret_key.txt') as f:
+with open('secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 ALLOWED_HOSTS = ['.footbag.info',
@@ -47,7 +47,6 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-#    'south',
 )
 
 LOCAL_APPS = (
@@ -62,6 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -72,7 +72,7 @@ WSGI_APPLICATION = 'footbag_site.wsgi.application'
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
+# https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 

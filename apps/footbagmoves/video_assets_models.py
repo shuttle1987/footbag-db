@@ -4,8 +4,8 @@ key to a VideoAsset"""
 
 from django.db import models
 
-from video_api_helpers import extract_yt_id
-from constants import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
+from .video_api_helpers import extract_yt_id
+from .constants import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
 
 class VideoAsset(models.Model):
     """This is a video asset, specifies the type of the video along with it's location
@@ -39,9 +39,9 @@ class VideoAsset(models.Model):
             self.end_time = 0
         super(VideoAsset, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.use_start == True or self.use_end == True:
-            return u'Video: %s, %s start: %d end %d' % (self.URL, self.video_type, self.start_time, self.end_time)
+            return 'Video: %s, %s start: %d end %d' % (self.URL, self.video_type, self.start_time, self.end_time)
         else:
-            return u'Video: %s, %s' % (self.URL, self.video_type)
+            return 'Video: %s, %s' % (self.URL, self.video_type)
 

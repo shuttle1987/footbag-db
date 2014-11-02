@@ -6,8 +6,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from apps.home import views
 from apps.footbagmoves import views
-from views import user_login, user_logout, user_panel
-admin.autodiscover()
+from .views import user_login, user_logout, user_panel
 
 urlpatterns = patterns('',
     url(r'^$', 'apps.home.views.index', name='basic_homepage'),#match the bare domain name
