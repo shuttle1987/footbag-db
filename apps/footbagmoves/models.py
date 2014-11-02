@@ -14,8 +14,8 @@ class Component(models.Model):
     name = models.CharField(max_length=20)
     slug = models.SlugField(editable=False, unique=True)#editable=False hides slug from admin page
 
-    def __unicode__(self):
-        """ Unicode string representation of the object """
+    def __str__(self):
+        """String representation of Component object """
         return self.name
 
     def save(self, *args, **kwargs):
@@ -39,7 +39,8 @@ class Move(models.Model):
     """
     name = models.CharField(max_length=40)
     slug = models.SlugField(editable=False, unique=True)#editable=False hides slug from admin page
-    def __unicode__(self):
+    def __str__(self):
+        """String representation of Move object """
         return self.name
 
     def save(self, *args, **kwargs):
@@ -58,52 +59,52 @@ class MoveComponentSequence(models.Model):
     component = models.ForeignKey(Component)
     move = models.ForeignKey(Move)
 
-    def __unicode__(self):
-        return u'%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
+    def __str__(self):
+        return '%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
 
 class MoveDemonstrationVideo(VideoAsset):
     """ This is to keep track of move demonstration videos.
     Videos are stored as defined in VideoAsset and are associated with moves via this table."""
     move = models.ForeignKey(Move)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.use_start == True or self.use_end == True:
-            return u'Demonstration video for Move: %s, %s, %s start: %d end %d' % (self.move.name, self.video_type, self.URL, self.start_time, self.end_time)
+            return 'Demonstration video for Move: %s, %s, %s start: %d end %d' % (self.move.name, self.video_type, self.URL, self.start_time, self.end_time)
         else:
-            return u'Demonstration video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+            return 'Demonstration video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
 
 class MoveTutorialVideo(VideoAsset):
     """ This is to keep track of move tutorial videos.
     Videos are stored as defined in VideoAsset and are associated with moves via this table."""
     move = models.ForeignKey(Move)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.use_start == True or self.use_end == True:
-            return u'Tutorial video for Move: %s, %s, %s start: %d end %d' % (self.move.name, self.video_type, self.URL, self.start_time, self.end_time)
+            return 'Tutorial video for Move: %s, %s, %s start: %d end %d' % (self.move.name, self.video_type, self.URL, self.start_time, self.end_time)
         else:
-            return u'Tutorial video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+            return 'Tutorial video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
 
 class ComponentDemonstrationVideo(VideoAsset):
     """ This is to keep track of component demonstration videos.
     Videos are stored as defined in VideoAsset and are associated with components via this table."""
     component = models.ForeignKey(Component)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.use_start == True or self.use_end == True:
-            return u'Demonstration video for Component: %s, %s, %s start: %d end %d' % (self.component.name, self.video_type, self.URL, self.start_time, self.end_time)
+            return 'Demonstration video for Component: %s, %s, %s start: %d end %d' % (self.component.name, self.video_type, self.URL, self.start_time, self.end_time)
         else:
-            return u'Demonstration video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
+            return 'Demonstration video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
 
 class ComponentTutorialVideo(VideoAsset):
     """ This is to keep track of component tutorial videos.
     Videos are stored as defined in VideoAsset and are associated with components via this table."""
     component = models.ForeignKey(Component)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.use_start == True or self.use_end == True:
-            return u'Tutorial video for Component: %s, %s, %s start: %d end %d' % (self.component.name, self.video_type, self.URL, self.start_time, self.end_time)
+            return 'Tutorial video for Component: %s, %s, %s start: %d end %d' % (self.component.name, self.video_type, self.URL, self.start_time, self.end_time)
         else:
-            return u'Tutorial video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
+            return 'Tutorial video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
 
 
 class MoveNickname(models.Model):

@@ -39,9 +39,9 @@ class VideoAsset(models.Model):
             self.end_time = 0
         super(VideoAsset, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.use_start == True or self.use_end == True:
-            return u'Video: %s, %s start: %d end %d' % (self.URL, self.video_type, self.start_time, self.end_time)
+            return 'Video: %s, %s start: %d end %d' % (self.URL, self.video_type, self.start_time, self.end_time)
         else:
-            return u'Video: %s, %s' % (self.URL, self.video_type)
+            return 'Video: %s, %s' % (self.URL, self.video_type)
 
