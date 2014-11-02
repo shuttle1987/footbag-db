@@ -4,8 +4,8 @@ key to a VideoAsset"""
 
 from django.db import models
 
-from video_api_helpers import extract_yt_id
-from constants import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
+from .video_api_helpers import extract_yt_id
+from .constants import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
 
 class VideoAsset(models.Model):
     """This is a video asset, specifies the type of the video along with it's location

@@ -1,10 +1,10 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from video_assets_models import VideoAsset
-from video_api_helpers import extract_yt_id
+from .video_assets_models import VideoAsset
+from .video_api_helpers import extract_yt_id
 
-from constants import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
+from .constants import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
 
 class Component(models.Model):
     """ A model for a footbag move component
