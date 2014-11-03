@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # Store this in a file on the server as the settings.py file is stored in the public git repository.
-with open('secret_key.txt') as f:
+with open(os.path.join(BASE_DIR,'secret_key.txt')) as f:
     SECRET_KEY = f.read().strip()
 
 ALLOWED_HOSTS = ['.footbag.info',
