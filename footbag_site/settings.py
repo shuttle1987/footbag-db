@@ -22,6 +22,18 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
+# Rendering for the trick tips
+import markdown
+from docutils.core import publish_parts
+def render_rest(markup):
+    parts = publish_parts(source=markup, writer_name="html4css1")
+    return parts["fragment"]
+
+MARKUP_FIELD_TYPES = (
+    ('markdown', markdown.markdown),
+    ('ReST', render_rest),
+)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
