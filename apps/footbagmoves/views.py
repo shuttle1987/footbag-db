@@ -9,7 +9,7 @@ from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 from apps.footbagmoves.models import MoveNickname, ComponentNickname
-from apps.footbagmoves.models import ComponentTips
+from apps.footbagmoves.models import MoveTips, ComponentTips
 
 from apps.footbagmoves.constants import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
 
@@ -49,6 +49,7 @@ def move_detail(request, move_slug):
     demo_video = MoveDemonstrationVideo.objects.filter(move__exact=current_move)
     tutorial_video = MoveTutorialVideo.objects.filter(move__exact=current_move)
     nicknames = MoveNickname.objects.filter(move__exact=current_move)
+    move_tips = MoveTips.objects.filter(move__exact=current_move)
     #only load the youtube API if a youtube video is associated with the move
     load_youtube_api = (any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in demo_video) or
                         any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in tutorial_video))
@@ -76,6 +77,7 @@ def move_detail(request, move_slug):
         'vid_types': video_types,
         'first_yt_id': first_yt_id,
         'first_yt_video': first_yt_video,
+        'move_tips': move_tips[0],
     })
     return HttpResponse(template.render(context))
 

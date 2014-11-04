@@ -66,11 +66,13 @@ This component is also known by the following nicknames:
 </div>
 
 {% if component_tips %}
-we have tips for this component!
+Tips:
 <br />
-{{ component_tips.tips.rendered|safe }}
+<div class="tips">
+	{{ component_tips.tips.rendered|safe }}
+</div>
 {% else %}
-Contribute some tips for this component!
+There's no tips on record, if you know this component well please consider contributing some!
 {% endif %}
 
 {% if load_youtube %}

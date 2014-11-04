@@ -69,6 +69,17 @@ This move is also known by the following nicknames:
 {% endwith %}
 </div>
 
+{% if move_tips %}
+Tips:
+<br />
+<div class="tips">
+	{{ move_tips.tips.rendered|safe }}
+</div>
+{% else %}
+There's no tips on record, if you know this move well please consider contributing some!
+{% endif %}
+
+
 
 {% if load_youtube %}
 <script>

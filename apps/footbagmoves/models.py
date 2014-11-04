@@ -32,14 +32,6 @@ class Component(models.Model):
         from django.core.urlresolvers import reverse
         return reverse('apps.footbagmoves.components', args=[str(self.id)])
 
-class Tips(models.Model):
-    """For editing tips for footbag moves and components."""
-    tips = MarkupField(default_markup_type='markdown')
-
-class ComponentTips(Tips):
-    """Tips for footbag components"""
-    component = models.ForeignKey(Component)
-
 class Move(models.Model):
     """ A model for organizing the information for an individual footbag move.
     Uses MoveComponentSequence to keep track of the squence of components that
@@ -128,3 +120,15 @@ class ComponentNickname(models.Model):
     component = models.ForeignKey(Component)
     nickname = models.CharField(max_length=40, unique=True)
     rating = models.SmallIntegerField(default=0)
+ 
+class Tips(models.Model):
+    """For editing tips for footbag moves and components."""
+    tips = MarkupField(default_markup_type='markdown')
+
+class ComponentTips(Tips):
+    """Tips for footbag components"""
+    component = models.ForeignKey(Component)
+
+class MoveTips(Tips):
+    """Tips for footbag moves"""
+    move = models.ForeignKey(Move)
