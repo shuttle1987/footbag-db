@@ -9,6 +9,7 @@ from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 from apps.footbagmoves.models import MoveNickname, ComponentNickname
+from apps.footbagmoves.models import ComponentTips
 
 from apps.footbagmoves.constants import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
 
@@ -103,7 +104,8 @@ def component_detail(request, component_slug):
     #load component info from DB
     demo_video = ComponentDemonstrationVideo.objects.filter(component__exact=current_component)
     tutorial_video = ComponentTutorialVideo.objects.filter(component__exact=current_component)
-    nicknames = ComponentNickname.objects.filter(move__exact=current_component)
+    nicknames = ComponentNickname.objects.filter(component__exact=current_component)
+    component_tips = ComponentTips.objects.filter(component__exact=current_component)
 
     #only load the youtube API if a youtube video is associated with the move
     load_youtube_api = (any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in demo_video) or
@@ -131,6 +133,7 @@ def component_detail(request, component_slug):
         'vid_types': video_types,
         'first_yt_id': first_yt_id,
         'first_yt_video': first_yt_video,
+        'component_tips': component_tips[0],
     })
     return HttpResponse(template.render(context))
 

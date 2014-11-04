@@ -125,6 +125,6 @@ class MoveNickname(models.Model):
 
 class ComponentNickname(models.Model):
     """Keep track of nicknames for footbag components."""
-    move = models.ForeignKey(Component)
+    component = models.ForeignKey(Component)
     nickname = models.CharField(max_length=40, unique=True)
     rating = models.SmallIntegerField(default=0)

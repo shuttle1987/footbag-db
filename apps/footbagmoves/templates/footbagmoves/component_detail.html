@@ -65,6 +65,13 @@ This component is also known by the following nicknames:
 {% endwith %}
 </div>
 
+{% if component_tips %}
+we have tips for this component!
+<br />
+{{ component_tips.tips.rendered }}
+{% else %}
+Contribute some tips for this component!
+{% endif %}
 
 {% if load_youtube %}
 <script>
