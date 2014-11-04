@@ -1,6 +1,8 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from markupfield.fields import MarkupField
+
 from .video_assets_models import VideoAsset
 from .video_api_helpers import extract_yt_id
 
@@ -29,6 +31,14 @@ class Component(models.Model):
         """ Compute canonical URL for a Component object"""
         from django.core.urlresolvers import reverse
         return reverse('apps.footbagmoves.components', args=[str(self.id)])
+
+class Tips(models.Model):
+    """For editing tips for footbag moves and components."""
+    tips = MarkupField(default_markup_type='markdown')
+
+class ComponentTips(Tips):
+    """Tips for footbag components"""
+    component = models.ForeignKey(Component)
 
 class Move(models.Model):
     """ A model for organizing the information for an individual footbag move.
