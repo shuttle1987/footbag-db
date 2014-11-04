@@ -47,6 +47,7 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'markupfield',
 )
 
 LOCAL_APPS = (
