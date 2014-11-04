@@ -68,7 +68,7 @@ This component is also known by the following nicknames:
 {% if component_tips %}
 we have tips for this component!
 <br />
-{{ component_tips.tips.rendered }}
+{{ component_tips.tips.rendered|safe }}
 {% else %}
 Contribute some tips for this component!
 {% endif %}
