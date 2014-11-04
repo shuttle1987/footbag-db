@@ -57,7 +57,7 @@ body {
 //Another compatibility hack
 
 #page-wrap >div {
-    border: 1px solid #999;
+    border: 1px solid #777;
     padding: 20px;
     margin-bottom: 5px;
     color: black;
@@ -87,4 +87,9 @@ body {
     }
 
     background: $div-color;
+}
+
+.tips {
+    background: darken($div-color, 10%);
+	box-shadow: 10px 10px 5px #888888;
 }
