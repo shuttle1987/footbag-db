@@ -24,13 +24,22 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Rendering for the trick tips
 import markdown
+import bleach
+
 from docutils.core import publish_parts
 def render_rest(markup):
+    """ Render ReStructuredText to HTML then clean the output using Bleach.
+    This is to prevent a number of issues to do with XSS."""
     parts = publish_parts(source=markup, writer_name="html4css1")
-    return parts["fragment"]
+    return bleach.clean(parts["fragment"])
+
+def render_markdown_clean(markup):
+    """ Render markdown to HTML then clean the output using Bleach.
+    This is to prevent a number of issues to do with XSS."""
+    return bleach.clean(markdown.markdown(markup))
 
 MARKUP_FIELD_TYPES = (
-    ('markdown', markdown.markdown),
+    ('markdown', render_markdown_clean),
     ('ReST', render_rest),
 )
 
