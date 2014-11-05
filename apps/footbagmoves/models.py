@@ -1,6 +1,8 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from markupfield.fields import MarkupField
+
 from .video_assets_models import VideoAsset
 from .video_api_helpers import extract_yt_id
 
@@ -115,6 +117,18 @@ class MoveNickname(models.Model):
 
 class ComponentNickname(models.Model):
     """Keep track of nicknames for footbag components."""
-    move = models.ForeignKey(Component)
+    component = models.ForeignKey(Component)
     nickname = models.CharField(max_length=40, unique=True)
     rating = models.SmallIntegerField(default=0)
+ 
+class Tips(models.Model):
+    """For editing tips for footbag moves and components."""
+    tips = MarkupField(default_markup_type='markdown')
+
+class ComponentTips(Tips):
+    """Tips for footbag components"""
+    component = models.ForeignKey(Component)
+
+class MoveTips(Tips):
+    """Tips for footbag moves"""
+    move = models.ForeignKey(Move)

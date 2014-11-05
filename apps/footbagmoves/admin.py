@@ -5,6 +5,7 @@ from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
 from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
 from apps.footbagmoves.models import ComponentNickname, MoveNickname
+from apps.footbagmoves.models import ComponentTips, MoveTips
 
 from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, ComponentsInlineFormset, ComponentNicknameForm, MoveNicknameForm
 
@@ -31,10 +32,16 @@ class ComponentNicknamesInline(admin.TabularInline):
     max_num = 20
     extra = 1
 
+class ComponentTipsInline(admin.StackedInline):
+    """ Inline admin for component tips"""
+    model = ComponentTips
+    max_num = 1
+
 class ComponentAdmin(admin.ModelAdmin):
     """Admin helper for the components"""
     fields = ('name',)
     inlines = (
+            ComponentTipsInline,
             ComponentDemonstrationVideoInline,
             ComponentTutorialVideoInline,
             ComponentNicknamesInline,
@@ -70,10 +77,16 @@ class MoveNicknamesInline(admin.TabularInline):
     max_num = 20
     extra = 1
 
+class MoveTipsInline(admin.StackedInline):
+    """ Inline admin for Move tips"""
+    model = MoveTips
+    max_num = 1
+
 class MoveAdmin(admin.ModelAdmin): 
     """Admin helper for the moves """
     inlines = (
             MoveComponentSequenceInline,
+            MoveTipsInline,
             MoveDemonstrationVideoInline,
             MoveTutorialVideoInline,
             MoveNicknamesInline,

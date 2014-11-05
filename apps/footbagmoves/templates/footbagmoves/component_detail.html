@@ -65,6 +65,15 @@ This component is also known by the following nicknames:
 {% endwith %}
 </div>
 
+{% if component_tips %}
+Tips:
+<br />
+<div class="tips">
+	{{ component_tips.tips.rendered|safe }}
+</div>
+{% else %}
+There's no tips on record, if you know this component well please consider contributing some!
+{% endif %}
 
 {% if load_youtube %}
 <script>
