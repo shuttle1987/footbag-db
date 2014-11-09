@@ -19,5 +19,6 @@ urlpatterns = patterns('',
     url(r'^logout/$', user_logout, name='logout'),
     url(r'^user_panel/$', user_panel, name='user_panel'),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='home/robots.txt', content_type='text/plain'), name='robots'),
+    url(r'^account/', include('account.urls')),#django-user-accounts
     url(r'^admin/', include(admin.site.urls)),
 )

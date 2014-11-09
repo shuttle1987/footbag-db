@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/1.7/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
-
+from django.conf import global_settings
 from .local_settings import * #import the settings specific to the environment (dev or live)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -68,7 +68,8 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    'markupfield',
+    'account',#django-user-accounts
+    'markupfield',#django-markupfield
 )
 
 LOCAL_APPS = (
@@ -86,6 +87,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'account.middleware.LocaleMiddleware',#django-user-accounts
+    'account.middleware.TimezoneMiddleware',#django-user-accounts
 )
 
 ROOT_URLCONF = 'footbag_site.urls'
@@ -126,5 +129,9 @@ TEMPLATE_LOADERS = (
             'django.template.loaders.filesystem.Loader',
             'django.template.loaders.app_directories.Loader',
         )),
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    "account.context_processors.account",#django-user-accounts
 )
 
