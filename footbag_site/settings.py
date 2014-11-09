@@ -122,6 +122,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'footbag_site', 'templates'),
     os.path.join(BASE_DIR, 'apps', 'home', 'templates'),
     os.path.join(BASE_DIR, 'apps', 'footbagmoves', 'templates'),
+    os.path.join(BASE_DIR, 'user_accounts', 'templates'),
 )
 
 TEMPLATE_LOADERS = (
