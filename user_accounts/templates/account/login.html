@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Log in{% endblock %}
+{% block header %}Log in{% endblock %}
+{% block content %}
+
+	<form method="POST" action="{% url "account_login" %}" autocapitalize="off" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+		<legend>Log in to an existing account</legend>
+		{% csrf_token %}
+		{{ form }}
+		{% if redirect_field_value %}
+		<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+		{% endif %}
+		<a href="{% url "account_password_reset" %}" class="btn btn-default">Forgot your password?</a>
+		<button type="submit" class="btn btn-primary">Log in</button>
+	</form>
+
+{% endblock %}
