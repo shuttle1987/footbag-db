@@ -22,7 +22,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-# Rendering for the trick tips
+# Rendering for the trick tips via markdownfield
 import markdown
 import bleach
 
@@ -43,11 +43,10 @@ MARKUP_FIELD_TYPES = (
     ('ReST', render_rest),
 )
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# Store this in a file on the server as the settings.py file is stored in the public git repository.
+ACCOUNT_OPEN_SIGNUP = False#django-user-accounts, this sets the site to private beta mode and requires signups to have tokens.
+
+
 with open(os.path.join(BASE_DIR,'secret_key.txt')) as f:
     SECRET_KEY = f.read().strip()
 
