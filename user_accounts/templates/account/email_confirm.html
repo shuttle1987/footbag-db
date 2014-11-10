@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm email address{% endblock %}
+{% block header %}Confirm email address{% endblock %}
+{% block content %}
+
+	<form method="post" action="{% url "account_confirm_email" key=confirmation.key %}">
+		<legend>Confirm Email</legend>
+		<fieldset>
+			{% csrf_token %}
+			<p>Confirm email address <b>{{ email }}</b>?</p>
+			<button type="submit" class="btn btn-primary">Confirm</button>
+		</fieldset>
+	</form>
+
+{% endblock %}
