@@ -6,7 +6,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 def error404(request):
-    return render(request,'404.html')
+    return render(request, '404.html', status=404)
+
+def error500(request):
+    return render(request, '500.html', status=500)
 
 @login_required
 def user_panel(request):

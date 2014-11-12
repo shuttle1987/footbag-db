@@ -23,3 +23,6 @@ urlpatterns = patterns('',
     url(r'^account/', include('account.urls')),#django-user-accounts
     url(r'^admin/', include(admin.site.urls)),
 )
+
+handler404 = 'footbag_site.views.error404'
+handler500 = 'footbag_site.views.error500'
