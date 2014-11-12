@@ -5,6 +5,9 @@ from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+def error403(request):
+    return render(request, '403.html', status=403)
+
 def error404(request):
     return render(request, '404.html', status=404)
 
