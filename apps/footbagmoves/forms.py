@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .constants import YOUTUBE_VIDEO_TYPE
 from .video_assets_models import VideoAsset
-from .video_api_helpers import is_youtube_video
+from .video_api_helpers import is_youtube_video, extract_yt_id
 
 from .models import ComponentNickname, MoveNickname
 
@@ -73,7 +73,19 @@ class VideosFormset(forms.models.BaseInlineFormSet):
                 not any(bool(e) for e in self.errors))
 
     def clean(self):
-        """Test that all individual videos are valid"""
+        """Test that all individual videos are valid and none are duplicates"""
+        current_videos = set()
+        for form in self.forms:
+            video_type = form.cleaned_data.get("video_type")
+            if video_type == YOUTUBE_VIDEO_TYPE:
+                video_id = extract_yt_id(form.cleaned_data.get("URL"))
+            else:
+                video_id = form.cleaned_data.get("URL")
+            video_info_tuple = (video_type, video_id) 
+            if video_info_tuple not in current_videos:
+                current_videos.add(video_info_tuple)
+            else:
+                raise forms.ValidationError("Duplicate video detected. Videos must not be duplicated.")
         super(VideosFormset, self).clean()
         for form in self.forms:
             form.is_valid()
