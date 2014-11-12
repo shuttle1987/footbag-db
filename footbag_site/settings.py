@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/1.7/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
-
+from django.conf import global_settings
 from .local_settings import * #import the settings specific to the environment (dev or live)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -22,7 +22,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-# Rendering for the trick tips
+# Rendering for the trick tips via markdownfield
 import markdown
 import bleach
 
@@ -43,11 +43,10 @@ MARKUP_FIELD_TYPES = (
     ('ReST', render_rest),
 )
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# Store this in a file on the server as the settings.py file is stored in the public git repository.
+ACCOUNT_OPEN_SIGNUP = False#django-user-accounts, this sets the site to private beta mode and requires signups to have tokens.
+
+
 with open(os.path.join(BASE_DIR,'secret_key.txt')) as f:
     SECRET_KEY = f.read().strip()
 
@@ -68,7 +67,8 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    'markupfield',
+    'account',#django-user-accounts
+    'markupfield',#django-markupfield
 )
 
 LOCAL_APPS = (
@@ -86,6 +86,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'account.middleware.LocaleMiddleware',#django-user-accounts
+    'account.middleware.TimezoneMiddleware',#django-user-accounts
 )
 
 ROOT_URLCONF = 'footbag_site.urls'
@@ -119,6 +121,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'footbag_site', 'templates'),
     os.path.join(BASE_DIR, 'apps', 'home', 'templates'),
     os.path.join(BASE_DIR, 'apps', 'footbagmoves', 'templates'),
+    os.path.join(BASE_DIR, 'user_accounts', 'templates'),
 )
 
 TEMPLATE_LOADERS = (
@@ -126,5 +129,9 @@ TEMPLATE_LOADERS = (
             'django.template.loaders.filesystem.Loader',
             'django.template.loaders.app_directories.Loader',
         )),
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    "account.context_processors.account",#django-user-accounts
 )
 
