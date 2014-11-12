@@ -1,4 +1,5 @@
 """ This settings file contains all the settings that are specific to the development site
+These settings are fine for developing locally but are not suitable for a live site.
 """
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -10,7 +11,7 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 # Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DATABASES = {
     'default': {

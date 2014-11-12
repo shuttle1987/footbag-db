@@ -1,6 +1,6 @@
 """ This file contains all the settings that are specific to the live deployment site
+Note that these settings are used for both the live site and the development staging site.
 """
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -9,12 +9,18 @@ DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+# Database settings, see:
+# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+
+with open(os.path.join(BASE_DIR,'mysql_pass.txt')) as f:
+    MYSQL_PASS = f.read().strip()
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',#django backend
+        'NAME': 'janis$footbag-db-dev',
+        'USER': 'janis',
+        'PASSWORD': MYSQL_PASS,
+        'HOST': 'mysql.server',
     }
 }
