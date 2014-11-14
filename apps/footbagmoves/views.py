@@ -2,7 +2,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.template import RequestContext, loader
-from django.contrib.auth.decorators import login_required
 
 import itertools
 
@@ -16,7 +15,7 @@ from apps.footbagmoves.constants import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
 
 from apps.footbagmoves.video_api_helpers import extract_first_yt_url, extract_yt_id
 
-from apps.footbagmoves.forms import ComponentEditForm, SearchForm
+from apps.footbagmoves.forms import SearchForm
 
 
 def get_last_3(queryset):
@@ -172,21 +171,3 @@ def search_page(request):
         'search_form': search_form,
     })
     return HttpResponse(template.render(context))
-
-@login_required
-def component_edit(request, component_id=None):
-    """Edit a component or add a new one"""
-    if component_id is None:
-        edit_form = ComponentEditForm()
-    else:
-        current_component = Component.objects.get(pk=component_id)
-        data = {
-            'name': current_component.name,
-        }
-        edit_form = ComponentEditForm()
-    context = RequestContext(request, {
-        'edit_form': edit_form,
-    })
-    template = loader.get_template('footbagmoves/component_edit.html')
-    return HttpResponse(template.render(context))
-
