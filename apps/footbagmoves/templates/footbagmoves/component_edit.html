@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Add a component{% endblock %}
+{% block header %}Add a component{% endblock %}
+{% block content %}
+
+	Add a new component to the database.
+
+	<form action="" method="post">
+		<table>
+			{{ edit_form.as_table }}
+		</table>
+		{% csrf_token %}
+		<input type="submit" value="submit">
+	</form>
+
+
+
+{% endblock %}

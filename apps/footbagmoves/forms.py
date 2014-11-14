@@ -5,7 +5,11 @@ from .constants import YOUTUBE_VIDEO_TYPE
 from .video_assets_models import VideoAsset
 from .video_api_helpers import is_youtube_video, extract_yt_id
 
-from .models import ComponentNickname, MoveNickname
+from .models import Component, ComponentNickname, MoveNickname
+
+class ComponentEditForm(forms.ModelForm):
+    class Meta:
+        model = Component
 
 class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
     """ A formset that requires you to enter at least one entry in order to validate.
