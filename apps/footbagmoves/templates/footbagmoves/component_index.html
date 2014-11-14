@@ -8,4 +8,7 @@ There are currently {{ number_of_components }} components on record in the footb
 <br />
 You can browse through the components  <a href="{% url "component-list" %}"> here </a>.
 
+{% if user.is_authenticated %}
+Click <a href="{% url "component_edit" %}">here</a> to add a new component to the database.
+{% endif %}
 {% endblock %}
