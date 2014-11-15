@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from .constants import YOUTUBE_VIDEO_TYPE
+from .constants import YOUTUBE_VIDEO_TYPE, VIDEO_TYPES, URL_VIDEO_TYPE
 from .video_assets_models import VideoAsset
 from .video_api_helpers import is_youtube_video, extract_yt_id
 
@@ -10,6 +10,7 @@ from .models import Component, ComponentNickname, MoveNickname
 class ComponentEditForm(forms.ModelForm):
     class Meta:
         model = Component
+
 
 class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
     """ A formset that requires you to enter at least one entry in order to validate.
@@ -33,7 +34,7 @@ class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
 
 class VideoEntryForm(forms.ModelForm):
     """A form for entering in video details """
-
+    video_type = forms.ChoiceField(choices=VIDEO_TYPES, initial=URL_VIDEO_TYPE)
     def __init__(self, *args, **kwargs):
         super(VideoEntryForm, self).__init__(*args, **kwargs)
         self.fields['start_time'].required = False
