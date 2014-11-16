@@ -3,12 +3,16 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext, loader
 
-from django.forms.formsets import formset_factory
+from django.forms.models import inlineformset_factory
+#from django.forms.formsets import formset_factory
 
-from apps.footbagmoves.models import Component
+from apps.footbagmoves.models import Component, ComponentDemonstrationVideo
 from apps.footbagmoves.forms import ComponentEditForm, VideoEntryForm, VideosFormset
 
-VideoEntryFormset = formset_factory(Component, VideoEntryForm, extra=1)
+#from apps.footbagmoves.video_assets_models import VideoAsset
+VideoEntryFormset = inlineformset_factory(Component, ComponentDemonstrationVideo, form=VideoEntryForm, formset=VideosFormset, extra=1, max_num=20)
+
+#VideoEntryFormset = formset_factory(Component, VideoEntryForm, extra=1, max_num=20)
 
 @login_required
 def component_edit(request, component_id=None):

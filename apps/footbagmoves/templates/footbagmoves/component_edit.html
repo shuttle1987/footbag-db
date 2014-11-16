@@ -10,6 +10,7 @@
 		<table>
 			{{ edit_form.as_table }}
 			{{ demo_vids.as_table }}
+			{{ demo_vids.management_form }}
 		</table>
 		{% csrf_token %}
 		<input type="submit" value="submit">
