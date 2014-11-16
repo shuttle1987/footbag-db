@@ -25,5 +25,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 )
 
+handler403 = 'footbag_site.views.error403'
 handler404 = 'footbag_site.views.error404'
 handler500 = 'footbag_site.views.error500'

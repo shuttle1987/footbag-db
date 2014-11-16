@@ -8,9 +8,10 @@ from .video_api_helpers import is_youtube_video, extract_yt_id
 from .models import Component, ComponentNickname, MoveNickname
 
 class ComponentEditForm(forms.ModelForm):
+    """A form for editing footbag components"""
     class Meta:
         model = Component
-
+        fields = ['name',]
 
 class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
     """ A formset that requires you to enter at least one entry in order to validate.
@@ -86,11 +87,12 @@ class VideosFormset(forms.models.BaseInlineFormSet):
                 video_id = extract_yt_id(form.cleaned_data.get("URL"))
             else:
                 video_id = form.cleaned_data.get("URL")
-            video_info_tuple = (video_type, video_id) 
-            if video_info_tuple not in current_videos:
-                current_videos.add(video_info_tuple)
-            else:
-                raise forms.ValidationError("Duplicate video detected. Videos must not be duplicated.")
+            if video_id:
+                video_info_tuple = (video_type, video_id) 
+                if video_info_tuple not in current_videos:
+                    current_videos.add(video_info_tuple)
+                else:
+                    raise forms.ValidationError("Duplicate video detected. Videos must not be duplicated.")
         super(VideosFormset, self).clean()
         for form in self.forms:
             form.is_valid()
