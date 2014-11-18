@@ -44,12 +44,14 @@ def move_detail(request, move_slug):
         context = RequestContext(request, {'move_slug' : move_slug})
         return HttpResponseNotFound(template.render(context))
     template = loader.get_template('footbagmoves/move_detail.html')
+
     #load move info from DB
     components_seq = MoveComponentSequence.objects.filter(move__exact=current_move)
     demo_video = MoveDemonstrationVideo.objects.filter(move__exact=current_move)
     tutorial_video = MoveTutorialVideo.objects.filter(move__exact=current_move)
     nicknames = MoveNickname.objects.filter(move__exact=current_move)
     move_tips = MoveTips.objects.filter(move__exact=current_move)
+
     #only load the youtube API if a youtube video is associated with the move
     load_youtube_api = (any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in demo_video) or
                         any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in tutorial_video))
@@ -67,6 +69,11 @@ def move_detail(request, move_slug):
         "Youtube": YOUTUBE_VIDEO_TYPE,
     }
 
+    if move_tips:
+        tips_to_display = move_tips[0]
+    else:
+        tips_to_display = ""
+
     context = RequestContext(request, {
         'move' : current_move,
         'sequence': components_seq,
@@ -77,7 +84,7 @@ def move_detail(request, move_slug):
         'vid_types': video_types,
         'first_yt_id': first_yt_id,
         'first_yt_video': first_yt_video,
-        'move_tips': move_tips[0],
+        'move_tips': tips_to_display,
     })
     return HttpResponse(template.render(context))
 
@@ -108,7 +115,6 @@ def component_detail(request, component_slug):
     tutorial_video = ComponentTutorialVideo.objects.filter(component__exact=current_component)
     nicknames = ComponentNickname.objects.filter(component__exact=current_component)
     component_tips = ComponentTips.objects.filter(component__exact=current_component)
-
     #only load the youtube API if a youtube video is associated with the move
     load_youtube_api = (any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in demo_video) or
                         any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in tutorial_video))
@@ -126,6 +132,12 @@ def component_detail(request, component_slug):
         "Youtube": YOUTUBE_VIDEO_TYPE,
     }
 
+    if component_tips:
+        tips_to_display = component_tips[0]
+    else:
+        tips_to_display = ""
+
+
     context = RequestContext(request, {
         'component' : current_component,
         'nicknames': nicknames,
@@ -135,7 +147,7 @@ def component_detail(request, component_slug):
         'vid_types': video_types,
         'first_yt_id': first_yt_id,
         'first_yt_video': first_yt_video,
-        'component_tips': component_tips[0],
+        'component_tips': tips_to_display,
     })
     return HttpResponse(template.render(context))
 
