@@ -5,7 +5,7 @@ from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 
 from django.forms.models import inlineformset_factory
-#from django.forms.formsets import formset_factory
+from django.template.defaultfilters import slugify
 
 from apps.footbagmoves.models import Component, ComponentDemonstrationVideo
 from apps.footbagmoves.forms import ComponentEditForm, VideoEntryForm, VideosFormset
@@ -20,10 +20,14 @@ def component_edit(request, component_id=None):
         edit_form = ComponentEditForm(request.POST or None)
         demo_vids = VideoEntryFormset(request.POST or None, instance=new_component)
         if demo_vids.is_valid() and edit_form.is_valid():
-            #todo check if component name is already taken
-            new_component.save()
-            demo_vids.save()
-            return HttpResponseRedirect(reverse('component_detail', args=[new_component.slug]))
+            new_component.name = edit_form.cleaned_data.get("name")
+            existing_components = Component.objects.filter(slug=slugify(new_component.name))
+            if not existing_components:
+                new_component.save()
+                demo_vids.save()
+                return HttpResponseRedirect(reverse('component_detail', args=[new_component.slug]))
+            else:
+                return HttpResponse("component with slug {0} already exists!".format(slugify(new_component.name)))
     else:
         current_component = get_object_or_404(Component, pk=component_id)
         demo_vids = VideoEntryFormset(request.POST or None, instance=current_component)
