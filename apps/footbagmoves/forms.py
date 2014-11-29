@@ -7,6 +7,8 @@ from .video_api_helpers import is_youtube_video, extract_yt_id
 
 from .models import Component, ComponentNickname, MoveNickname
 
+import markupfield
+
 class ComponentEditForm(forms.ModelForm):
     """A form for editing footbag components"""
     class Meta:
@@ -136,3 +138,10 @@ class SearchForm(forms.Form):
     search_text = forms.CharField()
     error_css_class = 'error'
     required_css_class = 'required'
+
+from markupfield.widgets import MarkupTextarea
+
+class TipsForm(forms.Form):
+    """A form for use in editing tips"""
+    #tips = forms.CharField(widget=forms.Textarea())
+    tips = forms.CharField(widget=markupfield.widgets.MarkupTextarea())

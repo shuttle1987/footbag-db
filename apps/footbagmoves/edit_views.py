@@ -7,8 +7,8 @@ from django.core.urlresolvers import reverse
 from django.forms.models import inlineformset_factory
 from django.template.defaultfilters import slugify
 
-from apps.footbagmoves.models import Component, ComponentDemonstrationVideo
-from apps.footbagmoves.forms import ComponentEditForm, VideoEntryForm, VideosFormset
+from apps.footbagmoves.models import Component, ComponentDemonstrationVideo, ComponentTips
+from apps.footbagmoves.forms import ComponentEditForm, VideoEntryForm, VideosFormset, TipsForm
 
 VideoEntryFormset = inlineformset_factory(Component, ComponentDemonstrationVideo, form=VideoEntryForm, formset=VideosFormset, extra=1, max_num=20)
 
@@ -18,6 +18,7 @@ def component_edit(request, component_id=None):
     if component_id is None:
         new_component = Component()
         edit_form = ComponentEditForm(request.POST or None)
+        tips_form = TipsForm(request.POST or None)
         demo_vids = VideoEntryFormset(request.POST or None, instance=new_component)
         if demo_vids.is_valid() and edit_form.is_valid():
             new_component.name = edit_form.cleaned_data.get("name")
@@ -25,6 +26,12 @@ def component_edit(request, component_id=None):
             if not existing_components:
                 new_component.save()
                 demo_vids.save()
+                if tips_form.is_valid():
+                    ComponentTips.objects.create(
+                        component=new_component,
+                        tips=tips_form.cleaned_data.get("tips"),
+                        tips_markup_type='markdown',
+                    )
                 return HttpResponseRedirect(reverse('component_detail', args=[new_component.slug]))
             else:
                 return HttpResponse("component with slug {0} already exists!".format(slugify(new_component.name)))
@@ -40,6 +47,7 @@ def component_edit(request, component_id=None):
 
     context = RequestContext(request, {
         'edit_form': edit_form,
+        'tips_form': tips_form,
         'demo_vids': demo_vids,
     })
     template = loader.get_template('footbagmoves/component_edit.html')
