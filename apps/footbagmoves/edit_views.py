@@ -23,7 +23,9 @@ def component_edit(request, component_id=None):
         if demo_vids.is_valid() and edit_form.is_valid():
             new_component.name = edit_form.cleaned_data.get("name")
             existing_components = Component.objects.filter(slug=slugify(new_component.name))
-            if not existing_components:
+            if existing_components:
+                return HttpResponse("Error saving: component with slug {0} already exists!".format(slugify(new_component.name)))
+            else:
                 new_component.save()
                 demo_vids.save()
                 if tips_form.is_valid():
@@ -33,17 +35,25 @@ def component_edit(request, component_id=None):
                         tips_markup_type='markdown',
                     )
                 return HttpResponseRedirect(reverse('component_detail', args=[new_component.slug]))
-            else:
-                return HttpResponse("component with slug {0} already exists!".format(slugify(new_component.name)))
     else:
         current_component = get_object_or_404(Component, pk=component_id)
         demo_vids = VideoEntryFormset(request.POST or None, instance=current_component)
-        if current_component and demo_vids.is_valid():
-            print("Valid component and Valid formset!!")
+        try:
+            #load tips if possible
+            existing_tips = ComponentTips.objects.get(component=current_component)
+        except ComponentTips.DoesNotExist:
+            existing_tips = None
+        if existing_tips:
+            raw_text = existing_tips.tips.raw
+            tips_form = TipsForm(request.POST or {'tips': raw_text})
+        else:
+            tips_form = TipsForm(request.POST or None)
         data = {
             'name': current_component.name,
         }
         edit_form = ComponentEditForm(data)
+        if demo_vids.is_valid() and edit_form.is_valid():
+            print("Debug: Valid component and valid video formset!")
 
     context = RequestContext(request, {
         'edit_form': edit_form,
