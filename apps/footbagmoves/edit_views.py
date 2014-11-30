@@ -79,6 +79,6 @@ def component_new(request):
         'tips_form': tips_form,
         'demo_vids': demo_vids,
     })
-    template = loader.get_template('footbagmoves/component_edit.html')
+    template = loader.get_template('footbagmoves/component_new.html')
     return HttpResponse(template.render(context))
 
