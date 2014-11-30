@@ -14,19 +14,16 @@ VideoEntryFormset = inlineformset_factory(Component, ComponentDemonstrationVideo
 
 @login_required
 def component_modify(request, component_id):
-    """Modify an existing component in the database"""
+    """Modify an existing component in the database:
+    :component_id: the unique id of the component being modified"""
     current_component = get_object_or_404(Component, pk=component_id)
     demo_vids = VideoEntryFormset(request.POST or None, instance=current_component)
-    try:
-        #load tips if possible
+    try: #load tips if possible
         existing_tips = ComponentTips.objects.get(component=current_component)
+        tips_form = TipsForm(request.POST or {'tips': existing_tips.tips.raw})
     except ComponentTips.DoesNotExist:
-        existing_tips = None
-    if existing_tips:
-        raw_text = existing_tips.tips.raw
-        tips_form = TipsForm(request.POST or {'tips': raw_text})
-    else:
         tips_form = TipsForm(request.POST or None)
+
     data = {
         'name': current_component.name,
     }
@@ -34,10 +31,7 @@ def component_modify(request, component_id):
     if demo_vids.is_valid() and edit_form.is_valid() and tips_form.is_valid():
         demo_vids.save()
         if existing_tips:
-            print("existing tips found for {0}".format(current_component.name))
-            print("Existing tips", existing_tips)
             existing_tips.tips.raw = tips_form.cleaned_data.get("tips")
-            #existing_tips.tips= tips_form.cleaned_data.get("tips")
             existing_tips.save()
         else:
             ComponentTips.objects.create(
