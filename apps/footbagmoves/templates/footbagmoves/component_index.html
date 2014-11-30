@@ -6,9 +6,9 @@
 
 There are currently {{ number_of_components }} components on record in the footbag database.
 <br />
-You can browse through the components  <a href="{% url "component-list" %}"> here </a>.
+You can browse through the components  <a href="{% url 'component-list' %}"> here </a>.
 
 {% if user.is_authenticated %}
-Click <a href="{% url "component_edit" %}">here</a> to add a new component to the database.
+Click <a href="{% url 'component-new' %}">here</a> to add a new component to the database.
 {% endif %}
 {% endblock %}
