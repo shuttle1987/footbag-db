@@ -27,16 +27,20 @@ import markdown
 import bleach
 
 from docutils.core import publish_parts
+
+#settings for Bleach
+bleach_tags_allowed = ['p', 'em', 'strong']
+
 def render_rest(markup):
     """ Render ReStructuredText to HTML then clean the output using Bleach.
     This is to prevent a number of issues to do with XSS."""
     parts = publish_parts(source=markup, writer_name="html4css1")
-    return bleach.clean(parts["fragment"])
+    return bleach.clean(parts["fragment"], bleach_tags_allowed)
 
 def render_markdown_clean(markup):
     """ Render markdown to HTML then clean the output using Bleach.
     This is to prevent a number of issues to do with XSS."""
-    return bleach.clean(markdown.markdown(markup))
+    return bleach.clean(markdown.markdown(markup), bleach_tags_allowed)
 
 MARKUP_FIELD_TYPES = (
     ('markdown', render_markdown_clean),
