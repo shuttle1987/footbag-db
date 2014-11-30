@@ -52,8 +52,19 @@ def component_edit(request, component_id=None):
             'name': current_component.name,
         }
         edit_form = ComponentEditForm(data)
-        if demo_vids.is_valid() and edit_form.is_valid():
-            print("Debug: Valid component and valid video formset!")
+        if demo_vids.is_valid() and edit_form.is_valid() and tips_form.is_valid():
+            demo_vids.save()
+            if existing_tips:
+                print("existing tips found for {0}".format(current_component.name))
+                existing_tips.tips.raw_text = tips_form.cleaned_data.get("tips")
+                existing_tips.save()
+            else:
+                ComponentTips.objects.create(
+                    component=current_component,
+                    tips=tips_form.cleaned_data.get("tips"),
+                    tips_markup_type='markdown',
+                )
+            return HttpResponseRedirect(reverse('component_detail', args=[current_component.slug]))
 
     context = RequestContext(request, {
         'edit_form': edit_form,
