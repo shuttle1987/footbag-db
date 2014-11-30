@@ -13,6 +13,37 @@ from apps.footbagmoves.forms import ComponentEditForm, VideoEntryForm, VideosFor
 VideoEntryFormset = inlineformset_factory(Component, ComponentDemonstrationVideo, form=VideoEntryForm, formset=VideosFormset, extra=1, max_num=20)
 
 @login_required
+def component_new(request):
+    """Add a new component to the database"""
+    new_component = Component()
+    edit_form = ComponentEditForm(request.POST or None)
+    tips_form = TipsForm(request.POST or None)
+    demo_vids = VideoEntryFormset(request.POST or None, instance=new_component)
+    if demo_vids.is_valid() and edit_form.is_valid():
+        new_component.name = edit_form.cleaned_data.get("name")
+        existing_components = Component.objects.filter(slug=slugify(new_component.name))
+        if existing_components:
+            return HttpResponse("Error saving: component with slug {0} already exists!".format(slugify(new_component.name)))
+        else:
+            new_component.save()
+            demo_vids.save()
+            if tips_form.is_valid():
+                ComponentTips.objects.create(
+                    component=new_component,
+                    tips=tips_form.cleaned_data.get("tips"),
+                    tips_markup_type='markdown',
+                )
+            return HttpResponseRedirect(reverse('component_detail', args=[new_component.slug]))
+
+    context = RequestContext(request, {
+        'edit_form': edit_form,
+        'tips_form': tips_form,
+        'demo_vids': demo_vids,
+    })
+    template = loader.get_template('footbagmoves/component_new.html')
+    return HttpResponse(template.render(context))
+
+@login_required
 def component_modify(request, component_id):
     """Modify an existing component in the database:
     :component_id: the unique id of the component being modified"""
@@ -50,35 +81,4 @@ def component_modify(request, component_id):
     template = loader.get_template('footbagmoves/component_modify.html')
     return HttpResponse(template.render(context))
 
-
-@login_required
-def component_new(request):
-    """Add a new component to the database"""
-    new_component = Component()
-    edit_form = ComponentEditForm(request.POST or None)
-    tips_form = TipsForm(request.POST or None)
-    demo_vids = VideoEntryFormset(request.POST or None, instance=new_component)
-    if demo_vids.is_valid() and edit_form.is_valid():
-        new_component.name = edit_form.cleaned_data.get("name")
-        existing_components = Component.objects.filter(slug=slugify(new_component.name))
-        if existing_components:
-            return HttpResponse("Error saving: component with slug {0} already exists!".format(slugify(new_component.name)))
-        else:
-            new_component.save()
-            demo_vids.save()
-            if tips_form.is_valid():
-                ComponentTips.objects.create(
-                    component=new_component,
-                    tips=tips_form.cleaned_data.get("tips"),
-                    tips_markup_type='markdown',
-                )
-            return HttpResponseRedirect(reverse('component_detail', args=[new_component.slug]))
-
-    context = RequestContext(request, {
-        'edit_form': edit_form,
-        'tips_form': tips_form,
-        'demo_vids': demo_vids,
-    })
-    template = loader.get_template('footbagmoves/component_new.html')
-    return HttpResponse(template.render(context))
 
