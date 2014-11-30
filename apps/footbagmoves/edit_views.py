@@ -13,14 +13,6 @@ from apps.footbagmoves.forms import ComponentEditForm, VideoEntryForm, VideosFor
 VideoEntryFormset = inlineformset_factory(Component, ComponentDemonstrationVideo, form=VideoEntryForm, formset=VideosFormset, extra=1, max_num=20)
 
 @login_required
-def component_edit(request, component_id=None):
-    """Edit a component or add a new one"""
-    if component_id is None:
-        return component_new(request)
-    else:
-        return component_modify(request, component_id)
-
-@login_required
 def component_modify(request, component_id):
     """Modify an existing component in the database"""
     current_component = get_object_or_404(Component, pk=component_id)
