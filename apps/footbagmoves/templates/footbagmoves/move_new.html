@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Add a new move{% endblock %}
+{% block header %}Add a new move{% endblock %}
+{% block content %}
+
+	Add a new move to the database.
+
+	<form action="" method="post">
+		<table>
+			{{ edit_form.as_table }}
+			{{ component_sequence.as_table }}
+			{{ demo_vids.as_table }}
+			{{ tips_form.as_table }}
+			{{ demo_vids.management_form }}
+		</table>
+		{% csrf_token %}
+		<input type="submit" value="submit">
+	</form>
+
+
+{% endblock %}

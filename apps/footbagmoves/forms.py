@@ -5,7 +5,7 @@ from .constants import YOUTUBE_VIDEO_TYPE, VIDEO_TYPES, URL_VIDEO_TYPE
 from .video_assets_models import VideoAsset
 from .video_api_helpers import is_youtube_video, extract_yt_id
 
-from .models import Component, ComponentNickname, MoveNickname
+from .models import Component, ComponentNickname, Move, MoveComponentSequence, MoveNickname
 
 import markupfield
 
@@ -14,6 +14,12 @@ class ComponentEditForm(forms.ModelForm):
     class Meta:
         model = Component
         fields = ['name',]
+
+class MoveComponentSequenceForm(forms.ModelForm):
+    """A form for editing the component sequences in footbag moves."""
+    class Meta:
+        model = MoveComponentSequence
+        fields = ['sequence_number', 'component']
 
 class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
     """ A formset that requires you to enter at least one entry in order to validate.
@@ -33,6 +39,13 @@ class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
                 raise forms.ValidationError('A sequence number was repeated, sequence numbers must be unique')
             else:
                 components_entered.add(seq_number)
+
+
+class MoveEditForm(forms.ModelForm):
+    """A form for editing footbag components"""
+    class Meta:
+        model = Move
+        fields = ['name',]
 
 
 class VideoEntryForm(forms.ModelForm):

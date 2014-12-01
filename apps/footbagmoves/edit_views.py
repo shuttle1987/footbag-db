@@ -8,9 +8,26 @@ from django.forms.models import inlineformset_factory
 from django.template.defaultfilters import slugify
 
 from apps.footbagmoves.models import Component, ComponentDemonstrationVideo, ComponentTips
-from apps.footbagmoves.forms import ComponentEditForm, VideoEntryForm, VideosFormset, TipsForm
+from apps.footbagmoves.models import Move, MoveComponentSequence, MoveDemonstrationVideo, MoveTips
+from apps.footbagmoves.forms import ComponentEditForm, ComponentsInlineFormset,  MoveEditForm, VideoEntryForm, VideosFormset, TipsForm, MoveComponentSequenceForm
 
-VideoEntryFormset = inlineformset_factory(Component, ComponentDemonstrationVideo, form=VideoEntryForm, formset=VideosFormset, extra=1, max_num=20)
+VideoEntryFormset = inlineformset_factory(
+    Component,
+    ComponentDemonstrationVideo,
+    form=VideoEntryForm,
+    formset=VideosFormset,
+    extra=1,
+    max_num=20
+)
+
+ComponentSequenceFormset = inlineformset_factory(
+    Move,
+    MoveComponentSequence,
+    form=MoveComponentSequenceForm,
+    formset=ComponentsInlineFormset,
+    extra=1,
+    max_num=15
+)
 
 @login_required
 def component_new(request):
@@ -81,4 +98,37 @@ def component_modify(request, component_id):
     template = loader.get_template('footbagmoves/component_modify.html')
     return HttpResponse(template.render(context))
 
+
+@login_required
+def move_new(request):
+    """Add a new move to the database"""
+    new_move = Move()
+    edit_form = MoveEditForm(request.POST or None)
+    component_sequence = ComponentSequenceFormset(request.POST or None, instance=new_move)
+    tips_form = TipsForm(request.POST or None)
+    demo_vids = VideoEntryFormset(request.POST or None, instance=new_move)
+    if demo_vids.is_valid() and edit_form.is_valid():
+        new_move.name = edit_form.cleaned_data.get("name")
+        existing_moves = Move.objects.filter(slug=slugify(new_move.name))
+        if existing_moves:
+            return HttpResponse("Error saving: move with slug {0} already exists!".format(slugify(new_move.name)))
+        else:
+            new_move.save()
+            demo_vids.save()
+            if tips_form.is_valid():
+                MoveTips.objects.create(
+                    move=new_move,
+                    tips=tips_form.cleaned_data.get("tips"),
+                    tips_markup_type='markdown',
+                )
+            return HttpResponseRedirect(reverse('move_detail', args=[new_move.slug]))
+
+    context = RequestContext(request, {
+        'edit_form': edit_form,
+        'component_sequence': component_sequence,
+        'tips_form': tips_form,
+        'demo_vids': demo_vids,
+    })
+    template = loader.get_template('footbagmoves/move_new.html')
+    return HttpResponse(template.render(context))
 
