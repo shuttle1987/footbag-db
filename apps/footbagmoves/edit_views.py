@@ -7,11 +7,12 @@ from django.core.urlresolvers import reverse
 from django.forms.models import inlineformset_factory
 from django.template.defaultfilters import slugify
 
-from apps.footbagmoves.models import Component, ComponentDemonstrationVideo, ComponentTips
-from apps.footbagmoves.models import Move, MoveComponentSequence, MoveDemonstrationVideo, MoveTips
+from apps.footbagmoves.models import Component, ComponentDemonstrationVideo, ComponentTutorialVideo, ComponentTips
+from apps.footbagmoves.models import Move, MoveComponentSequence, MoveDemonstrationVideo, MoveTutorialVideo, MoveTips
 from apps.footbagmoves.forms import ComponentEditForm, ComponentsInlineFormset,  MoveEditForm, VideoEntryForm, VideosFormset, TipsForm, MoveComponentSequenceForm
 
-VideoEntryFormset = inlineformset_factory(
+#Formset for component demonstration videos
+ComponentDemoVideoFormset = inlineformset_factory(
     Component,
     ComponentDemonstrationVideo,
     form=VideoEntryForm,
@@ -20,6 +21,38 @@ VideoEntryFormset = inlineformset_factory(
     max_num=20
 )
 
+#Formset for component tutorial videos
+ComponentTutorialVideoFormset = inlineformset_factory(
+    Component,
+    ComponentTutorialVideo,
+    form=VideoEntryForm,
+    formset=VideosFormset,
+    extra=1,
+    max_num=20
+)
+
+#Formset for move demonstration videos
+MoveDemoVideoFormset = inlineformset_factory(
+    Move,
+    MoveDemonstrationVideo,
+    form=VideoEntryForm,
+    formset=VideosFormset,
+    extra=1,
+    max_num=20
+)
+
+#Formset for move tutorial videos
+MoveTutorialVideoFormset = inlineformset_factory(
+    Move,
+    MoveTutorialVideo,
+    form=VideoEntryForm,
+    formset=VideosFormset,
+    extra=1,
+    max_num=20
+
+)
+
+#Formset for entering in the sequence of components in a move
 ComponentSequenceFormset = inlineformset_factory(
     Move,
     MoveComponentSequence,
@@ -35,7 +68,7 @@ def component_new(request):
     new_component = Component()
     edit_form = ComponentEditForm(request.POST or None)
     tips_form = TipsForm(request.POST or None)
-    demo_vids = VideoEntryFormset(request.POST or None, instance=new_component)
+    demo_vids = ComponentDemoVideoFormset(request.POST or None, instance=new_component)
     if demo_vids.is_valid() and edit_form.is_valid():
         new_component.name = edit_form.cleaned_data.get("name")
         existing_components = Component.objects.filter(slug=slugify(new_component.name))
@@ -65,11 +98,12 @@ def component_modify(request, component_id):
     """Modify an existing component in the database:
     :component_id: the unique id of the component being modified"""
     current_component = get_object_or_404(Component, pk=component_id)
-    demo_vids = VideoEntryFormset(request.POST or None, instance=current_component)
+    demo_vids = ComponentDemoVideoFormset(request.POST or None, instance=current_component)
     try: #load tips if possible
         existing_tips = ComponentTips.objects.get(component=current_component)
         tips_form = TipsForm(request.POST or {'tips': existing_tips.tips.raw})
     except ComponentTips.DoesNotExist:
+        existing_tips = None
         tips_form = TipsForm(request.POST or None)
 
     data = {
@@ -106,7 +140,7 @@ def move_new(request):
     edit_form = MoveEditForm(request.POST or None)
     component_sequence = ComponentSequenceFormset(request.POST or None, instance=new_move)
     tips_form = TipsForm(request.POST or None)
-    demo_vids = VideoEntryFormset(request.POST or None, instance=new_move)
+    demo_vids = MoveDemoVideoFormset(request.POST or None, instance=new_move)
     if demo_vids.is_valid() and edit_form.is_valid():
         new_move.name = edit_form.cleaned_data.get("name")
         existing_moves = Move.objects.filter(slug=slugify(new_move.name))
@@ -130,5 +164,46 @@ def move_new(request):
         'demo_vids': demo_vids,
     })
     template = loader.get_template('footbagmoves/move_new.html')
+    return HttpResponse(template.render(context))
+
+@login_required
+def move_modify(request, move_id):
+    """Modify an existing move in the database:
+    :move_id: the unique id of the move being modified"""
+    current_move = get_object_or_404(Move, pk=move_id)
+    demo_vids = MoveDemoVideoFormset(request.POST or None, instance=current_move)
+    try: #load tips if possible
+        existing_tips = MoveTips.objects.get(move=current_move)
+        tips_form = TipsForm(request.POST or {'tips': existing_tips.tips.raw})
+    except MoveTips.DoesNotExist:
+        existing_tips = None
+        tips_form = TipsForm(request.POST or None)
+
+    data = {
+        'name': current_move.name,
+    }
+    edit_form = MoveEditForm(data)
+    component_sequence = ComponentSequenceFormset(request.POST or None, instance=current_move)
+    if demo_vids.is_valid() and edit_form.is_valid() and tips_form.is_valid():
+        demo_vids.save()
+        if existing_tips:
+            existing_tips.tips.raw = tips_form.cleaned_data.get("tips")
+            existing_tips.save()
+        else:
+            MoveTips.objects.create(
+                move=current_move,
+                tips=tips_form.cleaned_data.get("tips"),
+                tips_markup_type='markdown',
+            )
+        return HttpResponseRedirect(reverse('move_detail', args=[current_move.slug]))
+
+    context = RequestContext(request, {
+        'move_name': current_move.name,
+        'edit_form': edit_form,
+        'component_sequence': component_sequence,
+        'tips_form': tips_form,
+        'demo_vids': demo_vids,
+    })
+    template = loader.get_template('footbagmoves/move_modify.html')
     return HttpResponse(template.render(context))
 
