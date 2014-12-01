@@ -79,6 +79,9 @@ Tips:
 There's no tips on record, if you know this move well please consider contributing some!
 {% endif %}
 
+{% if user.is_authenticated %}
+<a href="{% url 'move-edit' move.id %}">Edit this page</a>
+{% endif %}
 
 
 {% if load_youtube %}
