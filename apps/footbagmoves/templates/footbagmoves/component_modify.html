@@ -11,7 +11,22 @@
 	<form id="edit-component" action="" method="post">
 		{{ edit_form.as_p }}
 		<table>
-			{{ demo_vids.as_table }}
+			<thead>
+				<td>video type</td>
+				<td>URL</td>
+				<td>start time</td>
+				<td>end time</td>
+			</thead>
+			<tbody>
+			{% for vid in demo_vids.forms %}
+			<tr>
+				<td> {{ vid.video_type }}</td>
+				<td> {{ vid.URL }}</td>
+				<td> {{ vid.start_time }}</td>
+				<td> {{ vid.end_time }}</td>
+			</tr>
+			</tbody>
+			{% endfor %}
 		</table>
 		{{ demo_vids.management_form }}
 		{{ tips_form.as_p }}
