@@ -1,12 +1,14 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
 {% block title %}Editing component "{{ component_name }}"{% endblock %}
 {% block header %}Editing component "{{ component_name }}"{% endblock %}
 {% block content %}
 
+<script type="text/javascript" src="{% static "js/jquery-2.1.1.min.js"%}"></script>
+<script type="text/javascript" src="{% static "js/jquery.formset.js"%}"></script>
 	Currently editing component "{{ component_name }}"
 
-	<form action="" method="post">
+	<form id="edit-component" action="" method="post">
 		<table>
 			{{ edit_form.as_table }}
 			{{ demo_vids.as_table }}
@@ -16,6 +18,12 @@
 		{% csrf_token %}
 		<input type="submit" value="submit">
 	</form>
+
+<script type="text/javascript">
+    $(function() {
+        $('#edit-component tbody tr').formset();
+    })
+</script>
 
 
 {% endblock %}
