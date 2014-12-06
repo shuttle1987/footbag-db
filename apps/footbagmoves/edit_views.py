@@ -18,7 +18,8 @@ ComponentDemoVideoFormset = inlineformset_factory(
     form=VideoEntryForm,
     formset=VideosFormset,
     extra=1,
-    max_num=20
+    max_num=20,
+    can_delete=True,
 )
 
 #Formset for component tutorial videos
@@ -28,7 +29,8 @@ ComponentTutorialVideoFormset = inlineformset_factory(
     form=VideoEntryForm,
     formset=VideosFormset,
     extra=1,
-    max_num=20
+    max_num=20,
+    can_delete=True,
 )
 
 #Formset for move demonstration videos

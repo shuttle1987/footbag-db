@@ -12,16 +12,21 @@
 		{{ edit_form.as_p }}
 		<table>
 			<thead>
+			<tr>
 				<td>video type</td>
 				<td>URL</td>
 				<td>start time</td>
 				<td>end time</td>
+			</tr>
 			</thead>
 			<tbody>
 			{% for vid in demo_vids.forms %}
 			<tr>
 				<td> {{ vid.video_type }}</td>
-				<td> {{ vid.URL }}</td>
+				<td>
+					{{ vid.URL }}
+					{% if vid.instance.pk %} {{vid.DELETE}} {% endif %}
+				</td>
 				<td> {{ vid.start_time }}</td>
 				<td> {{ vid.end_time }}</td>
 			</tr>
