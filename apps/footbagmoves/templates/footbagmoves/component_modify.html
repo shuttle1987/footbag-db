@@ -9,12 +9,12 @@
 	Currently editing component "{{ component_name }}"
 
 	<form id="edit-component" action="" method="post">
+		{{ edit_form.as_p }}
 		<table>
-			{{ edit_form.as_table }}
 			{{ demo_vids.as_table }}
-			{{ tips_form.as_table }}
-			{{ demo_vids.management_form }}
 		</table>
+		{{ demo_vids.management_form }}
+		{{ tips_form.as_p }}
 		{% csrf_token %}
 		<input type="submit" value="submit">
 	</form>
