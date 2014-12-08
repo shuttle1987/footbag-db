@@ -14,9 +14,9 @@ class VideoAsset(models.Model):
     URL = models.URLField()
     video_id = models.CharField(max_length=20)
     use_start = models.BooleanField(default=False)
-    start_time = models.PositiveSmallIntegerField()
+    start_time = models.PositiveSmallIntegerField(default=0)
     use_end = models.BooleanField(default=False)
-    end_time = models.PositiveSmallIntegerField()
+    end_time = models.PositiveSmallIntegerField(default=0)
 
     def save(self, *args, **kwargs):
         """In order to correctly create instances of VideoAsset we need to override the save method.
