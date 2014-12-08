@@ -156,5 +156,4 @@ from markupfield.widgets import MarkupTextarea
 
 class TipsForm(forms.Form):
     """A form for use in editing tips"""
-    #tips = forms.CharField(widget=forms.Textarea())
-    tips = forms.CharField(widget=markupfield.widgets.MarkupTextarea())
+    tips = forms.CharField(widget=markupfield.widgets.MarkupTextarea(), required=False)
