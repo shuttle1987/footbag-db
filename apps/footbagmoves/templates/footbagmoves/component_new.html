@@ -1,21 +1,57 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}Add a component{% endblock %}
 {% block header %}Add a component{% endblock %}
 {% block content %}
 
+<script type="text/javascript" src="{% static "js/jquery-2.1.1.min.js"%}"></script>
+<script type="text/javascript" src="{% static "js/jquery.formset.js"%}"></script>
 	Add a new component to the database.
 
-	<form action="" method="post">
+	<form id="edit-component" action="" method="post">
+		{{ edit_form.as_p }}
+		{{ demo_vids.management_form }}
 		<table>
-			{{ edit_form.as_table }}
-			{{ demo_vids.as_table }}
-			{{ tips_form.as_table }}
-			{{ demo_vids.management_form }}
+			<thead>
+			<tr>
+				<td>video type</td>
+				<td>URL</td>
+				<td>start time</td>
+				<td>end time</td>
+			</tr>
+			</thead>
+			<tbody>
+			{% for vid in demo_vids.forms %}
+			<tr>
+				<td> {{ vid.video_type }}</td>
+				<td>
+					{{ vid.URL }}
+					{% if vid.instance.pk %} {{vid.DELETE}} {% endif %}
+				</td>
+				<td> {{ vid.start_time }}</td>
+				<td> {{ vid.end_time }}</td>
+			</tr>
+			</tbody>
+			{% endfor %}
 		</table>
+		{% for vid in demo_vids %}
+			{% for hidden in vid.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+		{% endfor %}
+
+		{{ tips_form.as_p }}
 		{% csrf_token %}
 		<input type="submit" value="submit">
 	</form>
+
+<script type="text/javascript">
+    $(function() {
+        $('#edit-component tbody tr').formset();
+    })
+</script>
+
 
 
 {% endblock %}
