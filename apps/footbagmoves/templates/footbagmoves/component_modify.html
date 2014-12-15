@@ -11,6 +11,7 @@
 	<form id="edit-component" action="" method="post">
 		{{ edit_form.as_p }}
 		{{ demo_vids.management_form }}
+		{{ demo_vids.non_form_errors.as_ul }}
 		<table>
 			<thead>
 			<tr>
@@ -22,14 +23,25 @@
 			</thead>
 			<tbody>
 			{% for vid in demo_vids.forms %}
+			{{ vid.non_field_errors }}
 			<tr>
-				<td> {{ vid.video_type }}</td>
 				<td>
+					{{ vid.video_type.errors.as_ul }}
+					{{ vid.video_type }}
+				</td>
+				<td>
+					{{ vid.URL.errors.as_ul }}
 					{{ vid.URL }}
 					{% if vid.instance.pk %} {{vid.DELETE}} {% endif %}
 				</td>
-				<td> {{ vid.start_time }}</td>
-				<td> {{ vid.end_time }}</td>
+				<td> 
+					{{ vid.start_time.errors.as_ul }}
+					{{ vid.start_time }}
+				</td>
+				<td>
+					{{ vid.end_time.errors.as_ul }}
+					{{ vid.end_time }}
+				</td>
 			</tr>
 			</tbody>
 			{% endfor %}
