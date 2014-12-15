@@ -17,7 +17,7 @@
 		{{ edit_form.as_p }}
 		{{ demo_vids.management_form }}
 		{{ demo_vids.non_form_errors.as_ul }}
-		<table>
+		<table id="demo-videos">
 			<thead>
 			<tr>
 				<td>video type</td>
@@ -57,6 +57,49 @@
 			{% endfor %}
 		{% endfor %}
 
+		{{ tutorial_vids.management_form }}
+		{{ tutorial_vids.non_form_errors.as_ul }}
+		<table id="tutorial-videos">
+			<thead>
+			<tr>
+				<td>video type</td>
+				<td>URL</td>
+				<td>start time</td>
+				<td>end time</td>
+			</tr>
+			</thead>
+			<tbody>
+			{% for vid in tutorial_vids.forms %}
+			{{ vid.non_field_errors }}
+			<tr>
+				<td>
+					{{ vid.video_type.errors.as_ul }}
+					{{ vid.video_type }}
+				</td>
+				<td>
+					{{ vid.URL.errors.as_ul }}
+					{{ vid.URL }}
+					{% if vid.instance.pk %} {{vid.DELETE}} {% endif %}
+				</td>
+				<td>
+					{{ vid.start_time.errors.as_ul }}
+					{{ vid.start_time }}
+				</td>
+				<td>
+					{{ vid.end_time.errors.as_ul }}
+					{{ vid.end_time }}
+				</td>
+			</tr>
+			</tbody>
+			{% endfor %}
+		</table>
+		{% for vid in tutorial_vids %}
+			{% for hidden in vid.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+		{% endfor %}
+
+
 		{{ tips_form.as_p }}
 		{% csrf_token %}
 		<input type="submit" value="submit">
@@ -64,7 +107,12 @@
 
 <script type="text/javascript">
     $(function() {
-        $('#edit-component tbody tr').formset();
+        $('#demo-videos tbody tr').formset({
+			prefix: '{{ demo_vids.prefix }}',
+		});
+        $('#tutorial-videos tbody tr').formset({
+			prefix: '{{ tutorial_vids.prefix }}',
+		});
     })
 </script>
 

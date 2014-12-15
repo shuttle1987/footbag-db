@@ -71,7 +71,8 @@ def component_new(request):
     edit_form = ComponentEditForm(request.POST or None)
     tips_form = TipsForm(request.POST or None)
     demo_vids = ComponentDemoVideoFormset(request.POST or None, instance=new_component)
-    if demo_vids.is_valid() and edit_form.is_valid():
+    tutorial_vids = ComponentTutorialVideoFormset(request.POST or None, instance=new_component)
+    if demo_vids.is_valid() and tutorial_vids.is_valid() and edit_form.is_valid():
         new_component.name = edit_form.cleaned_data.get("name")
         existing_components = Component.objects.filter(slug=slugify(new_component.name))
         if existing_components:
@@ -79,6 +80,7 @@ def component_new(request):
         else:
             new_component.save()
             demo_vids.save()
+            tutorial_vids.save()
             if tips_form.is_valid():
                 ComponentTips.objects.create(
                     component=new_component,
@@ -92,6 +94,7 @@ def component_new(request):
         'edit_form': edit_form,
         'tips_form': tips_form,
         'demo_vids': demo_vids,
+        'tutorial_vids': tutorial_vids,
     })
     template = loader.get_template('footbagmoves/component_modify.html')
     return HttpResponse(template.render(context))
@@ -102,6 +105,7 @@ def component_modify(request, component_id):
     :component_id: the unique id of the component being modified"""
     current_component = get_object_or_404(Component, pk=component_id)
     demo_vids = ComponentDemoVideoFormset(request.POST or None, instance=current_component)
+    tutorial_vids = ComponentTutorialVideoFormset(request.POST or None, instance=current_component)
     try: #load tips if possible
         existing_tips = ComponentTips.objects.get(component=current_component)
         tips_form = TipsForm(request.POST or {'tips': existing_tips.tips.raw})
@@ -113,8 +117,9 @@ def component_modify(request, component_id):
         'name': current_component.name,
     }
     edit_form = ComponentEditForm(data)
-    if demo_vids.is_valid() and edit_form.is_valid() and tips_form.is_valid():
+    if demo_vids.is_valid() and tutorial_vids.is_valid() and edit_form.is_valid() and tips_form.is_valid():
         demo_vids.save()
+        tutorial_vids.save()
         if existing_tips:
             existing_tips.tips.raw = tips_form.cleaned_data.get("tips")
             existing_tips.save()
@@ -127,11 +132,12 @@ def component_modify(request, component_id):
         return HttpResponseRedirect(reverse('component_detail', args=[current_component.slug]))
 
     context = RequestContext(request, {
+        'add_new': False, #Flag for template
         'component_name': current_component.name,
         'edit_form': edit_form,
         'tips_form': tips_form,
         'demo_vids': demo_vids,
-        'add_new': False,
+        'tutorial_vids': tutorial_vids,
     })
     template = loader.get_template('footbagmoves/component_modify.html')
     return HttpResponse(template.render(context))
