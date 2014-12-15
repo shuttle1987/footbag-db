@@ -1,22 +1,121 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
-{% block title %}Editing move "{{ move_name }}"{% endblock %}
-{% block header %}Editing move "{{ move_name }}"{% endblock %}
+{% block title %}{% if add_new %}Add a move{% else %}Editing move "{{ move_name }}"{% endif %}{% endblock %}
+{% block header %}{% if add_new %}Add a move{% else %}Editing move "{{ move_name }}"{% endif %}{% endblock %}
 {% block content %}
 
+<script type="text/javascript" src="{% static "js/jquery-2.1.1.min.js"%}"></script>
+<script type="text/javascript" src="{% static "js/jquery.formset.js"%}"></script>
+	{% if add_new %}
+	Add a new move to the database.
+	{% else %}
 	Currently editing move "{{ move_name }}"
+	{%endif %}
 
-	<form action="" method="post">
-		<table>
-			{{ edit_form.as_table }}
-			{{ component_sequence.as_table }}
-			{{ demo_vids.as_table }}
-			{{ tips_form.as_table }}
-			{{ demo_vids.management_form }}
+	<form id="edit-move" action="" method="post">
+		{{ edit_form.as_p }}
+		{{ component_sequence.as_table }}
+		{{ demo_vids.management_form }}
+		{{ demo_vids.non_form_errors.as_ul }}
+		<table id="demo-videos">
+			<thead>
+			<tr>
+				<td>video type</td>
+				<td>URL</td>
+				<td>start time</td>
+				<td>end time</td>
+			</tr>
+			</thead>
+			<tbody>
+			{% for vid in demo_vids.forms %}
+			{{ vid.non_field_errors }}
+			<tr>
+				<td>
+					{{ vid.video_type.errors.as_ul }}
+					{{ vid.video_type }}
+				</td>
+				<td>
+					{{ vid.URL.errors.as_ul }}
+					{{ vid.URL }}
+					{% if vid.instance.pk %} {{vid.DELETE}} {% endif %}
+				</td>
+				<td>
+					{{ vid.start_time.errors.as_ul }}
+					{{ vid.start_time }}
+				</td>
+				<td>
+					{{ vid.end_time.errors.as_ul }}
+					{{ vid.end_time }}
+				</td>
+			</tr>
+			</tbody>
+			{% endfor %}
 		</table>
+		{% for vid in demo_vids %}
+			{% for hidden in vid.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+		{% endfor %}
+
+		{{ tutorial_vids.management_form }}
+		{{ tutorial_vids.non_form_errors.as_ul }}
+		<table id="tutorial-videos">
+			<thead>
+			<tr>
+				<td>video type</td>
+				<td>URL</td>
+				<td>start time</td>
+				<td>end time</td>
+			</tr>
+			</thead>
+			<tbody>
+			{% for vid in tutorial_vids.forms %}
+			{{ vid.non_field_errors }}
+			<tr>
+				<td>
+					{{ vid.video_type.errors.as_ul }}
+					{{ vid.video_type }}
+				</td>
+				<td>
+					{{ vid.URL.errors.as_ul }}
+					{{ vid.URL }}
+					{% if vid.instance.pk %} {{vid.DELETE}} {% endif %}
+				</td>
+				<td>
+					{{ vid.start_time.errors.as_ul }}
+					{{ vid.start_time }}
+				</td>
+				<td>
+					{{ vid.end_time.errors.as_ul }}
+					{{ vid.end_time }}
+				</td>
+			</tr>
+			</tbody>
+			{% endfor %}
+		</table>
+		{% for vid in tutorial_vids %}
+			{% for hidden in vid.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+		{% endfor %}
+
+
+		{{ tips_form.as_p }}
 		{% csrf_token %}
 		<input type="submit" value="submit">
 	</form>
+
+<script type="text/javascript">
+    $(function() {
+        $('#demo-videos tbody tr').formset({
+			prefix: '{{ demo_vids.prefix }}',
+		});
+        $('#tutorial-videos tbody tr').formset({
+			prefix: '{{ tutorial_vids.prefix }}',
+		});
+    })
+</script>
 
 
 {% endblock %}

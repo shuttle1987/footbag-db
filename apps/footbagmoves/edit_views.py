@@ -151,7 +151,8 @@ def move_new(request):
     component_sequence = ComponentSequenceFormset(request.POST or None, instance=new_move)
     tips_form = TipsForm(request.POST or None)
     demo_vids = MoveDemoVideoFormset(request.POST or None, instance=new_move)
-    if demo_vids.is_valid() and edit_form.is_valid():
+    tutorial_vids = MoveTutorialVideoFormset(request.POST or None, instance=new_move)
+    if demo_vids.is_valid() and tutorial_vids.is_valid and edit_form.is_valid():
         new_move.name = edit_form.cleaned_data.get("name")
         existing_moves = Move.objects.filter(slug=slugify(new_move.name))
         if existing_moves:
@@ -168,12 +169,14 @@ def move_new(request):
             return HttpResponseRedirect(reverse('move_detail', args=[new_move.slug]))
 
     context = RequestContext(request, {
+        'add_new': True, #Flag for template
         'edit_form': edit_form,
         'component_sequence': component_sequence,
         'tips_form': tips_form,
         'demo_vids': demo_vids,
+        'tutorial_vids': tutorial_vids,
     })
-    template = loader.get_template('footbagmoves/move_new.html')
+    template = loader.get_template('footbagmoves/move_modify.html')
     return HttpResponse(template.render(context))
 
 @login_required
@@ -182,6 +185,7 @@ def move_modify(request, move_id):
     :move_id: the unique id of the move being modified"""
     current_move = get_object_or_404(Move, pk=move_id)
     demo_vids = MoveDemoVideoFormset(request.POST or None, instance=current_move)
+    tutorial_vids = MoveTutorialVideoFormset(request.POST or None, instance=current_move)
     try: #load tips if possible
         existing_tips = MoveTips.objects.get(move=current_move)
         tips_form = TipsForm(request.POST or {'tips': existing_tips.tips.raw})
@@ -194,8 +198,9 @@ def move_modify(request, move_id):
     }
     edit_form = MoveEditForm(data)
     component_sequence = ComponentSequenceFormset(request.POST or None, instance=current_move)
-    if demo_vids.is_valid() and edit_form.is_valid() and tips_form.is_valid():
+    if demo_vids.is_valid() and tutorial_vids.is_valid and edit_form.is_valid() and tips_form.is_valid():
         demo_vids.save()
+        tutorial_vids.save()
         if existing_tips:
             existing_tips.tips.raw = tips_form.cleaned_data.get("tips")
             existing_tips.save()
@@ -208,11 +213,13 @@ def move_modify(request, move_id):
         return HttpResponseRedirect(reverse('move_detail', args=[current_move.slug]))
 
     context = RequestContext(request, {
+        'add_new': False, #Flag for template
         'move_name': current_move.name,
         'edit_form': edit_form,
         'component_sequence': component_sequence,
         'tips_form': tips_form,
         'demo_vids': demo_vids,
+        'tutorial_vids': tutorial_vids,
     })
     template = loader.get_template('footbagmoves/move_modify.html')
     return HttpResponse(template.render(context))
