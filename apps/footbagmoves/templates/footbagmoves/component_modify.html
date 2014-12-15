@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% block title %}Editing component "{{ component_name }}"{% endblock %}
-{% block header %}Editing component "{{ component_name }}"{% endblock %}
+
+{% block title %}{% if add_new %}Add a component{% else %}Editing component "{{ component_name }}"{% endif %}{% endblock %}
+{% block header %}{% if add_new %}Add a component{% else %}Editing component "{{ component_name }}"{% endif %}{% endblock %}
 {% block content %}
 
 <script type="text/javascript" src="{% static "js/jquery-2.1.1.min.js"%}"></script>
 <script type="text/javascript" src="{% static "js/jquery.formset.js"%}"></script>
+	{% if add_new %}
+	Add a new component to the database.
+	{% else %}
 	Currently editing component "{{ component_name }}"
+	{%endif %}
 
 	<form id="edit-component" action="" method="post">
 		{{ edit_form.as_p }}

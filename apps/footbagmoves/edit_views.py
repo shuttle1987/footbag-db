@@ -88,11 +88,12 @@ def component_new(request):
             return HttpResponseRedirect(reverse('component_detail', args=[new_component.slug]))
 
     context = RequestContext(request, {
+        'add_new': True, #Flag for template
         'edit_form': edit_form,
         'tips_form': tips_form,
         'demo_vids': demo_vids,
     })
-    template = loader.get_template('footbagmoves/component_new.html')
+    template = loader.get_template('footbagmoves/component_modify.html')
     return HttpResponse(template.render(context))
 
 @login_required
@@ -130,6 +131,7 @@ def component_modify(request, component_id):
         'edit_form': edit_form,
         'tips_form': tips_form,
         'demo_vids': demo_vids,
+        'add_new': False,
     })
     template = loader.get_template('footbagmoves/component_modify.html')
     return HttpResponse(template.render(context))
