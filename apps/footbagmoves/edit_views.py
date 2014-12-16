@@ -152,7 +152,7 @@ def move_new(request):
     tips_form = TipsForm(request.POST or None)
     demo_vids = MoveDemoVideoFormset(request.POST or None, instance=new_move)
     tutorial_vids = MoveTutorialVideoFormset(request.POST or None, instance=new_move)
-    if demo_vids.is_valid() and tutorial_vids.is_valid and edit_form.is_valid():
+    if demo_vids.is_valid() and tutorial_vids.is_valid() and edit_form.is_valid():
         new_move.name = edit_form.cleaned_data.get("name")
         existing_moves = Move.objects.filter(slug=slugify(new_move.name))
         if existing_moves:
@@ -198,7 +198,7 @@ def move_modify(request, move_id):
     }
     edit_form = MoveEditForm(data)
     component_sequence = ComponentSequenceFormset(request.POST or None, instance=current_move)
-    if demo_vids.is_valid() and tutorial_vids.is_valid and edit_form.is_valid() and tips_form.is_valid():
+    if demo_vids.is_valid() and tutorial_vids.is_valid() and edit_form.is_valid() and tips_form.is_valid():
         demo_vids.save()
         tutorial_vids.save()
         if existing_tips:
