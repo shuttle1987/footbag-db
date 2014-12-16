@@ -15,7 +15,32 @@
 
 	<form id="edit-move" action="" method="post">
 		{{ edit_form.as_p }}
-		{{ component_sequence.as_table }}
+
+		{{ component_sequence.management_form}}
+		{{ component_sequence.non_form_errors.as_ul}}
+		<table id="component-sequence">
+			<thead>
+				<td>Number</td>
+				<td>Component</td>
+			</thead>
+			<tbody>
+			{% for component_form in component_sequence.forms %}
+			{{ component_form.non_field_errors }}	
+			<tr>
+				<td>
+					{{ component_form.sequence_number.errors.as_ul }}
+					{{ component_form.sequence_number }}
+				</td>
+				<td>
+					{{ component_form.component.errors.as_ul }}
+					{{ component_form.component }}
+					{% if component_form.instance.pk %} {{ component_form.DELETE }} {% endif %}
+				</td>
+			<tr>
+			</tbody>
+			{% endfor %}
+		</table>
+
 		{{ demo_vids.management_form }}
 		{{ demo_vids.non_form_errors.as_ul }}
 		<table id="demo-videos">
