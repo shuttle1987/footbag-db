@@ -37,8 +37,8 @@
 					{% if component_form.instance.pk %} {{ component_form.DELETE }} {% endif %}
 				</td>
 			<tr>
-			</tbody>
 			{% endfor %}
+			</tbody>
 		</table>
 
 		{{ demo_vids.management_form }}
@@ -74,8 +74,8 @@
 					{{ vid.end_time }}
 				</td>
 			</tr>
-			</tbody>
 			{% endfor %}
+			</tbody>
 		</table>
 		{% for vid in demo_vids %}
 			{% for hidden in vid.hidden_fields %}
@@ -116,8 +116,8 @@
 					{{ vid.end_time }}
 				</td>
 			</tr>
-			</tbody>
 			{% endfor %}
+			</tbody>
 		</table>
 		{% for vid in tutorial_vids %}
 			{% for hidden in vid.hidden_fields %}
@@ -138,6 +138,9 @@
 		});
         $('#tutorial-videos tbody tr').formset({
 			prefix: '{{ tutorial_vids.prefix }}',
+		});
+        $('#component-sequence tbody tr').formset({
+			prefix: '{{ component_sequence.prefix }}',
 		});
     })
 </script>
