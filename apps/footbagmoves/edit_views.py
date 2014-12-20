@@ -148,11 +148,11 @@ def move_new(request):
     """Add a new move to the database"""
     new_move = Move()
     edit_form = MoveEditForm(request.POST or None)
-    component_sequence = ComponentSequenceFormset(request.POST or None, instance=new_move)
+    component_sequence = ComponentSequenceFormset(request.POST or None, instance=new_move, prefix='components')
     tips_form = TipsForm(request.POST or None)
-    demo_vids = MoveDemoVideoFormset(request.POST or None, instance=new_move)
-    tutorial_vids = MoveTutorialVideoFormset(request.POST or None, instance=new_move)
-    if demo_vids.is_valid() and tutorial_vids.is_valid() and edit_form.is_valid():
+    demo_vids = MoveDemoVideoFormset(request.POST or None, instance=new_move, prefix='demo')
+    tutorial_vids = MoveTutorialVideoFormset(request.POST or None, instance=new_move, prefix='tutorial')
+    if demo_vids.is_valid() and tutorial_vids.is_valid() and component_sequence.is_valid() and edit_form.is_valid():
         new_move.name = edit_form.cleaned_data.get("name")
         existing_moves = Move.objects.filter(slug=slugify(new_move.name))
         if existing_moves:
@@ -184,8 +184,8 @@ def move_modify(request, move_id):
     """Modify an existing move in the database:
     :move_id: the unique id of the move being modified"""
     current_move = get_object_or_404(Move, pk=move_id)
-    demo_vids = MoveDemoVideoFormset(request.POST or None, instance=current_move)
-    tutorial_vids = MoveTutorialVideoFormset(request.POST or None, instance=current_move)
+    demo_vids = MoveDemoVideoFormset(request.POST or None, instance=current_move, prefix='demo')
+    tutorial_vids = MoveTutorialVideoFormset(request.POST or None, instance=current_move, prefix='tutorial')
     try: #load tips if possible
         existing_tips = MoveTips.objects.get(move=current_move)
         tips_form = TipsForm(request.POST or {'tips': existing_tips.tips.raw})
@@ -197,8 +197,8 @@ def move_modify(request, move_id):
         'name': current_move.name,
     }
     edit_form = MoveEditForm(data)
-    component_sequence = ComponentSequenceFormset(request.POST or None, instance=current_move)
-    if demo_vids.is_valid() and tutorial_vids.is_valid() and edit_form.is_valid() and tips_form.is_valid():
+    component_sequence = ComponentSequenceFormset(request.POST or None, instance=current_move, prefix='components')
+    if demo_vids.is_valid() and tutorial_vids.is_valid() and component_sequence.is_valid() and  edit_form.is_valid() and tips_form.is_valid():
         demo_vids.save()
         tutorial_vids.save()
         if existing_tips:
