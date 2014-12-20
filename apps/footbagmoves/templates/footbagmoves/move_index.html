@@ -13,4 +13,8 @@ For example here are some recently added moves:
     <li><a href="{% url "move_detail" move.slug %}"> {{ move.name }}</a></li>
 {% endfor %}
 </ul>
+{% if user.is_authenticated %}
+Click <a href="{% url 'move-new' %}">here</a> to add a new move to the database.
+{% endif %}
+
 {% endblock %}

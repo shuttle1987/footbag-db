@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}{% if add_new %}Add a move{% else %}Editing move "{{ move_name }}"{% endif %}{% endblock %}
+{% block header %}{% if add_new %}Add a move{% else %}Editing move "{{ move_name }}"{% endif %}{% endblock %}
+{% block content %}
+
+<script type="text/javascript" src="{% static "js/jquery-2.1.1.min.js"%}"></script>
+<script type="text/javascript" src="{% static "js/jquery.formset.js"%}"></script>
+	{% if add_new %}
+	Add a new move to the database.
+	{% else %}
+	Currently editing move "{{ move_name }}"
+	{%endif %}
+
+	<form id="edit-move" action="" method="post">
+		{{ edit_form.as_p }}
+
+		Components that make this move:
+		{{ component_sequence.management_form}}
+		{{ component_sequence.non_form_errors.as_ul}}
+		<table id="component-sequence">
+			<thead>
+				<td>Number</td>
+				<td>Component</td>
+			</thead>
+			<tbody>
+			{% for component_form in component_sequence.forms %}
+			{{ component_form.non_field_errors }}	
+			<tr>
+				<td>
+					{{ component_form.sequence_number.errors.as_ul }}
+					{{ component_form.sequence_number }}
+				</td>
+				<td>
+					{{ component_form.component.errors.as_ul }}
+					{{ component_form.component }}
+					{% if component_form.instance.pk %} {{ component_form.DELETE }} {% endif %}
+				</td>
+			<tr>
+			{% endfor %}
+			</tbody>
+		</table>
+
+		Demonstration videos:
+		{{ demo_vids.management_form }}
+		{{ demo_vids.non_form_errors.as_ul }}
+		<table id="demo-videos">
+			<thead>
+			<tr>
+				<td>video type</td>
+				<td>URL</td>
+				<td>start time</td>
+				<td>end time</td>
+			</tr>
+			</thead>
+			<tbody>
+			{% for vid in demo_vids.forms %}
+			{{ vid.non_field_errors }}
+			<tr>
+				<td>
+					{{ vid.video_type.errors.as_ul }}
+					{{ vid.video_type }}
+				</td>
+				<td>
+					{{ vid.URL.errors.as_ul }}
+					{{ vid.URL }}
+					{% if vid.instance.pk %} {{vid.DELETE}} {% endif %}
+				</td>
+				<td>
+					{{ vid.start_time.errors.as_ul }}
+					{{ vid.start_time }}
+				</td>
+				<td>
+					{{ vid.end_time.errors.as_ul }}
+					{{ vid.end_time }}
+				</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		{% for vid in demo_vids %}
+			{% for hidden in vid.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+		{% endfor %}
+
+		Tutorial videos:
+		{{ tutorial_vids.management_form }}
+		{{ tutorial_vids.non_form_errors.as_ul }}
+		<table id="tutorial-videos">
+			<thead>
+			<tr>
+				<td>video type</td>
+				<td>URL</td>
+				<td>start time</td>
+				<td>end time</td>
+			</tr>
+			</thead>
+			<tbody>
+			{% for vid in tutorial_vids.forms %}
+			{{ vid.non_field_errors }}
+			<tr>
+				<td>
+					{{ vid.video_type.errors.as_ul }}
+					{{ vid.video_type }}
+				</td>
+				<td>
+					{{ vid.URL.errors.as_ul }}
+					{{ vid.URL }}
+					{% if vid.instance.pk %} {{vid.DELETE}} {% endif %}
+				</td>
+				<td>
+					{{ vid.start_time.errors.as_ul }}
+					{{ vid.start_time }}
+				</td>
+				<td>
+					{{ vid.end_time.errors.as_ul }}
+					{{ vid.end_time }}
+				</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		{% for vid in tutorial_vids %}
+			{% for hidden in vid.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+		{% endfor %}
+
+
+		{{ tips_form.as_p }}
+		{% csrf_token %}
+		<input type="submit" value="submit">
+	</form>
+
+<script type="text/javascript">
+    $(function() {
+        $('#demo-videos tbody tr').formset({
+			prefix: '{{ demo_vids.prefix }}',
+			formCssClass: 'videos-formset1'
+		});
+        $('#tutorial-videos tbody tr').formset({
+			prefix: '{{ tutorial_vids.prefix }}',
+			formCssClass: 'videos-formset2'
+		});
+        $('#component-sequence tbody tr').formset({
+			prefix: '{{ component_sequence.prefix }}',
+			formCssClass: 'component-sequence-formset'
+		});
+    })
+</script>
+
+
+{% endblock %}

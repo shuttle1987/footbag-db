@@ -27,16 +27,30 @@ import markdown
 import bleach
 
 from docutils.core import publish_parts
+
+#settings for Bleach
+bleach_tags_allowed = [
+    'br',
+    'p',
+    'em',
+    'strong',
+]
+
 def render_rest(markup):
     """ Render ReStructuredText to HTML then clean the output using Bleach.
     This is to prevent a number of issues to do with XSS."""
     parts = publish_parts(source=markup, writer_name="html4css1")
-    return bleach.clean(parts["fragment"])
+    return bleach.clean(parts["fragment"], bleach_tags_allowed)
+
+#settings for markdown
+markdown_extensions = [
+    "nl2br",#makes newlines appear as </br>, this is probably what the users expect
+]
 
 def render_markdown_clean(markup):
     """ Render markdown to HTML then clean the output using Bleach.
     This is to prevent a number of issues to do with XSS."""
-    return bleach.clean(markdown.markdown(markup))
+    return bleach.clean(markdown.markdown(markup, markdown_extensions), bleach_tags_allowed)
 
 MARKUP_FIELD_TYPES = (
     ('markdown', render_markdown_clean),

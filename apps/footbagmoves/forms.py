@@ -1,17 +1,25 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from .constants import YOUTUBE_VIDEO_TYPE
+from .constants import YOUTUBE_VIDEO_TYPE, VIDEO_TYPES, URL_VIDEO_TYPE
 from .video_assets_models import VideoAsset
 from .video_api_helpers import is_youtube_video, extract_yt_id
 
-from .models import Component, ComponentNickname, MoveNickname
+from .models import Component, ComponentNickname, Move, MoveComponentSequence, MoveNickname
+
+import markupfield
 
 class ComponentEditForm(forms.ModelForm):
     """A form for editing footbag components"""
     class Meta:
         model = Component
         fields = ['name',]
+
+class MoveComponentSequenceForm(forms.ModelForm):
+    """A form for editing the component sequences in footbag moves."""
+    class Meta:
+        model = MoveComponentSequence
+        fields = ['sequence_number', 'component']
 
 class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
     """ A formset that requires you to enter at least one entry in order to validate.
@@ -33,9 +41,16 @@ class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
                 components_entered.add(seq_number)
 
 
+class MoveEditForm(forms.ModelForm):
+    """A form for editing footbag components"""
+    class Meta:
+        model = Move
+        fields = ['name',]
+
+
 class VideoEntryForm(forms.ModelForm):
     """A form for entering in video details """
-
+    video_type = forms.ChoiceField(choices=VIDEO_TYPES, initial=URL_VIDEO_TYPE)
     def __init__(self, *args, **kwargs):
         super(VideoEntryForm, self).__init__(*args, **kwargs)
         self.fields['start_time'].required = False
@@ -136,3 +151,9 @@ class SearchForm(forms.Form):
     search_text = forms.CharField()
     error_css_class = 'error'
     required_css_class = 'required'
+
+from markupfield.widgets import MarkupTextarea
+
+class TipsForm(forms.Form):
+    """A form for use in editing tips"""
+    tips = forms.CharField(widget=markupfield.widgets.MarkupTextarea(), required=False)

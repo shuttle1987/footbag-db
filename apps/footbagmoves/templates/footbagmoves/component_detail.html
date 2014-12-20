@@ -75,6 +75,10 @@ Tips:
 There's no tips on record, if you know this component well please consider contributing some!
 {% endif %}
 
+{% if user.is_authenticated %}
+<a href="{% url 'component-edit' component.id %}">Edit this page</a>
+{% endif %}
+
 {% if load_youtube %}
 <script>
 load_first_video = function(){
