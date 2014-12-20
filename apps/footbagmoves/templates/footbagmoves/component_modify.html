@@ -15,6 +15,7 @@
 
 	<form id="edit-component" action="" method="post">
 		{{ edit_form.as_p }}
+		Demonstration videos:
 		{{ demo_vids.management_form }}
 		{{ demo_vids.non_form_errors.as_ul }}
 		<table id="demo-videos">
@@ -57,6 +58,7 @@
 			{% endfor %}
 		{% endfor %}
 
+		Tutorial videos:
 		{{ tutorial_vids.management_form }}
 		{{ tutorial_vids.non_form_errors.as_ul }}
 		<table id="tutorial-videos">

@@ -16,6 +16,7 @@
 	<form id="edit-move" action="" method="post">
 		{{ edit_form.as_p }}
 
+		Components that make this move:
 		{{ component_sequence.management_form}}
 		{{ component_sequence.non_form_errors.as_ul}}
 		<table id="component-sequence">
@@ -41,6 +42,7 @@
 			</tbody>
 		</table>
 
+		Demonstration videos:
 		{{ demo_vids.management_form }}
 		{{ demo_vids.non_form_errors.as_ul }}
 		<table id="demo-videos">
@@ -83,6 +85,7 @@
 			{% endfor %}
 		{% endfor %}
 
+		Tutorial videos:
 		{{ tutorial_vids.management_form }}
 		{{ tutorial_vids.non_form_errors.as_ul }}
 		<table id="tutorial-videos">
