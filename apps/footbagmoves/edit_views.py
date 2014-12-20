@@ -40,7 +40,8 @@ MoveDemoVideoFormset = inlineformset_factory(
     form=VideoEntryForm,
     formset=VideosFormset,
     extra=1,
-    max_num=20
+    max_num=20,
+    can_delete=True
 )
 
 #Formset for move tutorial videos
@@ -50,8 +51,8 @@ MoveTutorialVideoFormset = inlineformset_factory(
     form=VideoEntryForm,
     formset=VideosFormset,
     extra=1,
-    max_num=20
-
+    max_num=20,
+    can_delete=True,
 )
 
 #Formset for entering in the sequence of components in a move
@@ -61,7 +62,8 @@ ComponentSequenceFormset = inlineformset_factory(
     form=MoveComponentSequenceForm,
     formset=ComponentsInlineFormset,
     extra=1,
-    max_num=15
+    max_num=15,
+    can_delete=True
 )
 
 @login_required
@@ -160,6 +162,7 @@ def move_new(request):
         else:
             new_move.save()
             demo_vids.save()
+            component_sequence.save()
             if tips_form.is_valid():
                 MoveTips.objects.create(
                     move=new_move,
@@ -201,6 +204,7 @@ def move_modify(request, move_id):
     if demo_vids.is_valid() and tutorial_vids.is_valid() and component_sequence.is_valid() and  edit_form.is_valid() and tips_form.is_valid():
         demo_vids.save()
         tutorial_vids.save()
+        component_sequence.save()
         if existing_tips:
             existing_tips.tips.raw = tips_form.cleaned_data.get("tips")
             existing_tips.save()
