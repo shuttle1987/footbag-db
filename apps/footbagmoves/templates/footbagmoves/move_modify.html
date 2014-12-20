@@ -135,12 +135,15 @@
     $(function() {
         $('#demo-videos tbody tr').formset({
 			prefix: '{{ demo_vids.prefix }}',
+			formCssClass: 'videos-formset1'
 		});
         $('#tutorial-videos tbody tr').formset({
 			prefix: '{{ tutorial_vids.prefix }}',
+			formCssClass: 'videos-formset2'
 		});
         $('#component-sequence tbody tr').formset({
 			prefix: '{{ component_sequence.prefix }}',
+			formCssClass: 'component-sequence-formset'
 		});
     })
 </script>
