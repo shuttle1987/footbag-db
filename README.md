@@ -1,6 +1,9 @@
 footbag-db
 ==========
 
+.. image:: https://travis-ci.org/shuttle1987/footbag-db.svg
+    :target: https://travis-ci.org/shuttle1987/footbag-db.svg
+
 This project aims create a set of educational tools accessible from the web
 to help people learn the skills and techniques involved in the sport of footbag.
 At the projects core is a video encyclopedia of techniques in the sport that is easy to search.
