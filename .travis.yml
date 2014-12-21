@@ -7,7 +7,8 @@ env:
     - DJANGO_SETTINGS_MODULE="footbag_site.settings"
     - PYTHONPATH="/home/travis/build/shuttle1987/footbag-db"
     - PIP_USE_MIRRORS=true
-  - DJANGO=1.7 DB=mysql
+  matrix:
+    - DJANGO=1.7 DB=mysql
 
 #commands to install dependencies
 install:
