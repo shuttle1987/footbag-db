@@ -1,0 +1,16 @@
+language: python
+
+python:
+  - "3.4"
+env:
+  - DJANGO=1.7 DB=mysql
+
+#commands to install dependencies
+install:
+  - pip install -q Django==$DJANGO --use-mirrors
+  - pip install -q . --use-mirrors
+  - pip install -q -r requirements.txt --use-mirrors
+
+#command to run the test suite
+script:
+  - python manage.py test
