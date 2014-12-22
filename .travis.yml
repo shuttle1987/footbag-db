@@ -2,6 +2,9 @@ language: python
 
 python:
   - "3.4"
+
+services: mysql
+
 env:
   global:
     - DJANGO_SETTINGS_MODULE="footbag_site.settings"
@@ -15,6 +18,10 @@ env:
 install:
   - pip install -q Django==$DJANGO
   - pip install -q -r requirements.txt
+
+before_script:
+  - mysql -e 'create database travis_ci_db;'
+  - python manage.py syncdb --noinput
 
 #command to run the test suite
 script:
