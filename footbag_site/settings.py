@@ -32,7 +32,7 @@ if os.getenv('BUILD_ON_TRAVIS', None):
             'NAME': 'travis_ci_db',
             'USER': 'travis',
             'PASSWORD': '',
-            'HOST': 'mysql.server',
+            'HOST': '127.0.0.1',
         }
     }
 else:
