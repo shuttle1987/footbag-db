@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 #Use the live settings to build on Travis CI
 if os.getenv('BUILD_ON_TRAVIS', None):
-    from live_settings import *
+    from .live_settings import *
 else:
     from .local_settings import * #import the settings specific to the environment (dev or live)
 
