@@ -15,12 +15,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 from django.conf import global_settings
-from .local_settings import * #import the settings specific to the environment (dev or live)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+#Use the live settings to build on Travis CI
+if os.getenv('BUILD_ON_TRAVIS', None):
+    from live_settings import *
+else:
+    from .local_settings import * #import the settings specific to the environment (dev or live)
 
 # Rendering for the trick tips via markdownfield
 import markdown
