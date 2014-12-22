@@ -15,12 +15,31 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 from django.conf import global_settings
-from .local_settings import * #import the settings specific to the environment (dev or live)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+#Use the following live settings to build on Travis CI
+if os.getenv('BUILD_ON_TRAVIS', None):
+    SECRET_KEY = "SecretKeyForUseOnTravis"
+    DEBUG = False
+    TEMPLATE_DEBUG = True
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',#django backend
+            'NAME': 'travis_ci_db',
+            'USER': 'travis',
+            'PASSWORD': '',
+            'HOST': '127.0.0.1',
+        }
+    }
+else:
+    #import the settings specific to the environment (dev or live)
+    from .local_settings import *
+    with open(os.path.join(BASE_DIR,'secret_key.txt')) as f:
+        SECRET_KEY = f.read().strip()
 
 # Rendering for the trick tips via markdownfield
 import markdown
@@ -61,8 +80,6 @@ MARKUP_FIELD_TYPES = (
 ACCOUNT_OPEN_SIGNUP = False#django-user-accounts, this sets the site to private beta mode and requires signups to have tokens.
 
 
-with open(os.path.join(BASE_DIR,'secret_key.txt')) as f:
-    SECRET_KEY = f.read().strip()
 
 ALLOWED_HOSTS = ['.footbag.info',
                  '.footbag.info.',
