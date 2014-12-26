@@ -38,12 +38,12 @@ $body-font: 14px Georgia, serif;
 	}
 
     #main-content {
-        width: 640px;
 		flex: 1;
     }
     #sidebar-left {
-        float: left;
 		flex: 0 0 12em;
+		margin-right: 5px;
+		/* Order makes sure left sidebar is on the left */
 		order: -1;
     }
 }
