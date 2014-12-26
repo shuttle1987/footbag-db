@@ -6,7 +6,7 @@ $body-font: 14px Georgia, serif;
 @import 'partials/_table_color.scss';
 
 
-@media screen and (max-width: 700px){
+@media screen and (max-width: 768px){
     body {
         background: #333;
     }
@@ -18,27 +18,33 @@ $body-font: 14px Georgia, serif;
     }
 }
 
-$content-height: 600px;
-
-@media screen and (min-width: 701px){
+@media screen and (min-width: 768px){
     body {
         background: #999;
     }
     #page-wrap {
+		display: flex;
+		min-height: 100vh;
+		flex-direction: column;
         width: 850px;
     }
     #page-wrap:after {
         content: "Desktop layout";
     }
+
+	#middle {
+		display: flex;
+		flex: 1;
+	}
+
     #main-content {
-        float: right;
-        width: 640px;
-        height: $content-height;
+		flex: 1;
     }
     #sidebar-left {
-        float: left;
-        width: 120px;
-        height: $content-height;
+		flex: 0 0 12em;
+		margin-right: 5px;
+		/* Order makes sure left sidebar is on the left */
+		order: -1;
     }
 }
 
@@ -58,7 +64,6 @@ body {
 
 #page-wrap >div {
     border: 1px solid #777;
-    padding: 20px;
     margin-bottom: 5px;
     color: black;
 }
@@ -66,6 +71,7 @@ body {
 #header {
     font-weight: bold;
     font-size: 24px;
+    height: 36px;
     background: $div-color;
 }
 
