@@ -15,26 +15,28 @@
         <div id="header">
             {% block header %}{% endblock %}
         </div>
-        <div id="sidebar-left">
-            {% block sidebar %}
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/components/">Components</a></li>
-                <li><a href="/moves/">Moves</a></li>
-                <li><a href="/search/">Search</a></li>
-                <li><a href="/about">About</a><li>
-                {% if user.is_authenticated %}
-                <li><a href="/account/logout">Logout</a><li>
-                {% else %}
-                <li><a href="/account/login">Login</a><li>
-                {% endif %}
-            </ul>
-            {% endblock %}
-        </div>
+		<div id="middle">
+			<div id="sidebar-left">
+				{% block sidebar %}
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/components/">Components</a></li>
+					<li><a href="/moves/">Moves</a></li>
+					<li><a href="/search/">Search</a></li>
+					<li><a href="/about">About</a><li>
+					{% if user.is_authenticated %}
+					<li><a href="/account/logout">Logout</a><li>
+					{% else %}
+					<li><a href="/account/login">Login</a><li>
+					{% endif %}
+				</ul>
+				{% endblock %}
+			</div>
 
-        <div id="main-content">
-            {% block content %}{% endblock %}
-        </div>
+			<div id="main-content">
+				{% block content %}{% endblock %}
+			</div>
+		</div>
         <div id="footer">
             user contributions licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">cc by-sa 3.0</a> with attribution required
         </div>
