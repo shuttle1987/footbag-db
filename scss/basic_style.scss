@@ -64,7 +64,6 @@ body {
 
 #page-wrap >div {
     border: 1px solid #777;
-    padding: 5px;
     margin-bottom: 5px;
     color: black;
 }
@@ -72,6 +71,7 @@ body {
 #header {
     font-weight: bold;
     font-size: 24px;
+    height: 36px;
     background: $div-color;
 }
 
