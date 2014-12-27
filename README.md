@@ -6,7 +6,7 @@ footbag-db
   [1]: https://travis-ci.org/shuttle1987/footbag-db/
   [2]: https://travis-ci.org/shuttle1987/footbag-db.svg
 
-[![Coverage Status](https://img.shields.io/coveralls/shuttle1987/footbag-db.svg)](https://coveralls.io/r/shuttle1987/footbag-db)
+[![Coverage Status](https://img.shields.io/coveralls/shuttle1987/footbag-db.svg)](https://coveralls.io/r/shuttle1987/footbag-db?branch=develop)
 
 This project aims create a set of educational tools accessible from the web
 to help people learn the skills and techniques involved in the sport of footbag.
