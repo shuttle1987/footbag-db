@@ -5,7 +5,13 @@ from .constants import YOUTUBE_VIDEO_TYPE, VIDEO_TYPES, URL_VIDEO_TYPE
 from .video_assets_models import VideoAsset
 from .video_api_helpers import is_youtube_video, extract_yt_id
 
-from .models import Component, ComponentNickname, Move, MoveComponentSequence, MoveNickname
+from .models import (
+    Component,
+    ComponentNickname,
+    Move,
+    MoveComponentSequence,
+    MoveNickname,
+)
 
 import markupfield
 
@@ -30,7 +36,7 @@ class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
         if any(self.errors):
             return
         if not any(cleaned_data and not cleaned_data.get('DELETE', False)
-                for cleaned_data in self.cleaned_data):
+                   for cleaned_data in self.cleaned_data):
             raise forms.ValidationError('At least one item is required.')
         components_entered = set()
         for component in self.cleaned_data:
@@ -65,8 +71,8 @@ class VideoEntryForm(forms.ModelForm):
             'end_time',
         )
         labels = {
-                'start_time': _('Start time'),
-                'end_time': _('End time'),
+            'start_time': _('Start time'),
+            'end_time': _('End time'),
         }
 
     def clean(self):
@@ -82,7 +88,8 @@ class VideoEntryForm(forms.ModelForm):
         video_type = self.cleaned_data.get("video_type")
         url = self.cleaned_data.get("URL")
         if video_type != YOUTUBE_VIDEO_TYPE and is_youtube_video(url):
-            raise forms.ValidationError("Error: a youtube link was entered in as a raw URL. Please use youtube video type instead.")
+            raise forms.ValidationError("Error: a youtube link was entered in as a raw URL."
+                                        " Please use youtube video type instead.")
         return self.cleaned_data
 
 
@@ -103,7 +110,7 @@ class VideosFormset(forms.models.BaseInlineFormSet):
             else:
                 video_id = form.cleaned_data.get("URL")
             if video_id:
-                video_info_tuple = (video_type, video_id) 
+                video_info_tuple = (video_type, video_id)
                 if video_info_tuple not in current_videos:
                     current_videos.add(video_info_tuple)
                 else:
@@ -122,11 +129,11 @@ class MoveNicknameForm(forms.ModelForm):
             'rating',
         )
         labels = {
-                'nickname': _('nickname'),
-                'rating': _('nickname rating'),
+            'nickname': _('nickname'),
+            'rating': _('nickname rating'),
         }
         help_texts = {
-                'rating': _('The more appropriate the nickname is the higher the rating it should have.'),
+            'rating': _('The more appropriate the nickname is the higher the rating it should have.'),
         }
 
 class ComponentNicknameForm(forms.ModelForm):
@@ -139,11 +146,11 @@ class ComponentNicknameForm(forms.ModelForm):
             'rating',
         )
         labels = {
-                'nickname': _('nickname'),
-                'rating': _('nickname rating'),
+            'nickname': _('nickname'),
+            'rating': _('nickname rating'),
         }
         help_texts = {
-                'rating': _('The more appropriate the nickname is the higher the rating it should have.'),
+            'rating': _('The more appropriate the nickname is the higher the rating it should have.'),
         }
 
 class SearchForm(forms.Form):
@@ -152,7 +159,7 @@ class SearchForm(forms.Form):
     error_css_class = 'error'
     required_css_class = 'required'
 
-from markupfield.widgets import MarkupTextarea
+#from markupfield.widgets import MarkupTextarea
 
 class TipsForm(forms.Form):
     """A form for use in editing tips"""

@@ -1,3 +1,4 @@
+"""URL routing for the browse move and browse components pages"""
 from django.views.generic import ListView
 from apps.footbagmoves.models import Component, Move
 

@@ -1,14 +1,20 @@
 from django.contrib import admin
-from django.forms.models import BaseInlineFormSet
 
-from apps.footbagmoves.models import Component, Move, MoveComponentSequence
-from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
-from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
-from apps.footbagmoves.models import ComponentNickname, MoveNickname
-from apps.footbagmoves.models import ComponentTips, MoveTips
+from apps.footbagmoves.models import (
+    Component, Move, MoveComponentSequence,
+    ComponentTutorialVideo, ComponentDemonstrationVideo,
+    MoveTutorialVideo, MoveDemonstrationVideo,
+    ComponentNickname, MoveNickname,
+    ComponentTips, MoveTips,
+)
 
-from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, ComponentsInlineFormset, ComponentNicknameForm, MoveNicknameForm
-
+from apps.footbagmoves.forms import (
+    VideosFormset,
+    VideoEntryForm,
+    ComponentsInlineFormset,
+    ComponentNicknameForm,
+    MoveNicknameForm
+)
 
 class ComponentDemonstrationVideoInline(admin.TabularInline):
     """Inline admin to link to a demonstation video for a component"""
@@ -41,10 +47,10 @@ class ComponentAdmin(admin.ModelAdmin):
     """Admin helper for the components"""
     fields = ('name',)
     inlines = (
-            ComponentTipsInline,
-            ComponentDemonstrationVideoInline,
-            ComponentTutorialVideoInline,
-            ComponentNicknamesInline,
+        ComponentTipsInline,
+        ComponentDemonstrationVideoInline,
+        ComponentTutorialVideoInline,
+        ComponentNicknamesInline,
     )
 
 
@@ -85,11 +91,11 @@ class MoveTipsInline(admin.StackedInline):
 class MoveAdmin(admin.ModelAdmin): 
     """Admin helper for the moves """
     inlines = (
-            MoveComponentSequenceInline,
-            MoveTipsInline,
-            MoveDemonstrationVideoInline,
-            MoveTutorialVideoInline,
-            MoveNicknamesInline,
+        MoveComponentSequenceInline,
+        MoveTipsInline,
+        MoveDemonstrationVideoInline,
+        MoveTutorialVideoInline,
+        MoveNicknamesInline,
     )
 
 

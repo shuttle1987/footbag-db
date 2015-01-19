@@ -1,6 +1,6 @@
 """ Views for the footbag moves and components """
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.http import HttpResponse, HttpResponseNotFound
 from django.template import RequestContext, loader
 
 import itertools
@@ -12,8 +12,6 @@ from apps.footbagmoves.models import MoveNickname, ComponentNickname
 from apps.footbagmoves.models import MoveTips, ComponentTips
 
 from apps.footbagmoves.constants import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
-
-from apps.footbagmoves.video_api_helpers import extract_first_yt_url, extract_yt_id
 
 from apps.footbagmoves.forms import SearchForm
 
@@ -28,7 +26,7 @@ def move_index(request):
     template = loader.get_template('footbagmoves/move_index.html')
     latest_moves = get_last_3(Move.objects.all())
     num_moves = Move.objects.count()
-    context = RequestContext(request,{
+    context = RequestContext(request, {
         'number_of_moves': num_moves,
         'recent_moves': latest_moves,
     })
@@ -56,7 +54,7 @@ def move_detail(request, move_slug):
     load_youtube_api = (any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in demo_video) or
                         any(vid.video_type == YOUTUBE_VIDEO_TYPE for vid in tutorial_video))
 
-    first_yt_video = next((vid for vid in itertools.chain(demo_video,tutorial_video) if
+    first_yt_video = next((vid for vid in itertools.chain(demo_video, tutorial_video) if
                            vid.video_type == YOUTUBE_VIDEO_TYPE), None)
     if load_youtube_api:
         first_yt_id = first_yt_video.video_id
@@ -159,7 +157,7 @@ def search_page(request):
         if search_form.is_valid():
             search_text = search_form.cleaned_data['search_text']
             nickname_objs = MoveNickname.objects.filter(nickname__exact=search_text)
-            move_objs = [ nickname.move for nickname in nickname_objs]
+            move_objs = [nickname.move for nickname in nickname_objs]
             results_found = len(move_objs)
             if results_found > 0:
                 results_info_text = "Found " + str(results_found) + " results for " + search_form.cleaned_data['search_text']

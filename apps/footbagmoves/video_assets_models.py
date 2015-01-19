@@ -23,7 +23,7 @@ class VideoAsset(models.Model):
         The start and end times when defined by `start_time` and `end_time` in the forms have to set
         `use_start` and `use_end` upon saving to the database.
         We also need to extract the ID from youtube videos to store internally"""
-        if(self.video_type == YOUTUBE_VIDEO_TYPE):
+        if self.video_type == YOUTUBE_VIDEO_TYPE:
             self.video_id = extract_yt_id(self.URL)
 
         if self.start_time:
@@ -41,7 +41,10 @@ class VideoAsset(models.Model):
 
     def __str__(self):
         if self.use_start == True or self.use_end == True:
-            return 'Video: %s, %s start: %d end %d' % (self.URL, self.video_type, self.start_time, self.end_time)
+            return 'Video: %s, %s start: %d end %d' % (self.URL,
+                                                       self.video_type,
+                                                       self.start_time,
+                                                       self.end_time)
         else:
             return 'Video: %s, %s' % (self.URL, self.video_type)
 

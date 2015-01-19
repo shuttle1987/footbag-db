@@ -6,6 +6,6 @@ URL_VIDEO_TYPE = '1'
 YOUTUBE_VIDEO_TYPE = '2'
 #Possible choices for video types
 VIDEO_TYPES = (
-        (URL_VIDEO_TYPE, 'URL'),
-        (YOUTUBE_VIDEO_TYPE, 'Youtube'),
+    (URL_VIDEO_TYPE, 'URL'),
+    (YOUTUBE_VIDEO_TYPE, 'Youtube'),
 )
