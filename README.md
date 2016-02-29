@@ -47,6 +47,13 @@ directory as the manage.py file.
 
 Store the secret key in that file.
 
+###Initial migrations
+In a bare install there's no database tables yet.
+Run:
+
+python manage.py makemigrations footbagmoves
+python manage.py migrate --fake-initial
+
 ##Git workflow
 For a conceptual overview of the type of branching strategy we are using have a
 look at http://scottchacon.com/2011/08/31/github-flow.html .
