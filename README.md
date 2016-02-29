@@ -23,6 +23,23 @@ an issue in the issues tracker.
 Depending on the database backend being used the Django settings might need to be
 changed.
 
+###Settings
+This project imports a file called local_settings.py from settings.py.
+This file is to conditionally choose between importing the development settings vs the live settings.
+As this is just a configuration step this file is not contained within the source control.
+
+To use the development settings place the following in local_settings.py:
+
+```python
+from footbag_site.dev_settings import *
+```
+
+To use the live settings:
+
+```python
+from footbag_site.live_settings import *
+```
+
 ##Git workflow
 For a conceptual overview of the type of branching strategy we are using have a
 look at http://scottchacon.com/2011/08/31/github-flow.html .

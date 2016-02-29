@@ -1,3 +1,5 @@
+"""Uses pyinvoke to do common tasks"""
+
 from invoke import task, run
 
 @task
