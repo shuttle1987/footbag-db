@@ -3,6 +3,15 @@
 from invoke import task, run
 
 @task
+def set_up_directories():
+    """
+    When you have a new project not all the directory structure is automatically generated.
+    This creates the directory structure required by other tasks.
+    """
+    run("mkdir -p ./static/basic_theme/css/")
+    run("mkdir -p ./footbag_site/static/basic_theme/css/")
+
+@task
 def compile_scss():
     """Compile the SCSS and copy to relevant static directory"""
     run("pyscss ./scss/*.scss > ./static/basic_theme/css/style.css")
