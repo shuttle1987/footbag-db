@@ -12,7 +12,7 @@ env:
     - PIP_USE_MIRRORS=true
     - BUILD_ON_TRAVIS=true
   matrix:
-    - DJANGO=1.7 DB=mysql
+    - DJANGO=1.9 DB=mysql
 
 #commands to install dependencies
 install:
@@ -22,7 +22,8 @@ install:
 
 before_script:
   - mysql -e 'create database travis_ci_db;'
-  - python manage.py syncdb --noinput
+  - python manage.py makemigrations
+  - python manage.py migrate
 
 #command to run the test suite
 script:
