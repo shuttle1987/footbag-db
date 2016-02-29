@@ -22,8 +22,35 @@ def run_tests():
     """Run the unit testing suite"""
     run("python manage.py test")
 
+@task
 def restart_server():
     """The command to restart the web server.
     PythonAnywhere is set up such that touching the WSGI file restarts the server.
     Change this command to whatever the web server requires."""
     run('touch /var/www/www_footbag_info_wsgi.py')#restarts PythonAnywhere server
+
+@task(run_tests)
+def prepare_deployment(branch_name):
+    """
+    Prepare to deploy from a git branch if and only if the unit tests pass
+    The syntax to call this from the command line is:
+
+    >>> invoke prepare_deployment --branch_name=foo_branch
+
+    where branch_name is the name of the branch being deployed
+    """
+    run('git checkout master && git merge ' + branch_name)
+
+@task(post=[restart_server])
+def deploy_to_live():
+    """
+    Deploy from the dev folder to the live site using git, assumes changes have
+    already been prepared with prepare_deployment.
+    """
+    import os
+    pwd = os.getcwd()
+    os.chdir('~/footbagsite/www_footbag_info/')
+    compile_scss()
+    run('git pull ~/footbagsite/dev-site/')
+    run('python manage.py migrate footbagmoves')
+    os.chdir(pwd)
