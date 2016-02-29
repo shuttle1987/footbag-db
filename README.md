@@ -40,6 +40,13 @@ To use the live settings:
 from footbag_site.live_settings import *
 ```
 
+###Secret key
+This is not stored in the settings.py file because it's not safe to store in version control.
+Settings.py reads in the secret key from a file called secret_key.txt which is found in the same
+directory as the manage.py file.
+
+Store the secret key in that file.
+
 ##Git workflow
 For a conceptual overview of the type of branching strategy we are using have a
 look at http://scottchacon.com/2011/08/31/github-flow.html .
