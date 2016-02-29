@@ -162,7 +162,7 @@ TEMPLATE_LOADERS = (
         )),
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + [
     "account.context_processors.account",#django-user-accounts
-)
+]
 
