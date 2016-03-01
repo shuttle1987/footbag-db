@@ -1,0 +1,34 @@
+language: python
+
+python:
+  - "3.4"
+
+services: mysql
+
+env:
+  global:
+    - DJANGO_SETTINGS_MODULE="footbag_site.settings"
+    - PYTHONPATH="/home/travis/build/shuttle1987/footbag-db"
+    - PIP_USE_MIRRORS=true
+    - BUILD_ON_TRAVIS=true
+  matrix:
+    - DJANGO=1.9 DB=mysql
+
+#commands to install dependencies
+install:
+  - pip install -q Django==$DJANGO
+  - pip install -q -r requirements.txt
+  - pip install coveralls
+
+before_script:
+  - mysql -e 'create database travis_ci_db;'
+  - python manage.py makemigrations
+  - python manage.py migrate
+
+#command to run the test suite
+script:
+  - python manage.py test
+  - coverage run manage.py test
+
+after_success:
+  - coveralls

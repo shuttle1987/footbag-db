@@ -1,9 +1,9 @@
 """Helper functions for the video APIs we are using in the project"""
 __all__ = ['extract_first_yt_url', 'extract_yt_id']
 
-from urlparse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs
 
-from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE
+from .constants import YOUTUBE_VIDEO_TYPE
 
 def extract_first_yt_url(demo_vids, tutorial_vids):
     """Extract the first youtube url from the demo or tutorial videos.
@@ -41,3 +41,18 @@ def extract_yt_id(youtube_url):
             return query.path.split('/')[2]
     # fail?
     return None
+
+def is_youtube_video(youtube_url):
+    """Returns true if the video is a youtube link and false otherwise"""
+    query = urlparse(youtube_url)
+    if query.hostname == 'youtu.be':
+        return True
+    if query.hostname in ('www.youtube.com', 'youtube.com'):
+        if query.path == '/watch':
+            return True
+        if query.path[:7] == '/embed/':
+            return True
+        if query.path[:3] == '/v/':
+            return True
+    # fail?
+    return False

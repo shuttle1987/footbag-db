@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Site currently in beta testing{% endblock %}
+{% block header %}Site currently in beta testing{% endblock %}
+{% block content %}
+
+	<h1>This site is in private beta</h1>
+	<p>If you have a signup code you can enter it below.</p>
+		<form method="get" action="">
+		<div><input type="text" name="code" placeholder="Your signup code..." /></div>
+		<div><input type="submit" class="btn btn-primary"></div>
+	</form>
+
+{% endblock %}

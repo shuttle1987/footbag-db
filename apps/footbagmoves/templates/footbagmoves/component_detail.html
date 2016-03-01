@@ -1,32 +1,114 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}Component - {{ component.name }}{% endblock %}
 {% block header %} Component: {{ component.name }}{% endblock %}
 {% block content %}
 This is the components detail page for {{ component.name }}
 
+
+{% if nicknames %}
 <br />
+<br />
+This component is also known by the following nicknames:
+<ul class="nicknames">
+    {% for nick in nicknames %}
+    <li> {{ nick.nickname }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if load_youtube %}
+<script src="{% static 'js/load_youtube.js' %}"></script>
+{% endif %}
+
+<div id="player"></div>
+
+<br />
+<br />
+<br />
+<div class="demonstration_videos">
 {% with videos=video_demo.all %}
     {% if videos %}
-        Video demonstration:
+        Video demonstration:<br />
+        <ul>
         {% for vid in videos %}
-            <a href="{{ vid.URL }}"> click for demo </a>
+            {% if vid.use_start or vid.use_end %}
+            <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration
+                ({% if vid.use_start == True %}starts at {{ vid.start_time }}s {% endif %}
+                {% if vid.use_end == True %}ends at {{ vid.end_time }}s {% endif %})
+                {% if vid.video_type == vid_types.URL %}(external link){% endif %}</a></li>
+            {% else %}
+                <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for demonstration  {% if vid.video_type == vid_types.URL %}(external link){% endif %}</a></li>
+            {% endif %}
         {% endfor %}
+        </ul>
     {% else %}
         No video demonstrations found.
     {% endif %}
 {% endwith %}
+</div>
 
 <br />
+<div class="tutorial_videos">
 {% with videos=video_tutorial.all %}
     {% if videos %}
-        Tutorial video:
+        Tutorial video:<br />
+        <ul>
         {% for vid in videos %}
-            <a href="{{ vid.URL }}"> click for tutorial </a>
+            <li><a href="{{ vid.URL }}" class="vidtype{{ vid.video_type }}"> click for tutorial  {% if vid.video_type == vid_types.URL %}(external link){% endif %}</a></li>
         {% endfor %}
+        </ul>
     {% else %}
         No video tutorials found.
     {% endif %}
 {% endwith %}
+</div>
+
+{% if component_tips %}
+Tips:
+<br />
+<div class="tips">
+	{{ component_tips.tips.rendered|safe }}
+</div>
+{% else %}
+There's no tips on record, if you know this component well please consider contributing some!
+{% endif %}
+
+{% if user.is_authenticated %}
+<a href="{% url 'component-edit' component.id %}">Edit this page</a>
+{% endif %}
+
+{% if load_youtube %}
+<script>
+load_first_video = function(){
+    //first Youtube video to be loaded in the player along with the page
+    player.loadVideoById({
+        videoId: "{{ first_yt_id }}",
+    {% if first_yt_video.use_start %}
+        startSeconds: {{first_yt_video.start_time}},
+    {% endif %}
+    {% if first_yt_video.use_end %}
+        endSeconds: {{first_yt_video.end_time}},
+    {% endif %}
+    });
+}
+
+//Get all the demo/tutorial links that contain a youtube video
+var yt_vid_class = document.getElementsByClassName("vidtype{{vid_types.Youtube}}");
+
+//Function that's called whenever a youtube video link is clicked
+var ytVidFunction = function(evt) {
+    var attribute = this.getAttribute("href");
+    player.loadVideoById(extractYouTubeID(attribute));
+    cancelDefaultAction(evt);
+};
+
+//Register listener for each youtube link
+for(var i=0;i<yt_vid_class.length;i++){
+    yt_vid_class[i].addEventListener('click', ytVidFunction, false);
+}
+</script>
+{% endif %}
 
 {% endblock %}

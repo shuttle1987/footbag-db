@@ -1,6 +1,13 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from markupfield.fields import MarkupField
+
+from .video_assets_models import VideoAsset
+from .video_api_helpers import extract_yt_id
+
+from .constants import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
+
 class Component(models.Model):
     """ A model for a footbag move component
     see https://github.com/shuttle1987/footbag-db/wiki/Abstract-model-for-footbag-moves
@@ -9,8 +16,8 @@ class Component(models.Model):
     name = models.CharField(max_length=20)
     slug = models.SlugField(editable=False, unique=True)#editable=False hides slug from admin page
 
-    def __unicode__(self):
-        """ Unicode string representation of the object """
+    def __str__(self):
+        """String representation of Component object """
         return self.name
 
     def save(self, *args, **kwargs):
@@ -34,7 +41,8 @@ class Move(models.Model):
     """
     name = models.CharField(max_length=40)
     slug = models.SlugField(editable=False, unique=True)#editable=False hides slug from admin page
-    def __unicode__(self):
+    def __str__(self):
+        """String representation of Move object """
         return self.name
 
     def save(self, *args, **kwargs):
@@ -53,58 +61,74 @@ class MoveComponentSequence(models.Model):
     component = models.ForeignKey(Component)
     move = models.ForeignKey(Move)
 
-    def __unicode__(self):
-        return u'%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
+    def __str__(self):
+        return '%s, %d, %s' % (self.move.name, self.sequence_number, self.component.name)
 
-#Raw URL pointing to a video
-URL_VIDEO_TYPE = u'1'
-#URL pointing to a youtube video
-YOUTUBE_VIDEO_TYPE = u'2'
-#Possible choices for video types
-VIDEO_TYPES = (
-        (URL_VIDEO_TYPE, u'URL'),
-        (YOUTUBE_VIDEO_TYPE, u'Youtube'),
-)
-
-class MoveDemonstrationVideo(models.Model):
-    """ This is to keep track of move demonstration videos. """
+class MoveDemonstrationVideo(VideoAsset):
+    """ This is to keep track of move demonstration videos.
+    Videos are stored as defined in VideoAsset and are associated with moves via this table."""
     move = models.ForeignKey(Move)
-    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
-    URL = models.URLField()
-    use_start = models.BooleanField(default=False)
-    start_time = models.PositiveSmallIntegerField()
-    use_end = models.BooleanField(default=False)
-    end_time = models.PositiveSmallIntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         if self.use_start == True or self.use_end == True:
-            return u'Demonstration video for Move: %s, %s, %s start: %d end %d' % (self.move.name, self.video_type, self.URL, self.start_time, self.end_time)
+            return 'Demonstration video for Move: %s, %s, %s start: %d end %d' % (self.move.name, self.video_type, self.URL, self.start_time, self.end_time)
         else:
-            return u'Demonstration video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+            return 'Demonstration video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
 
-class MoveTutorialVideo(models.Model):
-    """ This is to keep track of move tutorial videos. """
+class MoveTutorialVideo(VideoAsset):
+    """ This is to keep track of move tutorial videos.
+    Videos are stored as defined in VideoAsset and are associated with moves via this table."""
     move = models.ForeignKey(Move)
-    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
-    URL = models.URLField()
 
-    def __unicode__(self):
-        return u'Tutorial video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
+    def __str__(self):
+        if self.use_start == True or self.use_end == True:
+            return 'Tutorial video for Move: %s, %s, %s start: %d end %d' % (self.move.name, self.video_type, self.URL, self.start_time, self.end_time)
+        else:
+            return 'Tutorial video for Move: %s, %s, %s' % (self.move.name, self.video_type, self.URL)
 
-class ComponentDemonstrationVideo(models.Model):
-    """ This is to keep track of component demonstration videos. """
+class ComponentDemonstrationVideo(VideoAsset):
+    """ This is to keep track of component demonstration videos.
+    Videos are stored as defined in VideoAsset and are associated with components via this table."""
     component = models.ForeignKey(Component)
-    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
-    URL = models.URLField()
 
-    def __unicode__(self):
-        return u'Demonstration video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
+    def __str__(self):
+        if self.use_start == True or self.use_end == True:
+            return 'Demonstration video for Component: %s, %s, %s start: %d end %d' % (self.component.name, self.video_type, self.URL, self.start_time, self.end_time)
+        else:
+            return 'Demonstration video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
 
-class ComponentTutorialVideo(models.Model):
-    """ This is to keep track of component tutorial videos. """
+class ComponentTutorialVideo(VideoAsset):
+    """ This is to keep track of component tutorial videos.
+    Videos are stored as defined in VideoAsset and are associated with components via this table."""
     component = models.ForeignKey(Component)
-    video_type = models.CharField(max_length=1, choices=VIDEO_TYPES, default=URL_VIDEO_TYPE)
-    URL = models.URLField()
 
-    def __unicode__(self):
-        return u'Tutorial video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
+    def __str__(self):
+        if self.use_start == True or self.use_end == True:
+            return 'Tutorial video for Component: %s, %s, %s start: %d end %d' % (self.component.name, self.video_type, self.URL, self.start_time, self.end_time)
+        else:
+            return 'Tutorial video for Component: %s, %s, %s' % (self.component.name, self.video_type, self.URL)
+
+
+class MoveNickname(models.Model):
+    """Keep track of nicknames for footbag moves."""
+    move = models.ForeignKey(Move)
+    nickname = models.CharField(max_length=40, unique=True)
+    rating = models.SmallIntegerField(default=0)
+
+class ComponentNickname(models.Model):
+    """Keep track of nicknames for footbag components."""
+    component = models.ForeignKey(Component)
+    nickname = models.CharField(max_length=40, unique=True)
+    rating = models.SmallIntegerField(default=0)
+ 
+class Tips(models.Model):
+    """For editing tips for footbag moves and components."""
+    tips = MarkupField(default_markup_type='markdown')
+
+class ComponentTips(Tips):
+    """Tips for footbag components"""
+    component = models.ForeignKey(Component)
+
+class MoveTips(Tips):
+    """Tips for footbag moves"""
+    move = models.ForeignKey(Move)

@@ -1,34 +1,56 @@
 from django.contrib import admin
-from django.forms.models import BaseInlineFormSet
 
-from apps.footbagmoves.models import Component, Move, MoveComponentSequence
-from apps.footbagmoves.models import ComponentTutorialVideo, ComponentDemonstrationVideo
-from apps.footbagmoves.models import MoveTutorialVideo, MoveDemonstrationVideo
+from apps.footbagmoves.models import (
+    Component, Move, MoveComponentSequence,
+    ComponentTutorialVideo, ComponentDemonstrationVideo,
+    MoveTutorialVideo, MoveDemonstrationVideo,
+    ComponentNickname, MoveNickname,
+    ComponentTips, MoveTips,
+)
 
-from apps.footbagmoves.forms import VideosFormset, VideoEntryForm, ComponentsInlineFormset
-
-
-class VideoEntryAdmin(admin.TabularInline):
-    """ Single video entry """
-    #TODO: remove this?
-    pass
+from apps.footbagmoves.forms import (
+    VideosFormset,
+    VideoEntryForm,
+    ComponentsInlineFormset,
+    ComponentNicknameForm,
+    MoveNicknameForm
+)
 
 class ComponentDemonstrationVideoInline(admin.TabularInline):
     """Inline admin to link to a demonstation video for a component"""
     model = ComponentDemonstrationVideo
+    form = VideoEntryForm
+    formset = VideosFormset
     max_num = 20
 
 class ComponentTutorialVideoInline(admin.TabularInline):
     """Inline admin to link to a tutorial video for a component"""
     model = ComponentTutorialVideo
+    form = VideoEntryForm
+    formset = VideosFormset
     max_num = 20
+
+
+class ComponentNicknamesInline(admin.TabularInline):
+    """ Inline admin for associating component nicknames with the underlying Component obejcts """
+    model = ComponentNickname
+    form = ComponentNicknameForm
+    max_num = 20
+    extra = 1
+
+class ComponentTipsInline(admin.StackedInline):
+    """ Inline admin for component tips"""
+    model = ComponentTips
+    max_num = 1
 
 class ComponentAdmin(admin.ModelAdmin):
     """Admin helper for the components"""
     fields = ('name',)
     inlines = (
-            ComponentDemonstrationVideoInline,
-            ComponentTutorialVideoInline,
+        ComponentTipsInline,
+        ComponentDemonstrationVideoInline,
+        ComponentTutorialVideoInline,
+        ComponentNicknamesInline,
     )
 
 
@@ -42,6 +64,8 @@ class MoveDemonstrationVideoInline(admin.TabularInline):
 class MoveTutorialVideoInline(admin.TabularInline):
     """Inline admin to link to a tutorial video for a Move"""
     model = MoveTutorialVideo
+    form = VideoEntryForm
+    formset = VideosFormset
     max_num = 20
 
 class MoveComponentSequenceInline(admin.TabularInline):
@@ -52,12 +76,26 @@ class MoveComponentSequenceInline(admin.TabularInline):
     max_num = 20 #maximum of 20 components allowed
     extra = 1
 
+class MoveNicknamesInline(admin.TabularInline):
+    """ Inline admin for associating move nicknames with the underlying move obejcts """
+    model = MoveNickname
+    form = MoveNicknameForm
+    max_num = 20
+    extra = 1
+
+class MoveTipsInline(admin.StackedInline):
+    """ Inline admin for Move tips"""
+    model = MoveTips
+    max_num = 1
+
 class MoveAdmin(admin.ModelAdmin): 
     """Admin helper for the moves """
     inlines = (
-            MoveComponentSequenceInline,
-            MoveDemonstrationVideoInline,
-            MoveTutorialVideoInline,
+        MoveComponentSequenceInline,
+        MoveTipsInline,
+        MoveDemonstrationVideoInline,
+        MoveTutorialVideoInline,
+        MoveNicknamesInline,
     )
 
 

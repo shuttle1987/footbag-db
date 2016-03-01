@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Account settings{% endblock %}
+{% block header %}Account settings{% endblock %}
+{% block content %}
+
+<form method="POST" action="{% url "account_settings" %}">
+	<legend>Account</legend>
+	{% csrf_token %}
+	{{ form }}
+	<button class="btn btn-primary" type="submit">Save</button>
+</form>
+
+{% endblock %}

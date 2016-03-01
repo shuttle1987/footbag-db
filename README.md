@@ -1,6 +1,13 @@
 footbag-db
 ==========
 
+[![CI status][2]][1]
+
+[![Coverage Status](https://coveralls.io/repos/shuttle1987/footbag-db/badge.png?branch=develop)](https://coveralls.io/r/shuttle1987/footbag-db?branch=develop)
+
+  [1]: https://travis-ci.org/shuttle1987/footbag-db/
+  [2]: https://travis-ci.org/shuttle1987/footbag-db.svg
+  
 This project aims create a set of educational tools accessible from the web
 to help people learn the skills and techniques involved in the sport of footbag.
 At the projects core is a video encyclopedia of techniques in the sport that is easy to search.
@@ -15,6 +22,37 @@ an issue in the issues tracker.
 
 Depending on the database backend being used the Django settings might need to be
 changed.
+
+###Settings
+This project imports a file called local_settings.py from settings.py.
+This file is to conditionally choose between importing the development settings vs the live settings.
+As this is just a configuration step this file is not contained within the source control.
+
+To use the development settings place the following in local_settings.py:
+
+```python
+from footbag_site.dev_settings import *
+```
+
+To use the live settings:
+
+```python
+from footbag_site.live_settings import *
+```
+
+###Secret key
+This is not stored in the settings.py file because it's not safe to store in version control.
+Settings.py reads in the secret key from a file called secret_key.txt which is found in the same
+directory as the manage.py file.
+
+Store the secret key in that file.
+
+###Initial migrations
+In a bare install there's no database tables yet.
+Run:
+
+python manage.py makemigrations footbagmoves
+python manage.py migrate --fake-initial
 
 ##Git workflow
 For a conceptual overview of the type of branching strategy we are using have a

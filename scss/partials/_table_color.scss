@@ -1,0 +1,16 @@
+//SCSS for making nicer looking tables
+table, th, td{
+    border: 1px solid black;
+}
+
+td{
+    padding: 3px;
+}
+
+.row-even{
+    background: #FFFFFF;
+}
+
+.row-odd{
+    background: #E7E7E7;
+}

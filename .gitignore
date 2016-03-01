@@ -1,2 +1,4 @@
 *.pyc
 *.swp
+*.sqlite3
+secret_key.txt

@@ -5,37 +5,14 @@ from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+def error403(request):
+    return render(request, '403.html', status=403)
+
 def error404(request):
-    return render(request,'404.html')
+    return render(request, '404.html', status=404)
 
-def user_login(request):
-    """Login page"""
-    context = RequestContext(request)
-
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = authenticate(username=username, password=password)
-
-        if user:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/user_panel/')
-            else:
-                return HttpResponse('Your account is currently disabled')
-        else:
-            return HttpResponse("invalid username or password")
-    else:
-        login_template = loader.get_template('login.html')
-        return HttpResponse(login_template.render(context))
-
-
-@login_required
-def user_logout(request):
-    """Log a user out"""
-    logout(request)
-    return HttpResponseRedirect('/')
+def error500(request):
+    return render(request, '500.html', status=500)
 
 @login_required
 def user_panel(request):
