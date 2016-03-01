@@ -30,16 +30,16 @@ def restart_server():
     run('touch /var/www/www_footbag_info_wsgi.py')#restarts PythonAnywhere server
 
 @task(run_tests)
-def prepare_deployment(branch_name):
+def prepare_deployment(branch):
     """
     Prepare to deploy from a git branch if and only if the unit tests pass
     The syntax to call this from the command line is:
 
-    >>> invoke prepare_deployment --branch_name=foo_branch
+    >>> invoke prepare_deployment --branch=foo_branch
 
     where branch_name is the name of the branch being deployed
     """
-    run('git checkout master && git merge ' + branch_name)
+    run('git checkout master && git merge ' + branch)
 
 @task(post=[restart_server])
 def deploy_to_live():
