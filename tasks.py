@@ -49,9 +49,9 @@ def deploy_to_live():
     """
     import os
     pwd = os.getcwd()
-    os.chdir('~/footbagsite/www_footbag_info/')
+    os.chdir('/home/janis/footbagsite/www_footbag_info/')
     compile_scss()
     run('git checkout master')
-    run('git pull ~/footbagsite/dev-site/')
+    run('git pull /home/janis/footbagsite/dev-site/')
     run('python manage.py migrate footbagmoves')
     os.chdir(pwd)
