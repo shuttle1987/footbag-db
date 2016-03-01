@@ -22,5 +22,8 @@ DATABASES = {
         'USER': 'janis',
         'PASSWORD': MYSQL_PASS,
         'HOST': 'mysql.server',
+        'TEST': {
+            'NAME': 'janis$test_footbag-db-dev',
+        },
     }
 }
