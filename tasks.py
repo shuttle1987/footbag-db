@@ -29,17 +29,31 @@ def restart_server():
     Change this command to whatever the web server requires."""
     run('touch /var/www/www_footbag_info_wsgi.py')#restarts PythonAnywhere server
 
+
 @task(run_tests)
-def prepare_deployment(branch):
+def stage_changes(branch):
     """
-    Prepare to deploy from a git branch if and only if the unit tests pass
+    Prepare to stage changes on the staging server from a git branch if and only
+    if the unit tests pass.
     The syntax to call this from the command line is:
 
-    >>> invoke prepare_deployment --branch=foo_branch
+    >>> invoke stage_changes --branch=foo_branch
 
     where branch_name is the name of the branch being deployed
     """
-    run('git checkout master && git merge ' + branch)
+    run('git checkout develop && git merge --no-ff ' + branch)
+    run('python manage.py migrate footbagmoves')
+
+@task(run_tests)
+def prepare_deployment():
+    """
+    Prepare to deploy from develop to master and only if the unit tests pass
+    The syntax to call this from the command line is:
+
+    >>> invoke prepare_deployment
+
+    """
+    run('git checkout master && git merge develop')
 
 @task(post=[restart_server])
 def deploy_to_live():
