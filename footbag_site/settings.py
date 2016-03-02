@@ -56,7 +56,7 @@ else:
             'default': {
                 'ENGINE': 'django.db.backends.mysql',#django backend
                 'NAME': config['database']['MYSQL_DB_NAME'],
-                'USER': 'janis',
+                'USER': config['database']['MYSQL_DB_USER'],
                 'PASSWORD': config['database']['MYSQL_PASS'],
                 'HOST': 'mysql.server',
                 'TEST': {
