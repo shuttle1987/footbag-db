@@ -23,36 +23,35 @@ an issue in the issues tracker.
 Depending on the database backend being used the Django settings might need to be
 changed.
 
-###Settings
-This project imports a file called local_settings.py from settings.py.
-This file is to conditionally choose between importing the development settings vs the live settings.
-As this is just a configuration step this file is not contained within the source control.
-
-To use the development settings place the following in local_settings.py:
-
-```python
-from footbag_site.dev_settings import *
-```
-
-To use the live settings:
-
-```python
-from footbag_site.live_settings import *
-```
-
-###Secret key
-This is not stored in the settings.py file because it's not safe to store in version control.
-Settings.py reads in the secret key from a file called secret_key.txt which is found in the same
-directory as the manage.py file.
-
-Store the secret key in that file.
-
 ###Initial migrations
 In a bare install there's no database tables yet.
 Run:
 
 python manage.py makemigrations footbagmoves
 python manage.py migrate --fake-initial
+
+##Settings
+Setting related to the deployment of the site can be found in the deployment_settings.cfg file in the top level.
+This is just a standard configuration file as used by the python configparser.
+
+Sample file is as follows:
+```
+[ServerType]
+live_server: yes
+
+[secrets]
+SECRET_KEY: SuperSecretASCIIstring
+
+[database]
+MYSQL_PASS: MYSQLpassword
+MYSQL_DB_NAME: footbag_database
+MYSQL_DB_USER: janis
+MYSQL_TEST_DB_NAME: test_footbag_database
+```
+
+###Secret key
+This is not stored in the settings.py file because it's not safe to store in version control.
+Store the secret key in secrets section of the config file.
 
 ##Git workflow
 For a conceptual overview of the type of branching strategy we are using have a
