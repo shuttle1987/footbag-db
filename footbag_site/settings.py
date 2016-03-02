@@ -44,7 +44,26 @@ else:
     #import the settings specific to the environment (dev or live)
     live_server = config['ServerType'].getboolean('live_server')
     if live_server:
-        from .live_settings import *
+        # SECURITY WARNING: don't run with debug turned on in production!
+        DEBUG = False
+
+        TEMPLATE_DEBUG = True
+
+        # Database settings, see:
+        # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',#django backend
+                'NAME': 'janis$footbag-db-dev',
+                'USER': 'janis',
+                'PASSWORD': config['database']['MYSQL_PASS'],
+                'HOST': 'mysql.server',
+                'TEST': {
+                    'NAME': 'janis$test_footbag-db-dev',
+                },
+            }
+        }
     else:
         from .dev_settings import *
     SECRET_KEY = config['secrets']['SECRET_KEY']
