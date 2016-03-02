@@ -3,10 +3,7 @@ Django settings for footbag_site project.
 
 This settings file contains all the settings that are shared between all
 environments (in this case dev and live) then imports the deployment specific settings
-from local_settings.py.
-
-local_settings.py just imports the relevant settings for the deployment and as such is
-different in each deployment. local_settings.py is not tracked by git for this reason.
+from a config file called deploymeny_settings.cfg which is at the top level directory.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.9/topics/settings/
