@@ -55,7 +55,7 @@ else:
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.mysql',#django backend
-                'NAME': 'janis$footbag-db-dev',
+                'NAME': config['database']['MYSQL_DB_NAME'],
                 'USER': 'janis',
                 'PASSWORD': config['database']['MYSQL_PASS'],
                 'HOST': 'mysql.server',
