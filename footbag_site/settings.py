@@ -60,7 +60,7 @@ else:
                 'PASSWORD': config['database']['MYSQL_PASS'],
                 'HOST': 'mysql.server',
                 'TEST': {
-                    'NAME': 'janis$test_footbag-db-dev',
+                    'NAME': config['database']['MYSQL_TEST_DB_NAME'],
                 },
             }
         }
