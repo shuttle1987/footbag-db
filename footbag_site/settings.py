@@ -50,7 +50,7 @@ else:
         TEMPLATE_DEBUG = True
 
         # Database settings, see:
-        # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+        # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
         DATABASES = {
             'default': {
@@ -64,8 +64,18 @@ else:
                 },
             }
         }
-    else:
-        from .dev_settings import *
+    else:#running development server
+        # SECURITY WARNING: don't run with debug turned on in production!
+        DEBUG = True
+
+        TEMPLATE_DEBUG = True
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
     SECRET_KEY = config['secrets']['SECRET_KEY']
 
 # Rendering for the trick tips via markdownfield
