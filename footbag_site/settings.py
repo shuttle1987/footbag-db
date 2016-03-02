@@ -9,16 +9,21 @@ local_settings.py just imports the relevant settings for the deployment and as s
 different in each deployment. local_settings.py is not tracked by git for this reason.
 
 For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
+https://docs.djangoproject.com/en/1.9/topics/settings/
 
 For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
+https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 from django.conf import global_settings
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+import configparser
+config = configparser.SafeConfigParser()
+config_location = os.path.join(BASE_DIR, "deployment_settings.cfg")
+config.read(config_location)
 
 #Use the following live settings to build on Travis CI
 if os.getenv('BUILD_ON_TRAVIS', None):
@@ -37,9 +42,41 @@ if os.getenv('BUILD_ON_TRAVIS', None):
     }
 else:
     #import the settings specific to the environment (dev or live)
-    from .local_settings import *
-    with open(os.path.join(BASE_DIR,'secret_key.txt')) as f:
-        SECRET_KEY = f.read().strip()
+    live_server = config['ServerType'].getboolean('live_server')
+    if live_server:
+        # SECURITY WARNING: don't run with debug turned on in production!
+        DEBUG = False
+
+        TEMPLATE_DEBUG = True
+
+        # Database settings, see:
+        # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',#django backend
+                'NAME': config['database']['MYSQL_DB_NAME'],
+                'USER': config['database']['MYSQL_DB_USER'],
+                'PASSWORD': config['database']['MYSQL_PASS'],
+                'HOST': 'mysql.server',
+                'TEST': {
+                    'NAME': config['database']['MYSQL_TEST_DB_NAME'],
+                },
+            }
+        }
+    else:#running development server
+        # SECURITY WARNING: don't run with debug turned on in production!
+        DEBUG = True
+
+        TEMPLATE_DEBUG = True
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
+    SECRET_KEY = config['secrets']['SECRET_KEY']
 
 # Rendering for the trick tips via markdownfield
 import markdown
