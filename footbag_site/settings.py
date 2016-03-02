@@ -42,7 +42,11 @@ if os.getenv('BUILD_ON_TRAVIS', None):
     }
 else:
     #import the settings specific to the environment (dev or live)
-    from .local_settings import *
+    live_server = config['ServerType'].getboolean('live_server')
+    if live_server:
+        from .live_settings import *
+    else:
+        from .dev_settings import *
     SECRET_KEY = config['secrets']['SECRET_KEY']
 
 # Rendering for the trick tips via markdownfield
