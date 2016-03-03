@@ -14,6 +14,9 @@ def set_up_directories():
 @task
 def compile_scss():
     """Compile the SCSS and copy to relevant static directory"""
+
+    run("mkdir -p ./static/basic_theme/css/")
+    run("mkdir -p ./footbag_site/static/basic_theme/css/")
     run("pyscss ./scss/*.scss > ./static/basic_theme/css/style.css")
     run("cp ./static/basic_theme/css/style.css ./footbag_site/static/basic_theme/css/style.css")
 
