@@ -17,6 +17,10 @@ from django.conf import global_settings
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+#We have this setting for django sites which is required because of a dependency
+#that django-user-admin has on the sites framework.
+SITE_ID = 1
+
 import configparser
 config = configparser.SafeConfigParser()
 config_location = os.path.join(BASE_DIR, "deployment_settings.cfg")
