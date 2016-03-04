@@ -26,7 +26,6 @@ config.read(config_location)
 if os.getenv('BUILD_ON_TRAVIS', None):
     SECRET_KEY = "SecretKeyForUseOnTravis"
     DEBUG = False
-    TEMPLATE_DEBUG = True
 
     DATABASES = {
         'default': {
@@ -40,11 +39,10 @@ if os.getenv('BUILD_ON_TRAVIS', None):
 else:
     #import the settings specific to the environment (dev or live)
     live_server = config['ServerType'].getboolean('live_server')
+    SECRET_KEY = config['secrets']['SECRET_KEY']
     if live_server:
         # SECURITY WARNING: don't run with debug turned on in production!
         DEBUG = False
-
-        TEMPLATE_DEBUG = True
 
         # Database settings, see:
         # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -65,15 +63,12 @@ else:
         # SECURITY WARNING: don't run with debug turned on in production!
         DEBUG = True
 
-        TEMPLATE_DEBUG = True
-
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
                 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
             }
         }
-    SECRET_KEY = config['secrets']['SECRET_KEY']
 
 # Rendering for the trick tips via markdownfield
 import markdown
@@ -197,11 +192,12 @@ TEMPLATES = [
             'context_processors': [
                 "account.context_processors.account",#django-user-accounts
             ],
-        'loaders': [
-            ('django.template.loaders.cached.Loader', [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ]),
+            'debug': True,#Previously this was TEMPLATE_DEBUG
+            'loaders': [
+                ('django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ]),
             ],
         },
     }
