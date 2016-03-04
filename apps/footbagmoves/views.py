@@ -41,8 +41,8 @@ def move_detail(request, move_slug):
         current_move = Move.objects.get(slug=move_slug)
     except Move.DoesNotExist:
         template = loader.get_template('footbagmoves/move_not_found.html')
-        context = RequestContext(request, {'move_slug' : move_slug})
-        return HttpResponseNotFound(template.render(context))
+        html = template.render( {'move_slug' : move_slug}, request)
+        return HttpResponseNotFound(html)
     template = loader.get_template('footbagmoves/move_detail.html')
 
     #load move info from DB
@@ -74,30 +74,36 @@ def move_detail(request, move_slug):
     else:
         tips_to_display = ""
 
-    context = RequestContext(request, {
-        'move' : current_move,
-        'sequence': components_seq,
-        'nicknames': nicknames,
-        'video_demo': demo_video,
-        'video_tutorial': tutorial_video,
-        'load_youtube': load_youtube_api,
-        'vid_types': video_types,
-        'first_yt_id': first_yt_id,
-        'first_yt_video': first_yt_video,
-        'move_tips': tips_to_display,
-    })
-    return HttpResponse(template.render(context))
+    html = template.render(
+        {
+            'move' : current_move,
+            'sequence': components_seq,
+            'nicknames': nicknames,
+            'video_demo': demo_video,
+            'video_tutorial': tutorial_video,
+            'load_youtube': load_youtube_api,
+            'vid_types': video_types,
+            'first_yt_id': first_yt_id,
+            'first_yt_video': first_yt_video,
+            'move_tips': tips_to_display,
+        },
+        request
+    )
+    return HttpResponse(html)
 
 def component_index(request):
     """ View for the components index page """
     template = loader.get_template('footbagmoves/component_index.html')
     latest_components = get_last_3(Component.objects.all())
     num_components = Component.objects.count()
-    context = RequestContext(request, {
-        'number_of_components': num_components,
-        'recent_components': latest_components,
-    })
-    return HttpResponse(template.render(context))
+    html = template.render(
+        {
+            'number_of_components': num_components,
+            'recent_components': latest_components,
+        },
+        request
+    )
+    return HttpResponse(html)
 
 def component_detail(request, component_slug):
     """ View for the details of an individual component.
@@ -107,8 +113,8 @@ def component_detail(request, component_slug):
         current_component = Component.objects.get(slug=component_slug)
     except Component.DoesNotExist:
         template = loader.get_template('footbagmoves/component_not_found.html')
-        context = RequestContext(request, {'component_slug' : component_slug})
-        return HttpResponseNotFound(template.render(context))
+        html = template.render({'component_slug' : component_slug}, request)
+        return HttpResponseNotFound(html)
     template = loader.get_template('footbagmoves/component_detail.html')
     #load component info from DB
     demo_video = ComponentDemonstrationVideo.objects.filter(component__exact=current_component)
@@ -126,7 +132,8 @@ def component_detail(request, component_slug):
     else:
         first_yt_id = ""
 
-    #Used in the template to create class names for link elements so that we can extract the youtube videos from the DOM using javascript.
+    #Used in the template to create class names for link elements so that we can extract the
+    #YouTube videos from the DOM using javascript.
     video_types = {
         "URL": URL_VIDEO_TYPE,
         "Youtube": YOUTUBE_VIDEO_TYPE,
@@ -138,18 +145,21 @@ def component_detail(request, component_slug):
         tips_to_display = ""
 
 
-    context = RequestContext(request, {
-        'component' : current_component,
-        'nicknames': nicknames,
-        'video_demo': demo_video,
-        'video_tutorial': tutorial_video,
-        'load_youtube': load_youtube_api,
-        'vid_types': video_types,
-        'first_yt_id': first_yt_id,
-        'first_yt_video': first_yt_video,
-        'component_tips': tips_to_display,
-    })
-    return HttpResponse(template.render(context))
+    html = template.render(
+        {
+            'component' : current_component,
+            'nicknames': nicknames,
+            'video_demo': demo_video,
+            'video_tutorial': tutorial_video,
+            'load_youtube': load_youtube_api,
+            'vid_types': video_types,
+            'first_yt_id': first_yt_id,
+            'first_yt_video': first_yt_video,
+            'component_tips': tips_to_display,
+        },
+        request
+    )
+    return HttpResponse(html)
 
 def search_page(request):
     """A search page for the footbag database"""
@@ -169,17 +179,23 @@ def search_page(request):
                 results_info_text = "No results found for " + search_form.cleaned_data['search_text']
             #Note that this will hit the DB a lot(once per nickname found), some sort
             #of join method would be preferable as that potentially will scale better
-            context = RequestContext(request, {
-                'search_form': search_form,
-                'show_results': show_results,
-                'results_info': results_info_text,
-                'results_list': move_objs,
-            })
-            return HttpResponse(template.render(context))
+            html = template.render(
+                {
+                    'search_form': search_form,
+                    'show_results': show_results,
+                    'results_info': results_info_text,
+                    'results_list': move_objs,
+                },
+                request
+            )
+            return HttpResponse(html)
     else:
         search_form = SearchForm()
         show_results = False
-    context = RequestContext(request, {
-        'search_form': search_form,
-    })
-    return HttpResponse(template.render(context))
+    html = template.render(
+        {
+            'search_form': search_form,
+        },
+        request
+    )
+    return HttpResponse(html)
