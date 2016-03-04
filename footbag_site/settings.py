@@ -195,6 +195,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 "account.context_processors.account",#django-user-accounts
+                'django.contrib.auth.context_processors.auth',
             ],
             'debug': True,#Previously this was TEMPLATE_DEBUG
             'loaders': [
