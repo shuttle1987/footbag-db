@@ -10,13 +10,13 @@ from django.conf.urls import (
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from apps.home import views
+import apps.home.views as homepage
 from apps.footbagmoves import views
 import user_accounts
 from .views import user_panel
 
-urlpatterns = patterns('',
-    url(r'^$', 'apps.home.views.index', name='basic_homepage'),#match the bare domain name
+urlpatterns = [
+    url(r'^$', homepage.index, name='basic_homepage'),#match the bare domain name
     url(r'^about$', TemplateView.as_view(template_name='home/about.html'), name='about'),
     url(r'^components/', include('apps.footbagmoves.component_urls')),
     url(r'^moves/', include('apps.footbagmoves.move_urls')),
@@ -28,7 +28,7 @@ urlpatterns = patterns('',
 #    url(r"^account/signup/$", user_accounts.views.SignupView.as_view(), name="account_signup"),
     url(r'^account/', include('account.urls')),#django-user-accounts
     url(r'^admin/', include(admin.site.urls)),
-)
+]
 
 handler403 = 'footbag_site.views.error403'
 handler404 = 'footbag_site.views.error404'

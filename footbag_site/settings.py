@@ -182,22 +182,27 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'footbag_site', 'static'),)
 
-# Location of template files
-TEMPLATE_DIRS = (    
-    os.path.join(BASE_DIR, 'footbag_site', 'templates'),
-    os.path.join(BASE_DIR, 'apps', 'home', 'templates'),
-    os.path.join(BASE_DIR, 'apps', 'footbagmoves', 'templates'),
-    os.path.join(BASE_DIR, 'user_accounts', 'templates'),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
-TEMPLATE_LOADERS = (
-        ('django.template.loaders.cached.Loader', (
-            'django.template.loaders.filesystem.Loader',
-            'django.template.loaders.app_directories.Loader',
-        )),
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + [
-    "account.context_processors.account",#django-user-accounts
+        # Location of template files
+        'DIRS': [
+            os.path.join(BASE_DIR, 'footbag_site', 'templates'),
+            os.path.join(BASE_DIR, 'apps', 'home', 'templates'),
+            os.path.join(BASE_DIR, 'apps', 'footbagmoves', 'templates'),
+            os.path.join(BASE_DIR, 'user_accounts', 'templates'),
+        ],
+        'OPTIONS': {
+            'context_processors': [
+                "account.context_processors.account",#django-user-accounts
+            ],
+        'loaders': [
+            ('django.template.loaders.cached.Loader', [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]),
+            ],
+        },
+    }
 ]
-
