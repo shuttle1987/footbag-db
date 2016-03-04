@@ -15,7 +15,6 @@ from apps.footbagmoves.constants import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
 
 from apps.footbagmoves.forms import SearchForm
 
-
 def get_last_3(queryset):
     """Get the last 3 objects that were added as determined by their id.
     :param queryset: the query set we are filtering on"""
@@ -26,11 +25,14 @@ def move_index(request):
     template = loader.get_template('footbagmoves/move_index.html')
     latest_moves = get_last_3(Move.objects.all())
     num_moves = Move.objects.count()
-    context = RequestContext(request, {
-        'number_of_moves': num_moves,
-        'recent_moves': latest_moves,
-    })
-    return HttpResponse(template.render(context))
+    html = template.render(
+        {
+            'number_of_moves': num_moves,
+            'recent_moves': latest_moves,
+        },
+        request
+    )
+    return HttpResponse(html)
 
 def move_detail(request, move_slug):
     """ View for the move details page"""
