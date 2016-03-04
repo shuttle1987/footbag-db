@@ -1,9 +1,8 @@
 """URL processing for the search functionality """
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from apps.footbagmoves import views
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', views.search_page, name='search'),
-)
+]
