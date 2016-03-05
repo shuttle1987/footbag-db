@@ -75,8 +75,8 @@ There are 2 important branches:
 Before anything is pushed to the master branch it first needs to be tested on the develop branch.
 Because the master branch *is* the live site any changes to this branch must be via a pull request.
 
-This branch is deployed to the live site via the Fabric deployment.
-Note that Fabric will not deploy to the live site if *any* unit tests do not pass,
+This branch is deployed to the live site via the invoke script found in tasks.py
+Note that the script will not deploy to the live site if *any* unit tests do not pass,
 so please make sure that all the test pass before creating a pull request.
 
 ###New features
