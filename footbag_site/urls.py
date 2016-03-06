@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^search/', include('apps.footbagmoves.search_urls')),
     url(r'^browse/', include('apps.footbagmoves.browse_urls')),
     url(r'^edit/', include('apps.footbagmoves.edit_urls')),
+    url(r'^developers/', include('apps.footbagmoves.developer_urls')),
     url(r'^user_panel/$', user_panel, name='user_panel'),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='home/robots.txt', content_type='text/plain'), name='robots'),
 #    url(r"^account/signup/$", user_accounts.views.SignupView.as_view(), name="account_signup"),
