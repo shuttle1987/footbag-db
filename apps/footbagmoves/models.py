@@ -8,6 +8,8 @@ from .video_api_helpers import extract_yt_id
 
 from .constants import URL_VIDEO_TYPE, YOUTUBE_VIDEO_TYPE, VIDEO_TYPES
 
+import operator
+
 class Component(models.Model):
     """ A model for a footbag move component
     see https://github.com/shuttle1987/footbag-db/wiki/Abstract-model-for-footbag-moves
@@ -52,6 +54,17 @@ class Move(models.Model):
             self.slug = slugify(self.name)
             super(Move, self).save(*args, **kwargs)
 
+    def as_json(self):
+        """Return dictionary representing this instance"""
+        components = MoveComponentSequence.objects.filter(move=self.id)
+        components_by_order = sorted(components, key=operator.attrgetter('sequence_number'))
+        components_ordered_names = [comp_seq.component.name for comp_seq in components_by_order]
+
+        return {
+            "name": self.name,
+            "slug": self.slug,
+            "components": components_ordered_names,
+        }
 
 class MoveComponentSequence(models.Model):
     """ This is essentially a table that keeps track of the sequences of components that

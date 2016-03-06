@@ -4,6 +4,7 @@ from django.template import loader
 from django.core import serializers
 
 from apps.footbagmoves.models import Component, Move
+import json
 
 def jsonComponents():
     """Serialize components into json"""
@@ -14,8 +15,8 @@ def jsonComponents():
 def jsonMoves():
     """Serialize footbag moves into json"""
     all_move_objects = list(Move.objects.all())
-    data = serializers.serialize('json', all_move_objects)
-    return data
+    json_results = [move.as_json() for move in all_move_objects]
+    return json.dumps(json_results)
 
 def index(request):
     template = loader.get_template('footbagmoves/developer.html')
