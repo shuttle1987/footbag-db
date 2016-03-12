@@ -41,7 +41,6 @@ class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
         sequences_entered = set()
         for component in self.cleaned_data:
             seq_number = component.get('sequence_number', False)
-            print(seq_number)
             if seq_number is False:
                 raise forms.ValidationError('A sequence number was not provided, each component must be given a sequence number in the move')
             elif seq_number in sequences_entered:
