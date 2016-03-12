@@ -1,7 +1,7 @@
 from django.test import TestCase
 from apps.footbagmoves.video_api_helpers import extract_yt_id
 from apps.footbagmoves.forms import VideoEntryForm
-from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE
+from apps.footbagmoves.models import YOUTUBE_VIDEO_TYPE, URL_VIDEO_TYPE
 
 class YoutubeIDExtraction(TestCase):
     """Test functionality that extracts the youtube ID from a youtube URL"""
@@ -50,3 +50,15 @@ class VideoEntryFormTests(TestCase):
             15,
         )
         self.assertTrue(form.is_valid())
+
+    def test_enter_youtube_as_URL(self):
+        """Make sure that youtube video fails validation when classified as URL type"""
+        form = self.form_data(
+            URL_VIDEO_TYPE,
+            'http://www.youtube.com/watch?v=DJ_uZiueQKg',
+            'on',
+            'on',
+            5,
+            15,
+        )
+        self.assertFalse(form.is_valid())
