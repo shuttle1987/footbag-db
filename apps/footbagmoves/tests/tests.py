@@ -84,3 +84,44 @@ class MoveCreationTest(TestCase):
         self.assertEquals(only_move_in_db, move_toe_kick)
         #Test the component saved it's name properly in the DB
         self.assertEquals(only_move_in_db.name, "Toe kick")
+
+    def duplicate_component_should_fail_validation(self):
+        """
+        Test that a move with more than one component with the same sequence
+        number should fail validation
+        """
+        pass
+
+
+from .edit_views import ComponentSequenceFormset
+class MoveComponentSequences(TestCase):
+    """Tests for the move component sequences"""
+    
+    def setUp(self):
+        self.component_toe_kick = Component(name="Toe kick")
+        self.component_toe_kick.save()
+
+    def form_data(self, move, component0_name, component0_seq_number, component1_name, component1_seq_number):
+        return ComponentSequenceFormset(
+            move = move,
+            data = {
+                'form-TOTAL_FORMS': 2,
+                'form-INITIAL_FORMS': 0,
+                'form-MIN_NUM_FORMS': 0,
+                'form-MAM_NUM_FORMS': 15,
+                'form-0-sequence-number': component0_seq_number,
+                'form-0-component': component0_name,
+                'form-1-sequence-number': component1_seq_number,
+                'form-1-component': component1_name,
+            }
+        )
+
+    def test_valid_data(self):
+        move = Move(name="Toe kick")
+        form = self.form_data(
+            move,
+            self.component_toe_kick.name,
+            0,
+            self.component_toe_kick.name,
+            1
+        )
