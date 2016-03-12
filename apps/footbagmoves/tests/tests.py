@@ -80,6 +80,7 @@ class MoveComponentSequences(TestCase):
         )
 
     def test_valid_data(self):
+        """Test that a valid move passes validation"""
         form = self.form_data(
             self.test_move,
             self.component_toe_kick.id,
@@ -97,5 +98,27 @@ class MoveComponentSequences(TestCase):
             0,
             self.component_toe_kick.id,
             0
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_invalid_sequence_number(self):
+        """Test that a move with invalid sequence fails validation"""
+        form = self.form_data(
+            self.test_move,
+            self.component_toe_kick.id,
+            -1,
+            self.component_toe_kick.id,
+            0
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_missing_sequence_number(self):
+        """Test that a move with missing sequence fails validation"""
+        form = self.form_data(
+            self.test_move,
+            self.component_toe_kick.id,
+            "",
+            self.component_toe_kick.id,
+            1
         )
         self.assertFalse(form.is_valid())
