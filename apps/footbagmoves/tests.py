@@ -61,15 +61,22 @@ class ComponentCreationTest(TestCase):
 
 class MoveCreationTest(TestCase):
     """Tests for creating footbag moves"""
+
+    def setUp(self):
+        """Set up components for use wiht Move tests"""
+        self.component_toe_kick = Component(name="Toe kick")
+        self.component_toe_kick.save()
+
     def test_creating_move(self):
         """Test we can create a move and save it"""
-        comp_toe_kick = Component()
-        comp_toe_kick.name = "Toe kick"
-        comp_toe_kick.save()
-
         move_toe_kick = Move(name="Toe kick")
         move_toe_kick.save()
-        MoveComponentSequence(sequence_number=0, component=comp_toe_kick, move=move_toe_kick)
+        component_sequence = MoveComponentSequence(
+            sequence_number=0,
+            component=self.component_toe_kick,
+            move=move_toe_kick
+        )
+        component_sequence.save()
 
         all_moves_in_db = Move.objects.all()
         self.assertEquals(len(all_moves_in_db), 1)
