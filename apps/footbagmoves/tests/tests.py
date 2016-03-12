@@ -88,3 +88,14 @@ class MoveComponentSequences(TestCase):
             1
         )
         self.assertTrue(form.is_valid())
+
+    def test_duplicated_sequence(self):
+        """Test that a move with duplicated sequence fails validation"""
+        form = self.form_data(
+            self.test_move,
+            self.component_toe_kick.id,
+            0,
+            self.component_toe_kick.id,
+            0
+        )
+        self.assertFalse(form.is_valid())
