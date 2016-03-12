@@ -38,13 +38,15 @@ class ComponentsInlineFormset(forms.models.BaseInlineFormSet):
         if not any(cleaned_data and not cleaned_data.get('DELETE', False)
                    for cleaned_data in self.cleaned_data):
             raise forms.ValidationError('At least one item is required.')
-        components_entered = set()
+        sequences_entered = set()
         for component in self.cleaned_data:
             seq_number = component.get('sequence_number', False)
-            if seq_number and seq_number in components_entered:
+            if seq_number is False:
+                raise forms.ValidationError('A sequence number was not provided, each component must be given a sequence number in the move')
+            elif seq_number in sequences_entered:
                 raise forms.ValidationError('A sequence number was repeated, sequence numbers must be unique')
             else:
-                components_entered.add(seq_number)
+                sequences_entered.add(seq_number)
 
 
 class MoveEditForm(forms.ModelForm):
