@@ -52,35 +52,39 @@ class MoveCreationTest(TestCase):
         pass
 
 
-from .edit_views import ComponentSequenceFormset
+from apps.footbagmoves.edit_views import ComponentSequenceFormset
 class MoveComponentSequences(TestCase):
     """Tests for the move component sequences"""
     
     def setUp(self):
         self.component_toe_kick = Component(name="Toe kick")
         self.component_toe_kick.save()
+        self.test_move = Move(name='test move')
+        self.test_move.save()
 
-    def form_data(self, move, component0_name, component0_seq_number, component1_name, component1_seq_number):
+    def form_data(self, move, component0_id, component0_seq_number, component1_id, component1_seq_number):
+        data = {
+            'form-TOTAL_FORMS': 2,
+            'form-INITIAL_FORMS': 0,
+            'form-MIN_NUM_FORMS': 0,
+            'form-MAM_NUM_FORMS': 15,
+            'form-0-sequence_number': component0_seq_number,
+            'form-0-component': component0_id,
+            'form-1-sequence_number': component1_seq_number,
+            'form-1-component': component1_id,
+        }
         return ComponentSequenceFormset(
-            move = move,
-            data = {
-                'form-TOTAL_FORMS': 2,
-                'form-INITIAL_FORMS': 0,
-                'form-MIN_NUM_FORMS': 0,
-                'form-MAM_NUM_FORMS': 15,
-                'form-0-sequence-number': component0_seq_number,
-                'form-0-component': component0_name,
-                'form-1-sequence-number': component1_seq_number,
-                'form-1-component': component1_name,
-            }
+            data,
+            instance = move,
+            prefix = 'form'
         )
 
     def test_valid_data(self):
-        move = Move(name="Toe kick")
         form = self.form_data(
-            move,
-            self.component_toe_kick.name,
+            self.test_move,
+            self.component_toe_kick.id,
             0,
-            self.component_toe_kick.name,
+            self.component_toe_kick.id,
             1
         )
+        self.assertTrue(form.is_valid())
