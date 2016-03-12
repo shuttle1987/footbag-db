@@ -44,13 +44,6 @@ class MoveCreationTest(TestCase):
         #Test the component saved it's name properly in the DB
         self.assertEquals(only_move_in_db.name, "Toe kick")
 
-    def duplicate_component_should_fail_validation(self):
-        """
-        Test that a move with more than one component with the same sequence
-        number should fail validation
-        """
-        pass
-
 
 from apps.footbagmoves.edit_views import ComponentSequenceFormset
 class MoveComponentSequences(TestCase):
