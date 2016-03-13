@@ -17,6 +17,7 @@ class ComponentCreationTest(TestCase):
 
         #Test the component saved its name properly in the DB
         self.assertEquals(only_component_in_db.name, "Toe stall")
+        self.assertEquals(str(comp1), "Toe stall")
 
 class MoveCreationTest(TestCase):
     """Tests for creating footbag moves"""
