@@ -104,6 +104,14 @@ class FootbagComponentViews(TestCase):
         expected_url = reverse('component_detail', args=("NewComponent",))
         self.assertEqual(response.status_code, 200)
 
+    def test_non_existent_component_404s(self):
+        """Test that a non-existent component responds with 404 status code"""
+        non_existant_slug = "ThisIsNotAValidComponentSlug"
+        component_url = reverse('component_detail', args=(non_existant_slug,))
+        resp = self.client.get(component_url)
+        self.assertEqual(resp.status_code, 404)
+
+
 class FootbagMovesViews(TestCase):
     """Test views for footbag move creation"""
     def setUp(self):
@@ -125,3 +133,10 @@ class FootbagMovesViews(TestCase):
         move_url = reverse('move_detail', args=(move_test.slug,))
         resp = self.client.get(move_url)
         self.assertEqual(resp.status_code, 200)
+
+    def test_non_existent_move_404s(self):
+        """Test that a non-existent move responds with 404 status code"""
+        non_existant_slug = "ThisIsNotAValidMoveSlug"
+        move_url = reverse('move_detail', args=(non_existant_slug,))
+        resp = self.client.get(move_url)
+        self.assertEqual(resp.status_code, 404)
