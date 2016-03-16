@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 
 from django.contrib.auth.models import User
 
-from apps.footbagmoves.models import Component
+from apps.footbagmoves.models import Component, Move, MoveComponentSequence
 from apps.footbagmoves.constants import YOUTUBE_VIDEO_TYPE
 
 class UserFactory(factory.DjangoModelFactory):
@@ -90,7 +90,7 @@ class FootbagComponentViews(TestCase):
         return self.client.post(reverse('component-new'), data, follow=True)
 
     def test_component_gettable(self):
-        """Test that the GET request for an existing move works"""
+        """Test that the GET request for an existing component works"""
         new_component = Component(name="NewlyAdded")
         new_component.save()
         component_url = reverse('component_detail', args=(new_component.slug,))
@@ -98,8 +98,30 @@ class FootbagComponentViews(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_valid_component_creation(self):
-        """Test that sending the post data of a valid move gives 302 redirect"""
+        """Test that sending the post data of a valid component gives 302 redirect"""
         self.client.login(username=self.user.username, password='adm1n')
         response = self.new_component_post_data("NewComponent")
         expected_url = reverse('component_detail', args=("NewComponent",))
         self.assertEqual(response.status_code, 200)
+
+class FootbagMovesViews(TestCase):
+    """Test views for footbag move creation"""
+    def setUp(self):
+        self.user = UserFactory.create()
+        self.new_component = Component(name="TestComponent")
+        self.new_component.save()
+
+    def test_move_gettable(self):
+        """Test that the GET request for an existing move works"""
+        move_test = Move(name="Test move")
+        move_test.save()
+        component_sequence = MoveComponentSequence(
+            sequence_number=0,
+            component=self.new_component,
+            move=move_test
+        )
+        component_sequence.save()
+
+        move_url = reverse('move_detail', args=(move_test.slug,))
+        resp = self.client.get(move_url)
+        self.assertEqual(resp.status_code, 200)
