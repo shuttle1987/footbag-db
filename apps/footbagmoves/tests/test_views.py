@@ -107,8 +107,15 @@ class FootbagComponentViews(TestCase):
     def test_non_existent_component_404s(self):
         """Test that a non-existent component responds with 404 status code"""
         non_existant_slug = "ThisIsNotAValidComponentSlug"
-        component_url = reverse('component_detail', args=(non_existant_slug,))
+        component_url = "/component/{}".format(non_existant_slug)
         resp = self.client.get(component_url)
+        self.assertEqual(resp.status_code, 404)
+
+    def test_modify_non_existent_component_404s(self):
+        """Test that an attempt to modify a non-existent component responds with 404 status code"""
+        non_existant_slug = "ThisIsNotAValidComponentSlug"
+        component_modify_url = "/edit/component/{}".format(non_existant_slug)
+        resp = self.client.get(component_modify_url)
         self.assertEqual(resp.status_code, 404)
 
 
@@ -137,6 +144,13 @@ class FootbagMovesViews(TestCase):
     def test_non_existent_move_404s(self):
         """Test that a non-existent move responds with 404 status code"""
         non_existant_slug = "ThisIsNotAValidMoveSlug"
-        move_url = reverse('move_detail', args=(non_existant_slug,))
+        move_url = "/move/{}".format(non_existant_slug)
         resp = self.client.get(move_url)
+        self.assertEqual(resp.status_code, 404)
+
+    def test_modify_non_existent_move_404s(self):
+        """Test that an attempt to modify a non-existent move responds with 404 status code"""
+        non_existant_slug = "ThisIsNotAValidMoveSlug"
+        move_modify_url = "/edit/move/{}".format(non_existant_slug)
+        resp = self.client.get(move_modify_url)
         self.assertEqual(resp.status_code, 404)
