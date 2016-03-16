@@ -27,9 +27,10 @@ changed.
 In a bare install there's no database tables yet.
 Run:
 
+```
 python manage.py makemigrations footbagmoves
 python manage.py migrate --fake-initial
-
+```
 ##Settings
 Setting related to the deployment of the site can be found in the deployment_settings.cfg file in the top level.
 This is just a standard configuration file as used by the python configparser.
