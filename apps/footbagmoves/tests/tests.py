@@ -15,14 +15,15 @@ class ComponentCreationTest(TestCase):
         only_component_in_db = all_components_in_db[0]
         self.assertEquals(only_component_in_db, comp1)
 
-        #Test the component saved it's name properly in the DB
+        #Test the component saved its name properly in the DB
         self.assertEquals(only_component_in_db.name, "Toe stall")
+        self.assertEquals(str(comp1), "Toe stall")
 
 class MoveCreationTest(TestCase):
     """Tests for creating footbag moves"""
 
     def setUp(self):
-        """Set up components for use wiht Move tests"""
+        """Set up components for use with Move tests"""
         self.component_toe_kick = Component(name="Toe kick")
         self.component_toe_kick.save()
 
@@ -41,15 +42,8 @@ class MoveCreationTest(TestCase):
         self.assertEquals(len(all_moves_in_db), 1)
         only_move_in_db = all_moves_in_db[0]
         self.assertEquals(only_move_in_db, move_toe_kick)
-        #Test the component saved it's name properly in the DB
+        #Test the move saved its name properly in the DB
         self.assertEquals(only_move_in_db.name, "Toe kick")
-
-    def duplicate_component_should_fail_validation(self):
-        """
-        Test that a move with more than one component with the same sequence
-        number should fail validation
-        """
-        pass
 
 
 from apps.footbagmoves.edit_views import ComponentSequenceFormset

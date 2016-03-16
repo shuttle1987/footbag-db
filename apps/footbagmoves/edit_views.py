@@ -91,15 +91,17 @@ def component_new(request):
                 )
             return HttpResponseRedirect(reverse('component_detail', args=[new_component.slug]))
 
-    context = RequestContext(request, {
+    template = loader.get_template('footbagmoves/component_modify.html')
+    html = template.render({
         'add_new': True, #Flag for template
         'edit_form': edit_form,
         'tips_form': tips_form,
         'demo_vids': demo_vids,
         'tutorial_vids': tutorial_vids,
-    })
-    template = loader.get_template('footbagmoves/component_modify.html')
-    return HttpResponse(template.render(context))
+        },
+        request
+    )
+    return HttpResponse(html)
 
 @login_required
 def component_modify(request, component_id):
@@ -133,16 +135,18 @@ def component_modify(request, component_id):
             )
         return HttpResponseRedirect(reverse('component_detail', args=[current_component.slug]))
 
-    context = RequestContext(request, {
+    template = loader.get_template('footbagmoves/component_modify.html')
+    html = template.render({
         'add_new': False, #Flag for template
         'component_name': current_component.name,
         'edit_form': edit_form,
         'tips_form': tips_form,
         'demo_vids': demo_vids,
         'tutorial_vids': tutorial_vids,
-    })
-    template = loader.get_template('footbagmoves/component_modify.html')
-    return HttpResponse(template.render(context))
+        },
+        request
+    )
+    return HttpResponse(html)
 
 
 @login_required
@@ -171,16 +175,18 @@ def move_new(request):
                 )
             return HttpResponseRedirect(reverse('move_detail', args=[new_move.slug]))
 
-    context = RequestContext(request, {
+    template = loader.get_template('footbagmoves/move_modify.html')
+    html = template.render({
         'add_new': True, #Flag for template
         'edit_form': edit_form,
         'component_sequence': component_sequence,
         'tips_form': tips_form,
         'demo_vids': demo_vids,
         'tutorial_vids': tutorial_vids,
-    })
-    template = loader.get_template('footbagmoves/move_modify.html')
-    return HttpResponse(template.render(context))
+        },
+        request
+    )
+    return HttpResponse(html)
 
 @login_required
 def move_modify(request, move_id):
@@ -216,7 +222,8 @@ def move_modify(request, move_id):
             )
         return HttpResponseRedirect(reverse('move_detail', args=[current_move.slug]))
 
-    context = RequestContext(request, {
+    template = loader.get_template('footbagmoves/move_modify.html')
+    html = template.render({
         'add_new': False, #Flag for template
         'move_name': current_move.name,
         'edit_form': edit_form,
@@ -224,7 +231,8 @@ def move_modify(request, move_id):
         'tips_form': tips_form,
         'demo_vids': demo_vids,
         'tutorial_vids': tutorial_vids,
-    })
-    template = loader.get_template('footbagmoves/move_modify.html')
-    return HttpResponse(template.render(context))
+        },
+        request
+    )
+    return HttpResponse(html)
 
