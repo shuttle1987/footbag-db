@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.core.urlresolvers import reverse
 
 from markupfield.fields import MarkupField
 
@@ -31,7 +32,6 @@ class Component(models.Model):
 
     def get_absolute_url(self):
         """ Compute canonical URL for a Component object"""
-        from django.core.urlresolvers import reverse
         return reverse('component_detail', args=[self.slug])
 
 class Move(models.Model):
@@ -65,6 +65,10 @@ class Move(models.Model):
             "slug": self.slug,
             "components": components_ordered_names,
         }
+
+    def get_absolute_url(self):
+        """ Compute canonical URL for a Move object"""
+        return reverse('move_detail', args=[self.slug])
 
 class MoveComponentSequence(models.Model):
     """ This is essentially a table that keeps track of the sequences of components that
