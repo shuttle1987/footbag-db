@@ -1,4 +1,4 @@
--e git+https://github.com/django-haystack/django-haystack.git
+git+https://github.com/django-haystack/django-haystack.git
 astroid==1.3.4
 bleach==1.4
 Django==1.9.4
