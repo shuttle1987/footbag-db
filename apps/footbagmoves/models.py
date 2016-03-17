@@ -32,7 +32,7 @@ class Component(models.Model):
     def get_absolute_url(self):
         """ Compute canonical URL for a Component object"""
         from django.core.urlresolvers import reverse
-        return reverse('component_detail', args=[str(self.id)])
+        return reverse('component_detail', args=[self.slug])
 
 class Move(models.Model):
     """ A model for organizing the information for an individual footbag move.
