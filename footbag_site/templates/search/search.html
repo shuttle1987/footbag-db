@@ -18,7 +18,11 @@
 
             {% for result in page.object_list %}
                 <p>
-                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>
+                    {% if result.content_type = "footbagmoves.component" %}
+                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a> (component)
+                    {% else %}
+                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a> (move)
+                    {% endif %}
                 </p>
             {% empty %}
                 <p>No results found.</p>
