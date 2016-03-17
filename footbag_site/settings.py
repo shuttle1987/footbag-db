@@ -132,6 +132,7 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'haystack',#django-haystack
     'account',#django-user-accounts
     'markupfield',#django-markupfield
 )
@@ -154,6 +155,14 @@ MIDDLEWARE_CLASSES = (
     'account.middleware.LocaleMiddleware',#django-user-accounts
     'account.middleware.TimezoneMiddleware',#django-user-accounts
 )
+
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
+}
 
 ROOT_URLCONF = 'footbag_site.urls'
 
