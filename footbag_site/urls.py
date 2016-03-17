@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^about$', TemplateView.as_view(template_name='home/about.html'), name='about'),
     url(r'^components/', include('apps.footbagmoves.component_urls')),
     url(r'^moves/', include('apps.footbagmoves.move_urls')),
+    url(r'^search/', include('haystack.urls')),
     url(r'^search/', include('apps.footbagmoves.search_urls')),
     url(r'^browse/', include('apps.footbagmoves.browse_urls')),
     url(r'^edit/', include('apps.footbagmoves.edit_urls')),
