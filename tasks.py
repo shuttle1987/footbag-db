@@ -62,3 +62,8 @@ def deploy_to_live():
     run('git pull /home/janis/footbagsite/dev-site/ master')
     run('python manage.py migrate footbagmoves')
     os.chdir(pwd)
+
+@task
+def create_search_index():
+    """Create the index files needed to run Haystack search"""
+    run('python manage.py update_index')
