@@ -9,7 +9,7 @@ docutils==0.12
 ecdsa==0.13.3
 factory-boy==2.6.1
 fake-factory==0.5.7
-html5lib==0.999
+html5lib==0.99999999
 invoke==0.12.2
 logilab-common==0.63.2
 Markdown==2.5.1
